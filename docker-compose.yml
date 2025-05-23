@@ -1,0 +1,49 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: docker/centos9-php/Dockerfile
+    container_name: servicios_app
+    environment:
+      - APP_ENV=${APP_ENV}
+      - APP_NAME=${APP_NAME}
+      - APP_URL=${APP_URL}
+      - DB_HOST=${DB_HOST}
+      - DB_NAME=${DB_NAME}          
+      - DB_USER=${DB_USER}          
+      - DB_PASSWORD=${DB_PASSWORD}  
+      - DB_PORT=${DB_PORT}
+      - APP_DEBUG=${APP_DEBUG}      
+    volumes:
+      - ./:/var/www/html
+      - ./docker/vhost.conf:/etc/httpd/conf.d/vhost.conf
+      - ./docker/centos9-php/php.ini:/etc/php.ini
+    ports:
+      - "${APP_PORT:-8080}:80"
+    depends_on:
+      - db
+    networks:
+      - servicios_network
+
+  db:
+    image: mariadb:10.8
+    container_name: servicios_db
+    environment:
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+      - MYSQL_DATABASE=${DB_NAME}     
+      - MYSQL_USER=${DB_USER}         
+      - MYSQL_PASSWORD=${DB_PASSWORD} 
+    volumes:
+      - db_data:/var/lib/mysql
+      - ./docker/mariadb/init.sql:/docker-entrypoint-initdb.d/init.sql
+    ports:
+      - "${DB_PORT:-3306}:3306"
+    networks:
+      - servicios_network
+
+volumes:
+  db_data:
+
+networks:
+  servicios_network:
+    driver: bridge

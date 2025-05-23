@@ -1,0 +1,37 @@
+# Ignorar dependencias de Composer
+/vendor/
+
+# Ignorar archivos de configuración local sensibles
+.env
+.env.local
+.env.*.local
+
+# Ignorar archivos de logs y caches
+/logs/
+*.log
+cache/
+tmp/
+
+# Ignorar archivos de sistema y editor
+.DS_Store
+Thumbs.db
+*.swp
+*~
+
+# Ignorar archivos temporales de PHPStorm o IDEs similares
+.idea/
+.vscode/
+
+
+# Ignorar archivos de backup
+*.bak
+*.backup
+
+# Ignorar archivos compilados o generados
+*.class
+*.cache
+*.out
+
+# Ignorar archivos de sesión y cookies
+*.sess
+*.cookie

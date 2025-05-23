@@ -1,0 +1,12 @@
+.git/
+.vscode/
+vendor/
+node_modules/
+.env
+docker-compose.override.yml
+*.log
+*.sqlite
+*.md
+storage/logs/
+public/storage/
+tests/
