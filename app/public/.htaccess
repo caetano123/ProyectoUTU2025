@@ -11,7 +11,7 @@
 
      # PREVENIR HOTLINKING DE IMÁGENES
     RewriteCond %{HTTP_REFERER} !^$
-    RewriteCond %{HTTP_REFERER} !^http(s)?://(www\.)?tudominio\.com [NC]
+    RewriteCond %{HTTP_REFERER} !^http(s)?://(www\.)?localhost [NC]
     RewriteRule \.(jpg|jpeg|png|gif)$ - [NC,F,L]
 
     # Redireccionar todo a index.php (para frameworks MVC)
@@ -47,6 +47,12 @@
 <IfModule mod_deflate.c>
     AddOutputFilterByType DEFLATE text/html text/plain text/xml text/css text/javascript application/javascript
 </IfModule>
+
+# Forzar UTF-8 para ciertos tipos de archivos
+<IfModule mod_mime.c>
+    AddCharset UTF-8 .html .css .js .xml .json .rss
+</IfModule>
+
 
 # Cache
 <IfModule mod_expires.c>

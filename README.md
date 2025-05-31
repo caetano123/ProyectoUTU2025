@@ -12,7 +12,7 @@ Este proyecto es una aplicación PHP con base de datos MariaDB, configurada para
 ### 1. Clonar el repositorio
 
 ```bash
-git clone https://github.com/caetano123/ProyectoUTU.git
+git clone https://github.com/caetano123/ProyectoUTU2025.git
 cd ProyectoUTU
 2. Configurar las variables de entorno
 En la raíz del proyecto hay un archivo .env con las credenciales de la base de datos.
