@@ -40,7 +40,7 @@
     php_value memory_limit 256M
     php_value max_execution_time 300
     php_value session.save_handler files
-    php_value session.save_path "/var/lib/php/session"
+   # php_value session.save_path "/var/lib/php/session"
 </IfModule>
 
 # Compresión

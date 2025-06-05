@@ -16,10 +16,8 @@
         <ul>
             <?php foreach ($datos as $usuario): ?>
                 <li>
-    <?= htmlspecialchars($usuario['Nombre'] ?? '') . ' ' . htmlspecialchars($usuario['Apellido'] ?? '') ?> 
-    (ID: <?= htmlspecialchars($usuario['ID_Usuarios'] ?? '') ?>, Correo: <?= htmlspecialchars($usuario['Correo'] ?? '') ?>)
-</li>
-
+                    <?= htmlspecialchars($usuario['Nombre']) . ' ' . htmlspecialchars($usuario['Apellido']) ?> 
+                    (CI: <?= htmlspecialchars($usuario['CI']) ?>, Email: <?= htmlspecialchars($usuario['Email']) ?>)
                 </li>
             <?php endforeach; ?>
         </ul>
