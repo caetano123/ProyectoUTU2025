@@ -1,25 +1,67 @@
 <?php
+/**
+ * Punto de entrada principal de la aplicación
+ * Inicializa componentes esenciales y despacha las peticiones
+ */
 
+
+
+// Definir la ruta base
+define("BASE_PATH", dirname(__DIR__));
+
+// Cargar autoloader de Composer
+require BASE_PATH."/../vendor/autoload.php";
+
+// Manejo de errores para entorno de desarrollo
 error_reporting(E_ALL);
-ini_set('display_errors', 1);
+ini_set("display_errors", 1);
 
-require_once __DIR__ . '/../../vendor/autoload.php';  // Corregí la ruta aquí
 
-use Core\Router;
 
-Router::startSession();
+// Inicializar contenedor de dependencias y registrar componentes esenciales
+$session = new App\Core\Session();
+App\Core\Container::set('session', $session);
 
-$uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
-$method = $_SERVER['REQUEST_METHOD'];
+$db = App\Core\Database::getInstance();
+App\Core\Container::set('db', $db);
 
-$router = new Router();     
-$router->direct($uri, $method);
+$userModel = new App\Models\User();
+App\Core\Container::set('userModel', $userModel);
 
-// Mostrar URL y método para depurar
-var_dump("URI:", $uri);
-var_dump("METHOD:", $method);
+$auth = new App\Core\Auth($session, $userModel);
+App\Core\Container::set('auth', $auth);
 
-// Mostrar datos del usuario en sesión para depurar
-var_dump("SESSION user:", $_SESSION['user'] ?? null);
+$view = new App\Core\View();
+App\Core\Container::set('view', $view);
 
-exit;  // Detener ejecución aquí para que puedas ver la salida
+// Preparar datos de la solicitud
+$request = [
+    "get" => $_GET,
+    "post" => $_POST,
+    "uri" => isset($_GET["url"]) ? trim($_GET["url"], "/") : "home",
+    "method" => $_SERVER["REQUEST_METHOD"] ?? "GET"
+];
+App\Core\Container::set('request', $request);
+
+// Compartir datos globales con todas las vistas
+$view->share([
+    "auth" => [
+        "user" => $auth->user(),
+        "check" => $auth->check()
+    ],
+    "currentUrl" => parse_url($_SERVER["REQUEST_URI"], PHP_URL_PATH),
+    "flash" => [
+        "error" => $session->flash("error"),
+        "success" => $session->flash("success")
+    ]
+]);
+
+// Iniciar el enrutador
+$router = new App\Core\Router($view, $request);
+App\Core\Container::set('router', $router);
+
+// Cargar y configurar rutas
+require BASE_PATH."/../config/routes.php";
+
+// Procesar la solicitud actual
+$router->dispatch();
