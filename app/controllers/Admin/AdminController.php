@@ -1,37 +1,41 @@
 <?php
 namespace App\Controllers\Admin;
 
-use Core\Session;
-use Core\View;
-use App\Models\Security\User;
+use App\Core\Controller;
+use App\Models\User;
+use App\Core\View;
 
-class AdminController {
+class AdminController extends Controller
+{
     protected $view;
+    protected $userModel;
 
-    public function __construct() {
+    public function __construct()
+    {
+        parent::__construct();
         $this->view = new View();
+        $this->userModel = new User();
     }
 
-    private function checkAdmin() {
-        Session::start();
-        $user = Session::get('user');
+    private function checkAdmin()
+    {
+        $user = $this->auth->user();
 
         if (!$user) {
-            header('Location: /login');
-            exit;
+            return $this->redirect('/login');
         }
 
         $userId = $user['ID_Usuarios'] ?? null;
-        if (!$userId || !User::hasRole($userId, 'admin')) {
-            header('Location: /login');
-            exit;
+        if (!$userId || !$this->userModel->hasRole($userId, 'admin')) {
+            return $this->redirect('/login');
         }
     }
 
-    public function dashboard() {
+    public function dashboard()
+    {
         $this->checkAdmin();
 
-        $this->view->render("Admin/dashboard", [
+        return $this->view->render("Admin/dashboard", [
             "titulo" => "Panel de Administración"
         ]);
     }
