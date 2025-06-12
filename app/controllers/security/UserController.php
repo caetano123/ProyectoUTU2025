@@ -1,70 +1,96 @@
 <?php
 namespace App\Controllers\Security;
 
-use App\Models\Security\User;
-use Core\Session;
-use Core\View;
+use App\Core\Controller;
+use App\Models\User;
+use App\Core\View;
 
-class UserController {
+class UserController extends Controller
+{
+    protected $userModel;
     protected $view;
 
-    public function __construct() {
+    public function __construct()
+    {
+        parent::__construct();
+        $this->userModel = new User();
         $this->view = new View();
     }
 
-    private function checkAuth() {
-        Session::start();
-        if (!Session::get('user')) {
-            header('Location: /login');
-            exit;
+    private function checkAuth()
+    {
+        if (!$this->auth->check()) {
+            return $this->redirect('/login');
         }
     }
 
-    public function index() {
+    public function index()
+    {
         $this->checkAuth();
 
-        $usuarios = User::all();
-        $this->view->render("Security/auth/index", [
+        $usuarios = $this->userModel->all();
+        return $this->view->render("auth/index", [
             "titulo" => "Listado de usuarios",
             "datos" => $usuarios
         ]);
     }
 
-    public function show($param) {
+    public function show($params)
+    {
         $this->checkAuth();
 
-        $usuario = User::findById($param['id']);
-        $this->view->render("Security/auth/show", [
-            "titulo" => "Usuario ID {$param['id']}",
+        $id = $params['id'] ?? null;
+        if (!$id) {
+            return $this->redirect('/usuarios');
+        }
+
+        $usuario = $this->userModel->findById($id);
+        if (!$usuario) {
+            return $this->redirect('/usuarios');
+        }
+
+        return $this->view->render("auth/show", [
+            "titulo" => "Usuario ID $id",
             "datos" => [$usuario]
         ]);
     }
 
-    public function edit($param) {
+    public function edit($params)
+    {
         $this->checkAuth();
 
-        $usuario = User::findById($param['id']);
-        $this->view->render("Security/auth/edit", [
-            "titulo" => "Editar usuario ID {$param['id']}",
+        $id = $params['id'] ?? null;
+        $usuario = $this->userModel->findById($id);
+        if (!$usuario) {
+            return $this->redirect('/usuarios');
+        }
+
+        return $this->view->render("auth/edit", [
+            "titulo" => "Editar usuario ID $id",
             "datos" => $usuario
         ]);
     }
 
-    public function save($param) {
+    public function save($params)
+    {
         $this->checkAuth();
 
-        $id = $param['id'];
+        $id = $params['id'] ?? null;
+        if (!$id) {
+            return $this->redirect('/usuarios');
+        }
+
         $data = [
             'Nombre' => $_POST['nombre'] ?? '',
             'Apellido' => $_POST['apellido'] ?? '',
             'Correo' => $_POST['correo'] ?? '',
-            'Verificado' => isset($_POST['verificado']) ? 1 : 0 // checkbox
+            'Verificado' => isset($_POST['verificado']) ? 1 : 0
         ];
 
-        $updated = User::update($id, $data);
+        $updated = $this->userModel->update($id, $data);
 
         $mensaje = $updated ? "Se actualizó correctamente." : "No se pudo actualizar.";
-        $this->view->render("Security/auth/save", [
+        return $this->view->render("auth/save", [
             "titulo" => "Actualizar usuario",
             "datos" => [$mensaje]
         ]);

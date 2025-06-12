@@ -1,28 +1,44 @@
 <?php
-namespace Core;
+namespace App\Core;
 
 use PDO;
 use PDOException;
 
 class Database {
-    private static $instance = null;
+    private static $instance;
+    private $connection;
 
-    private function __construct() {}
 
-    public static function getInstance() {
-        if (self::$instance === null) {
-            $config = require __DIR__ . '/../../config/database.php';
-            try {
-                self::$instance = new PDO(
-                    "mysql:host={$config['host']};dbname={$config['database']};charset=utf8",
-                    $config['username'],
-                    $config['password']
-                );
-                self::$instance->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-            } catch (PDOException $e) {
-                die("Error conexión DB: " . $e->getMessage());
-            }
+     private function __construct() {
+        $config = require BASE_PATH . "/../config/database.php";
+        $dsn = "{$config["driver"]}:host={$config["host"]};dbname={$config["database"]};charset={$config["charset"]}";
+        
+        try {
+            $this->connection = new \PDO(
+                $dsn,
+                $config["username"],
+                $config["password"],
+                $config["options"] ?? []
+            );
+        } catch (\PDOException $e) {
+            throw new \Exception("Error de conexión a la base de datos: " . $e->getMessage());
+        }
+    }
+
+     public static function getInstance() {
+        if (!self::$instance) {
+            self::$instance = new self();
         }
         return self::$instance;
+    }
+
+    public function query($sql, $params = []) {
+        $stmt = $this->connection->prepare($sql);
+        $stmt->execute($params);
+        return $stmt;
+    }
+    
+    public function lastInsertId() {
+        return $this->connection->lastInsertId();
     }
 }

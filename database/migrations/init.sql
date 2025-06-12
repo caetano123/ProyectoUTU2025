@@ -127,3 +127,11 @@ CREATE TABLE Portafolio (
     FOREIGN KEY (ID_Usuario) REFERENCES Usuarios(ID_Usuarios)
 );
 CREATE INDEX idx_portafolio_usuario ON Portafolio(ID_Usuario);
+
+
+INSERT INTO Roles (Nombre) VALUES ('cliente');
+INSERT INTO Roles (Nombre) VALUES ('proveedor');
+INSERT INTO Roles (Nombre) VALUES ('admin');
+
+INSERT INTO UsuarioRol (ID_Usuario, ID_Rol) VALUES (3, 1);
+
