@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?= $title ?? 'Mini Framework' ?></title>
-   <link rel="StyleSheet" href="css/styles.css" />
+   <link rel="StyleSheet" href="css/style.css" />
 </head>
 <body>
     <header>
@@ -15,5 +15,8 @@
         <?php $this->component('flash-messages') ?>
 		<?= $content ?>
         </main>
+
+
+        <script src="/js/script.js"> </script>
 </body>
 </html>
