@@ -16,6 +16,11 @@ use App\Middleware\AuthMiddleware;
 
 // Página de inicio
 $router->addRoute("GET", "/", "HomeController@index");
+//Pagina Vender Servicio
+$router->addRoute("GET", "/vender", "VenderController@index");
+//Pagina de Buscar Servicio
+$router->addRoute("GET", "/buscar", "BuscarController@index");
+
 // Login
 $router->addRoute("GET", "/login", "Security\\AuthController@showLogin");
 $router->addRoute("POST", "/login", "Security\\AuthController@login");
