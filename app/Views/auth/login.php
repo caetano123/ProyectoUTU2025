@@ -1,39 +1,44 @@
+<div class="login-wrapper">
+    <div class="login-box">
 
-    <h2>Iniciar sesión</h2>
+        <h2>Inicio de Sesion:</h2>
 
-<?php if (!empty($errors)): ?>
-    <div class="errors">
-        <ul>
-            <?php foreach ($errors as $error): ?>
-                <li><?= htmlspecialchars($error) ?></li>
-            <?php endforeach; ?>
-        </ul>
+        <?php if (!empty($errors)): ?>
+            <div class="alert alert-error">
+                <ul>
+                    <?php foreach ($errors as $error): ?>
+                        <li><?= htmlspecialchars($error) ?></li>
+                    <?php endforeach; ?>
+                </ul>
+            </div>
+        <?php endif; ?>
+
+        <?php if (!empty($flash['error'])): ?>
+            <div class="alert alert-error"><?= htmlspecialchars($flash['error']) ?></div>
+        <?php endif; ?>
+
+        <?php if (!empty($flash['success'])): ?>
+            <div class="alert alert-success"><?= htmlspecialchars($flash['success']) ?></div>
+        <?php endif; ?>
+
+        <form method="POST" action="/login" class="login-form">
+            <div class="form-group">
+              
+                <input type="email" name="email" required="admin@example.com" placeholder="Email">
+                
+                
+            </div>
+            
+            <div class="form-group">
+                
+                <input type="password" name="password" required="1234" placeholder="Contraseña">
+                
+            </div>
+            
+            <button type="submit" class="btn-cta">Iniciar Sesión</button>
+
+                <p class="olvidaste"><a href="/recuperar_contraseña.php">¿Olvidaste tu contraseña?</a></p>
+
+        </form>
     </div>
-<?php endif; ?>
-
-<?php if (!empty($flash['error'])): ?>
-    <div class="flash-error"><?= htmlspecialchars($flash['error']) ?></div>
-<?php endif; ?>
-
-<?php if (!empty($flash['success'])): ?>
-    <div class="flash-success"><?= htmlspecialchars($flash['success']) ?></div>
-<?php endif; ?>
-
-
-
-    <form method="POST" action="/login" style="max-width: 300px;">
-        <div>
-            <label>Email:</label>
-            <input type="email" name="email" required value="admin@example.com">
-            <small>Usar: admin@example.com</small>
-        </div>
-        
-        <div>
-            <label>Contraseña:</label>
-            <input type="password" name="password" required value="1234">
-            <small>Usar: 1234</small>
-        </div>
-        
-        <button type="submit">Ingresar</button>
-    </form>
-
+</div>
