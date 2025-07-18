@@ -36,8 +36,12 @@ habilitar_servicios() {
 
 # Creación de usuario del sistema
 crear_usuario_app() {
-    echo "Creando usuario del sistema '$APP_USER'..."
-    id "$APP_USER" &>/dev/null || useradd -m -s /bin/bash "$APP_USER"
+   if id "$APP_USER" &>/dev/null; then
+    echo "Usuario '$APP_USER' ya existe."
+else
+    echo "Creando usuario '$APP_USER'."
+    useradd -m -s /bin/bash "$APP_USER"
+fi
 }
 
 # Configuración de directorios
