@@ -133,5 +133,5 @@ INSERT INTO Roles (Nombre) VALUES ('cliente');
 INSERT INTO Roles (Nombre) VALUES ('proveedor');
 INSERT INTO Roles (Nombre) VALUES ('admin');
 
-INSERT INTO UsuarioRol (ID_Usuario, ID_Rol) VALUES (3, 1);
+
 
