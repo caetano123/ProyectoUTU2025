@@ -8,7 +8,6 @@ DIR_PROYECTO="/opt/ProyectoUTU2025"
 REPO_GIT="https://github.com/caetano123/ProyectoUTU2025.git"
 DIR_BACKUP="/opt/backups"
 APACHE_CONF="/etc/httpd/conf.d/proyecto.conf"
-APACHE_LOG_DIR="/var/log/httpd"
 ENV_FILE="$DIR_PROYECTO/.env"
 
 # Helper para leer opción válida de un rango numérico

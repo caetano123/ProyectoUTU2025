@@ -8,7 +8,7 @@ $dotenv->load();
 return [
     'driver' => $_ENV['DB_DRIVER'], // <-- ESTA CLAVE ES FUNDAMENTAL
     'host' => $_ENV['DB_HOST'],
-    'database' => $_ENV['DB_DATABASE'],
+    'database' => $_ENV['SERVICIOS_DB_DATABASE'],
     'username' => $_ENV['DB_USERNAME'],
     'password' => $_ENV['DB_PASSWORD'],
     'charset' => 'utf8mb4',
