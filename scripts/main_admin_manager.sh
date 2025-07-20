@@ -84,11 +84,10 @@ leer_no_vacio() {
   done
 }
 
-# Validar IP con máscara básica
+# Validar IP con máscara CIDR (ej: 192.168.1.100/24)
 leer_ip_con_mask() {
-  local ip
   while true; do
-    read -p "Dirección IP con máscara (ej: 192.168.1.100/24): " ip
+    read -p "Ingrese la IP con máscara (ej: 192.168.1.100/24): " ip
     if [[ "$ip" =~ ^([0-9]{1,3}\.){3}[0-9]{1,3}/[0-9]{1,2}$ ]]; then
       echo "$ip"
       return
@@ -98,18 +97,51 @@ leer_ip_con_mask() {
   done
 }
 
-# Validar IP simple (puede usarse para gateway y DNS)
-leer_ip_simple() {
-  local ip
+# Función para listar conexiones nmcli y leer conexión válida
+leer_conexion_nmcli() {
   while true; do
-    read -p "$1" ip
+    echo "Conexiones disponibles:"
+    nmcli con show | awk 'NR>1 {print NR-1 ") " $1 " (" $2 ")"}'
+    read -p "Ingrese el nombre exacto de la conexión a configurar: " CONEXION
+    if nmcli con show "$CONEXION" &>/dev/null; then
+      echo "$CONEXION"
+      return
+    else
+      echo "Conexión '$CONEXION' no encontrada. Intente nuevamente."
+    fi
+  done
+}
+
+# Validar IP simple (ej: gateway, DNS)
+leer_ip_simple() {
+  local prompt="$1"
+  while true; do
+    read -p "$prompt" ip
     if [[ "$ip" =~ ^([0-9]{1,3}\.){3}[0-9]{1,3}$ ]]; then
       echo "$ip"
       return
     else
-      echo "Formato inválido. Debe ser una IP como 192.168.1.1."
+      echo "Formato inválido. Debe ser una IP válida como 192.168.1.1."
     fi
   done
+}
+
+configurar_red() {
+  echo "==> Configuración de red estática con nmcli"
+
+  CONEXION=$(leer_conexion_nmcli)
+  IP=$(leer_ip_con_mask)
+  GATEWAY=$(leer_ip_simple "Ingrese puerta de enlace (gateway) (ej: 192.168.1.1): ")
+  DNS=$(leer_ip_simple "Ingrese DNS primario (ej: 8.8.8.8): ")
+
+  echo "Aplicando configuración..."
+  nmcli con mod "$CONEXION" ipv4.addresses "$IP"
+  nmcli con mod "$CONEXION" ipv4.gateway "$GATEWAY"
+  nmcli con mod "$CONEXION" ipv4.dns "$DNS"
+  nmcli con mod "$CONEXION" ipv4.method manual
+  nmcli con up "$CONEXION"
+
+  echo "Red configurada con IP estática $IP en la conexión '$CONEXION'."
 }
 
 crear_usuario_grupo() {
@@ -272,38 +304,6 @@ abm_usuarios_bd() {
     done
 }
 
-configurar_red() {
-    echo "==> Configuración de red estática usando nmcli"
-
-    CONEXION=$(leer_conexion_nmcli)
-    IP=$(leer_ip_con_mask)
-    GATEWAY=$(leer_ip_simple "Puerta de enlace (ej: 192.168.1.1): ")
-    DNS1=$(leer_ip_simple "DNS primario (ej: 8.8.8.8): ")
-
-    echo "Aplicando configuración..."
-
-    nmcli con mod "$CONEXION" ipv4.addresses "$IP"
-    nmcli con mod "$CONEXION" ipv4.gateway "$GATEWAY"
-    nmcli con mod "$CONEXION" ipv4.dns "$DNS1"
-    nmcli con mod "$CONEXION" ipv4.method manual
-    nmcli con up "$CONEXION"
-
-    echo "Red configurada con IP estática $IP en conexión '$CONEXION'."
-}
-
-leer_conexion_nmcli() {
-  while true; do
-    echo "Conexiones disponibles:"
-    nmcli con show | awk 'NR>1 {print NR-1 ") "$1" ("$2")"}'
-    read -p "Nombre exacto de la conexión a configurar: " CONEXION
-    if nmcli con show "$CONEXION" &>/dev/null; then
-      echo "$CONEXION"
-      return
-    else
-      echo "Conexión '$CONEXION' no encontrada. Intenta otra vez."
-    fi
-  done
-}
 
 actualizar_sistema() {
     log_info "Actualizando sistema CentOS..."
@@ -561,7 +561,21 @@ clonar_actualizar_repo() {
 
     chown -R "$USUARIO_APP":"$GRUPO_APP" "$DIR_PROYECTO"
     echo "Repositorio listo en $DIR_PROYECTO"
+
+    # === Crear enlace simbólico ===
+    echo "==> Verificando enlace simbólico en /var/www/html/public..."
+
+    # Borra el enlace simbólico o carpeta actual si existe
+    if [ -L /var/www/html/public ] || [ -d /var/www/html/public ]; then
+        rm -rf /var/www/html/public
+        echo "Enlace o carpeta antigua eliminada."
+    fi
+
+    # Crear nuevo enlace simbólico
+    ln -s "$DIR_PROYECTO/app/public" /var/www/html/public
+    echo "Enlace simbólico creado: /var/www/html/public -> $DIR_PROYECTO/app/public"
 }
+
 
 # Configuración de Apache (opcional, comentada por ahora)
 # configurar_apache() {
