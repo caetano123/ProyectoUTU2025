@@ -6,11 +6,11 @@ $dotenv = Dotenv::createImmutable(__DIR__ . '/../');
 $dotenv->load();
 
 return [
-    'driver' => $_ENV['DB_DRIVER'], // <-- ESTA CLAVE ES FUNDAMENTAL
+    'driver' => $_ENV['DB_DRIVER'], 
     'host' => $_ENV['DB_HOST'],
     'database' => $_ENV['SERVICIOS_DB_DATABASE'],
-    'username' => $_ENV['DB_USERNAME'],
-    'password' => $_ENV['DB_PASSWORD'],
+    'username' => $_ENV['SERVICIOS_DB_USER'],
+    'password' => $_ENV['SERVICIOS_DB_PASS'],
     'charset' => 'utf8mb4',
     'options' => [
         PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,

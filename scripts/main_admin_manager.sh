@@ -97,12 +97,19 @@ leer_ip_con_mask() {
   done
 }
 
+mostrar_interfaces() {
+  echo "=== Interfaces de red activas ==="
+  ip link show | awk -F: '$0 !~ "lo|vir|docker|^[^0-9]"{print $2}' | sed 's/^ *//;s/ *$//'
+}
+
 # Función para listar conexiones nmcli y leer conexión válida
 leer_conexion_nmcli() {
   while true; do
     echo "Conexiones disponibles:"
-    nmcli con show | awk 'NR>1 {print NR-1 ") " $1 " (" $2 ")"}'
+    nmcli -t -f NAME con show | nl -w2 -s') '  # listado limpio
     read -p "Ingrese el nombre exacto de la conexión a configurar: " CONEXION
+    CONEXION=$(echo "$CONEXION" | xargs)  # elimina espacios adelante y atrás
+
     if nmcli con show "$CONEXION" &>/dev/null; then
       echo "$CONEXION"
       return
@@ -128,7 +135,8 @@ leer_ip_simple() {
 
 configurar_red() {
   echo "==> Configuración de red estática con nmcli"
-
+  
+  mostrar_interfaces
   CONEXION=$(leer_conexion_nmcli)
   IP=$(leer_ip_con_mask)
   GATEWAY=$(leer_ip_simple "Ingrese puerta de enlace (gateway) (ej: 192.168.1.1): ")
@@ -322,25 +330,26 @@ instalar_apache() {
     mkdir -p "$APACHE_LOG_DIR"
 
     CONF="/etc/httpd/conf/httpd.conf"
+    DOCUMENT_ROOT="$DIR_PROYECTO/app/public"
 
     # Hacer backup antes de modificar
     cp "$CONF" "$CONF.bak"
 
-    # Cambiar el DocumentRoot solo si es el principal (evita los VirtualHost)
-    sed -i "0,/^DocumentRoot/s|^DocumentRoot \".*\"|DocumentRoot \"$DIR_PROYECTO/public\"|" "$CONF"
+    # Cambiar el DocumentRoot (solo el primero para evitar tocar VirtualHosts)
+    sed -i "0,/^DocumentRoot/s|^DocumentRoot \".*\"|DocumentRoot \"$DOCUMENT_ROOT\"|" "$CONF"
 
-    # Asegurarse de que exista el bloque <Directory "$DIR_PROYECTO/public"> correctamente configurado
-    if ! grep -q "<Directory \"$DIR_PROYECTO/public\">" "$CONF"; then
+    # Asegurar <Directory> correcto para el nuevo DocumentRoot
+    if ! grep -q "<Directory \"$DOCUMENT_ROOT\">" "$CONF"; then
         cat <<EOF >> "$CONF"
 
-<Directory "$DIR_PROYECTO/public">
+<Directory "$DOCUMENT_ROOT">
     AllowOverride All
     Require all granted
     Options -Indexes +FollowSymLinks
 </Directory>
 EOF
     else
-        log_info "Ya existe el bloque <Directory \"$DIR_PROYECTO/public\">, no se duplica."
+        log_info "Ya existe el bloque <Directory \"$DOCUMENT_ROOT\">, no se duplica."
     fi
 
     # Asegurar que mod_rewrite esté cargado
@@ -351,7 +360,7 @@ EOF
     systemctl enable httpd
     systemctl restart httpd
 
-    log_success "Apache instalado y configurado (sin VirtualHost)"
+    log_success "Apache instalado y configurado correctamente para $DOCUMENT_ROOT"
 }
 
 
