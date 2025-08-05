@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Core;
 
 use App\Models\User;
@@ -11,12 +12,13 @@ use App\Models\User;
  * - Mantener el estado de sesión del usuario
  * - Proporcionar métodos para verificar la autenticación
  */
-class Auth {
+class Auth
+{
     /**
      * @var Session Instancia de la clase Session
      */
     protected $session;
-    
+
     /**
      * @var User Instancia del modelo User
      */
@@ -28,7 +30,8 @@ class Auth {
      * @param Session $session
      * @param User $userModel
      */
-    public function __construct(Session $session, User $userModel) {
+    public function __construct(Session $session, User $userModel)
+    {
         $this->session = $session;
         $this->userModel = $userModel;
     }
@@ -40,11 +43,17 @@ class Auth {
      * @param string $password
      * @return bool
      */
-    public function attempt($email, $password) {
+    public function attempt($email, $password)
+    {
         $user = $this->userModel->findByEmail($email);
 
         if ($user && password_verify($password, $user["ContrasenaHash"])) {
-            unset($user["ContrasenaHash"]); // Seguridad: no guardar la contraseña
+            unset($user["ContrasenaHash"]);
+
+            // Cargar roles y agregarlos al usuario
+            $roles = $this->userModel->getRolesByUserId($user['ID_Usuarios']);
+            $user['roles'] = $roles;
+
             $this->session->set("user", $user);
             return true;
         }
@@ -58,8 +67,15 @@ class Auth {
      * @param array $user
      * @return void
      */
-    public function login(array $user) {
-        unset($user["ContrasenaHash"]); // Seguridad
+    public function login(array $user)
+    {
+        unset($user["ContrasenaHash"]);
+
+        if (!isset($user['roles'])) {
+            $roles = $this->userModel->getRolesByUserId($user['ID_Usuarios']);
+            $user['roles'] = $roles;
+        }
+
         $this->session->set("user", $user);
     }
 
@@ -69,7 +85,8 @@ class Auth {
      * @param array $userData
      * @return int|bool
      */
-    public function register($userData) {
+    public function register($userData)
+    {
         // Encriptar la contraseña
         $userData["ContrasenaHash"] = password_hash($userData["ContrasenaHash"], PASSWORD_DEFAULT);
 
@@ -82,7 +99,8 @@ class Auth {
      * 
      * @return array|null
      */
-    public function user() {
+    public function user()
+    {
         return $this->session->get("user");
     }
 
@@ -91,7 +109,8 @@ class Auth {
      * 
      * @return bool
      */
-    public function check() {
+    public function check()
+    {
         return $this->session->has("user");
     }
 
@@ -100,7 +119,8 @@ class Auth {
      * 
      * @return void
      */
-    public function logout() {
+    public function logout()
+    {
         $this->session->remove("user");
     }
 }

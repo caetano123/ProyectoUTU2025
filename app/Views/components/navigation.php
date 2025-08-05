@@ -1,43 +1,95 @@
-<?php
+<nav class="navbar">
+  <div class="nav-left">
+    <img src="./assets/logo-ServiciOS.png" alt="Logo ServiciOs" class="nav-logo" />
+  </div>
+  <div class="nav-links">
 
-function isActive(string $path, string $currentUrl, bool $exact = false): string {
-    if ($exact) {
-        return $currentUrl === $path ? 'active' : '';
-    }
-    return strpos($currentUrl, $path) === 0 ? 'active' : '';
-}
-?>
-
-<nav>
-    <div class="nav-left">ServiciOS</div>
     <a href="/" class="<?= isActive('/', $currentUrl, true) ?>">Inicio</a>
-    
-    <?php if ($auth['check']): ?>
+
+    <?php if ($auth->check()): 
+      $user = $auth->user();
+      $isAdmin = isset($user['roles']) && in_array('admin', $user['roles']);
+    ?>
+      <a href="/vender" class="<?= isActive('/vender', $currentUrl) ?>">Vender Servicio</a>
+
+      <div class="dropdown">
+        <a href="javascript:void(0)" class="btn-exp" onclick="toggleDropdown('explorarDropdown')">Explorar ▼</a>
+        <div id="explorarDropdown" class="dropdown-content">
+          <a href="/informatica">Informática</a>
+          <a href="/carpinteria">Carpintería</a>
+          <a href="/arquitecto">Arquitecto</a>
+          <a href="/albanil">Albañil</a>
+          <a href="/plomero">Plomero</a>
+          <a href="/electricista">Electricista</a>
+          <a href="/todos">Ver Todos</a>
+        </div>
+      </div>
+
+      <?php if ($isAdmin): ?>
         <a href="/dashboard" class="<?= isActive('/dashboard', $currentUrl) ?>">Dashboard</a>
         <a href="/clientes" class="<?= isActive('/clientes', $currentUrl) ?>">Clientes</a>
-        <a href="/servicios" class="<?= isActive('/servicios', $currentUrl) ?>">Servicios</a>
-        <a href="/perfil" class="<?= isActive('/perfil', $currentUrl) ?>">Perfil</a>
-        <a href="/logout">Cerrar sesión</a>
-    <?php else: ?>
-         <a href="/vender" class="<?= isActive('/explorar', $currentUrl) ?>">Vender Servicio</a>
-          <a href="/buscar" class="<?= isActive('/explorar', $currentUrl) ?>">Buscar Servicio</a>
-        
-        
-          <div class="dropdown">
-  <a href="javascript:void(0)" class="btn-exp" onclick="toggleDropdown()">Explorar ▼</a>
-  <div id="dropdownContent" class="dropdown-content">
-    <a href="/informatica">Informatica</a>
-    <a href="/carpinteria">Carpinteria</a>
-    <a href="/arquitecto">Arquitecto</a>
-    <a href="/arquitecto">Albañil</a>
-    <a href="/plomero">Plomero</a>
-    <a href="/electricista">Electricista</a>
-    <a href="/todos">Ver Todos</a>
-  </div>
-</div>
-        <a href="/login" class="btn-lgn<?= isActive('/login', $currentUrl, true) ?>">Iniciar sesión</a>
-        <a href="/register" class="btn-cta<?= isActive('/register', $currentUrl, true) ?>">Registrarse</a>
-        
-    <?php endif; ?>
-</nav>
+      <?php endif; ?>
 
+      <a href="/servicios" class="<?= isActive('/servicios', $currentUrl) ?>">Servicios</a>
+
+      <?php if (strpos($currentUrl, '/servicios') === false): ?>
+        <form class="navbar-search-form" action="/buscar" method="get">
+          <input
+            type="text"
+            name="query"
+            placeholder="Buscar servicio..."
+            class="navbar-search-input"
+            required>
+          <button type="submit" class="search-button">
+            <i class="fas fa-search" aria-hidden="true"></i><span class="sr-only">Buscar</span>
+          </button>
+        </form>
+      <?php endif; ?>
+
+      <div class="dropdown">
+        <a href="javascript:void(0)" class="btn-exp" onclick="toggleDropdown('perfilDropdown')">
+          Perfil ▼
+        </a>
+        <div id="perfilDropdown" class="dropdown-content">
+          <a href="/perfil">Ver Perfil</a>
+          <a href="/configuracion">Configuración</a>
+          <a href="/logout">Cerrar sesión</a>
+        </div>
+      </div>
+
+    <?php else: ?>
+      <a href="/vender" class="<?= isActive('/vender', $currentUrl) ?>">Vender Servicio</a>
+
+      <div class="dropdown">
+        <a href="javascript:void(0)" class="btn-exp" onclick="toggleDropdown('explorarDropdown')">Explorar ▼</a>
+        <div id="explorarDropdown" class="dropdown-content">
+          <a href="/informatica">Informática</a>
+          <a href="/carpinteria">Carpintería</a>
+          <a href="/arquitecto">Arquitecto</a>
+          <a href="/albanil">Albañil</a>
+          <a href="/plomero">Plomero</a>
+          <a href="/electricista">Electricista</a>
+          <a href="/todos">Ver Todos</a>
+        </div>
+      </div>
+
+      <?php if (strpos($currentUrl, '/servicios') === false): ?>
+        <form class="navbar-search-form" action="/buscar" method="get">
+          <input
+            type="text"
+            name="query"
+            placeholder="Buscar servicio..."
+            class="navbar-search-input"
+            required>
+          <button type="submit" class="search-button">
+            <i class="fas fa-search" aria-hidden="true"></i><span class="sr-only">Buscar</span>
+          </button>
+        </form>
+      <?php endif; ?>
+
+      <a href="/login" class="btn-lgn <?= isActive('/login', $currentUrl, true) ?>">Iniciar sesión</a>
+      <a href="/register" class="btn-cta <?= isActive('/register', $currentUrl, true) ?>">Registrarse</a>
+    <?php endif; ?>
+
+  </div>
+</nav>
