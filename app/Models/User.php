@@ -78,4 +78,16 @@ public function findByRol($rolNombre) {
     return $stmt->fetchAll(\PDO::FETCH_ASSOC);
 }
 
+public function getRolesByUserId(int $userId): array
+{
+    $sql = "
+        SELECT r.Nombre 
+        FROM UsuarioRol ur
+        JOIN Roles r ON ur.ID_Rol = r.ID_Rol
+        WHERE ur.ID_Usuario = :userId
+    ";
+    $stmt = $this->executeRawQuery($sql, [':userId' => $userId]);
+    return $stmt->fetchAll(\PDO::FETCH_COLUMN);
+}
+
 }

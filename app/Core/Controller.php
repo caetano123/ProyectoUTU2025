@@ -1,6 +1,9 @@
 <?php
 namespace App\Core;
 
+use App\Core\View;
+use App\Core\Auth;
+
 /**
  * Clase Controller - Clase base para todos los controladores
  * 
@@ -33,12 +36,15 @@ abstract class Controller {
      * Constructor
      * Obtiene dependencias del contenedor
      */
-    public function __construct() {
-        $this->view = Container::get('view');
-        $this->request = Container::get('request');
-        $this->session = Container::get('session');
-        $this->auth = Container::get('auth');
-    }
+   public function __construct() {
+    $this->view = Container::get('view');
+    $this->request = Container::get('request');
+    $this->session = Container::get('session');
+    $this->auth = Container::get('auth');
+
+    // Compartir la instancia de Auth con todas las vistas
+    $this->view->share('auth', $this->auth);
+}
 
     /**
      * Renderiza una vista

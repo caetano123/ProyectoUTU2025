@@ -12,10 +12,14 @@ define("BASE_PATH", dirname(__DIR__));
 // Cargar autoloader de Composer
 require BASE_PATH."/../vendor/autoload.php";
 
-// Manejo de errores para entorno de desarrollo
-error_reporting(E_ALL);
-ini_set("display_errors", 1);
 
+// Cargar funciones globales
+require BASE_PATH . "/Helpers/functions.php";
+
+// Manejo de errores para entorno de desarrollo
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
 
 
 // Inicializar contenedor de dependencias y registrar componentes esenciales
@@ -45,16 +49,14 @@ App\Core\Container::set('request', $request);
 
 // Compartir datos globales con todas las vistas
 $view->share([
-    "auth" => [
-        "user" => $auth->user(),
-        "check" => $auth->check()
-    ],
+    "auth" => $auth,
     "currentUrl" => parse_url($_SERVER["REQUEST_URI"], PHP_URL_PATH),
     "flash" => [
         "error" => $session->flash("error"),
         "success" => $session->flash("success")
     ]
 ]);
+
 
 // Iniciar el enrutador
 $router = new App\Core\Router($view, $request);
