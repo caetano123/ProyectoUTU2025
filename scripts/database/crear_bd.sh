@@ -1,13 +1,14 @@
 #!/bin/bash
 
-# Ruta al archivo .env
-ENV_FILE="$(dirname "$0")/../../.env"
+# Variables fijas definidas antes de ejecutar el script, por ejemplo:
+ DB_HOST="localhost"
+ DB_USERNAME="root"
+ DB_PASSWORD=""
+ DB_DATABASE="ServiciOs"
 
-# Cargar las variables del archivo .env
-if [ -f "$ENV_FILE" ]; then
-  export $(grep -v '^#' "$ENV_FILE" | xargs)
-else
-  echo "❌ Archivo .env no encontrado en $ENV_FILE"
+# Comprobamos que las variables estén definidas
+if [ -z "$DB_HOST" ] || [ -z "$DB_USERNAME" ] || [ -z "$DB_PASSWORD" ] || [ -z "$DB_DATABASE" ]; then
+  echo "❌ Error: Variables DB_HOST, DB_USERNAME, DB_PASSWORD y DB_DATABASE deben estar definidas antes de ejecutar este script."
   exit 1
 fi
 
@@ -33,4 +34,3 @@ for file in "$BASE_DIR/migrations"/*.sql; do
 done
 
 echo "✅ Migraciones completadas."
-

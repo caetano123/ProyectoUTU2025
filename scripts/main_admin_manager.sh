@@ -7,25 +7,18 @@ DIR_PROYECTO="/opt/ProyectoUTU2025"
 REPO_GIT="https://github.com/caetano123/ProyectoUTU2025.git"
 APACHE_CONF="/etc/httpd/conf.d"
 APACHE_LOG_DIR="/var/log/httpd"
-ENV_FILE="$DIR_PROYECTO/.env"
-
+DB_HOST="localhost"
+DB_USERNAME="root"
+DB_PASSWORD=""
+SERVICIOS_DB_DATABASE="ServiciOs"
+SERVICIOS_BACKUP_DIR="/opt/ProyectoUTU2025/backups"
+SERVICIOS_LOG_DIR="/opt/ProyectoUTU2025/logs"
 
 RED='\033[0;31m'
 GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
 BLUE='\033[0;34m'
 NC='\033[0m' # Sin color
-
-
-# Cargar variables del .env si existe
-if [ -f "$ENV_FILE" ]; then
-    set -o allexport
-    source "$ENV_FILE"
-    set +o allexport
-else
-    echo "[WARNING] No se encontró archivo .env en $ENV_FILE"
-fi
-
 
 # Funciones de utilidad
 log_info() {
@@ -207,14 +200,10 @@ agregar_usuario_a_grupo() {
 }
 
 abm_usuarios_bd() {
-    if [ ! -f "$ENV_FILE" ]; then
-      echo "Archivo $ENV_FILE no encontrado"
-      return 1
-    fi
-
-    set -o allexport
-    source "$ENV_FILE"
-    set +o allexport
+    DB_HOST="localhost"
+    DB_USERNAME="root"
+    DB_PASSWORD="cae2007"
+    SERVICIOS_DB_DATABASE="ServiciOs"
 
     while true; do
         echo ""
@@ -311,6 +300,7 @@ abm_usuarios_bd() {
         esac
     done
 }
+
 
 
 actualizar_sistema() {
@@ -619,40 +609,41 @@ clonar_actualizar_repo() {
 
 setup_backups() {
     log_info "Configurando sistema de backups..."
-    
-    # Crear directorio de scripts si no existe
-    mkdir -p /opt/ProyectoUTU2025/scripts
 
-    cat > /opt/ProyectoUTU2025/scripts/backups.sh << 'EOF'
+    mkdir -p "$DIR_PROYECTO/scripts"
+
+    cat > "$DIR_PROYECTO/scripts/backups.sh" << EOF
 #!/bin/bash
-source /opt/ProyectoUTU2025/.env
 
-TIMESTAMP=$(date +%Y%m%d_%H%M%S)
-BACKUP_FILE="$SERVICIOS_BACKUP_DIR/servicios_backup_$TIMESTAMP.tar.gz"
-DB_BACKUP_FILE="$SERVICIOS_BACKUP_DIR/db_backup_$TIMESTAMP.sql"
+TIMESTAMP=\$(date +%Y%m%d_%H%M%S)
+BACKUP_FILE="${SERVICIOS_BACKUP_DIR}/servicios_backup_\$TIMESTAMP.tar.gz"
+DB_BACKUP_FILE="${SERVICIOS_BACKUP_DIR}/db_backup_\$TIMESTAMP.sql"
+
+# Crear directorios si no existen
+mkdir -p "${SERVICIOS_BACKUP_DIR}"
+mkdir -p "${SERVICIOS_LOG_DIR}"
 
 # Backup de base de datos
-mysqldump -u "$SERVICIOS_DB_USER" -p"$SERVICIOS_DB_PASS" "$SERVICIOS_DB_DATABASE" > "$DB_BACKUP_FILE"
-
+mysqldump -u "${DB_USERNAME}" -p"${DB_PASSWORD}" "${SERVICIOS_DB_DATABASE}" > "\$DB_BACKUP_FILE"
 
 # Backup de archivos
-tar -czf "$BACKUP_FILE" -C / \
-    var/www/html/servicios \
-    opt/servicios/config \
+tar -czf "\$BACKUP_FILE" -C / \\
+    var/www/html/servicios \\
+    opt/servicios/config \\
     opt/servicios/uploads
 
 # Limpiar backups antiguos (más de 7 días)
-find "$SERVICIOS_BACKUP_DIR" -name "*.tar.gz" -mtime +7 -delete
-find "$SERVICIOS_BACKUP_DIR" -name "*.sql" -mtime +7 -delete
+find "${SERVICIOS_BACKUP_DIR}" -name "*.tar.gz" -mtime +7 -delete
+find "${SERVICIOS_BACKUP_DIR}" -name "*.sql" -mtime +7 -delete
 
-echo "$(date): Backup completado - $BACKUP_FILE" >> "$SERVICIOS_LOG_DIR/backup.log"
+echo "\$(date): Backup completado - \$BACKUP_FILE" >> "${SERVICIOS_LOG_DIR}/backup.log"
 EOF
 
-    chmod +x /opt/ProyectoUTU2025/scripts/backups.sh
+    chmod +x "$DIR_PROYECTO/scripts/backups.sh"
 
-    # Agregar la tarea al crontab si no existe ya (sin borrar otras tareas)
-    (crontab -l 2>/dev/null | grep -q '/opt/ProyectoUTU2025/scripts/backups.sh') || \
-    (crontab -l 2>/dev/null; echo "0 2 * * * /opt/ProyectoUTU2025/scripts/backups.sh") | crontab -
+    # Agregar al crontab si no existe aún
+    (crontab -l 2>/dev/null | grep -q "$DIR_PROYECTO/scripts/backups.sh") || \
+    (crontab -l 2>/dev/null; echo "0 2 * * * $DIR_PROYECTO/scripts/backups.sh") | crontab -
 
     log_success "Sistema de backups configurado"
 }
