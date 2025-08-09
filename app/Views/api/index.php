@@ -19,4 +19,4 @@ require BASE_PATH ."/app/Views/components/tabla.php";
 echo '</div>
 	</div>
 
-    <script src="js/api.js"></script>';
+    <script src="js/script.js"></script>';
