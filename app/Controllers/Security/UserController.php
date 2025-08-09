@@ -95,4 +95,13 @@ class UserController extends Controller
             "datos" => [$mensaje]
         ]);
     }
+    
+    public function paginado(){
+        $datos = $this->modelo->sqlPaginado();
+        $datos["baseUrl"] = "/usuarios/pagina";
+        
+        return $this->render( "usuarios/paginar", $datos );
+
+    }
 }
+
