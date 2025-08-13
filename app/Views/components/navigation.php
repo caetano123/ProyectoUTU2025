@@ -1,7 +1,6 @@
 <nav class="navbar">
   <div class="nav-left">
-    <img src="./assets/logo-ServiciOS.png" alt="Logo ServiciOs" class="nav-logo" />
-  </div>
+<img src="<?= BASE_URL ?>/assets/logo-ServiciOS.png" alt="Logo" class="nav-logo">  </div>
   <div class="nav-links">
 
     <a href="/" class="<?= isActive('/', $currentUrl, true) ?>">Inicio</a>
@@ -11,6 +10,13 @@
       $isAdmin = isset($user['roles']) && in_array('admin', $user['roles']);
     ?>
       <a href="/vender" class="<?= isActive('/vender', $currentUrl) ?>">Vender Servicio</a>
+
+
+      <a href="/post" class="<?= isActive('/post', $currentUrl) ?>">Posts</a>
+
+      
+      <a href="/apicategorias" class="<?= isActive('/apicategorias', $currentUrl) ?>">Api</a>
+
 
       <div class="dropdown">
         <a href="javascript:void(0)" class="btn-exp" onclick="toggleDropdown('explorarDropdown')">Explorar ▼</a>

@@ -9,6 +9,10 @@
 // Definir la ruta base
 define("BASE_PATH", dirname(__DIR__));
 
+// Suponiendo que tu proyecto corre en http://localhost:81
+define('BASE_URL', 'http://localhost:81');
+
+
 // Cargar autoloader de Composer
 require BASE_PATH."/../vendor/autoload.php";
 

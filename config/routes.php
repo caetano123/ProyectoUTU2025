@@ -8,6 +8,7 @@
  * Asegúrate de que los nombres de los controladores incluyan correctamente su subnamespace.
  */
 
+use App\Core\Auth;
 use App\Middleware\AuthMiddleware;
 
 // =========================
@@ -23,6 +24,12 @@ $router->addRoute("GET", "/", "HomeController@index");
 $router->addRoute("GET", "/vender", "VenderController@index");
 //Pagina de Buscar Servicio
 $router->addRoute("GET", "/buscar", "BuscarController@index");
+
+//Pagina de Posts
+$router->addRoute("GET", "/post", "PostController@index");
+$router->addRoute("GET", "/post/paginar/:pagina", "PostController@index",[AuthMiddleware::class]);
+
+
 
 // Login
 $router->addRoute("GET", "/login", "Security\\AuthController@showLogin");

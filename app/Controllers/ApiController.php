@@ -4,55 +4,66 @@ namespace App\Controllers;
 use App\Core\Controller;
 use App\Models\Api;
 
-class ApiController extends Controller{
+class ApiController extends Controller {
 
-	 private $modelo;		
+    private $modelo;
 
-    public function __construct(){
-		$this->modelo = new Api();
-		parent::__construct();
-	}
-
-public function index() {
-
-    if ( isset( $_POST["miDato"] ) ) {
-        // Asegúrate de usar $miDato en tu código si lo necesitas
-        $miDato = $_POST["miDato"];
-
-        // Establece la cabecera antes de imprimir cualquier cosa
-        header('Content-Type: application/json');
-        // Lógica para buscar en la base de datos
-
-          $datos = $this->modelo->find(["name" => $miDato]);
-
-		  if ( isset( $datos["name"])){
-
-			$sql = sprintf("SELECT * FROM Posts WHERE  category_id =  %s " , $datos["category_id"])   ;	
-			$datos = $this->modelo->executeRawQuery($sql);
-
-			}else{
-			
-			$datos = [ 
-					[ "name" => "No existe la categoria" ]				
-			];
-		}
-
-        $response = [
-            'status' => 'success',
-            'message' => 'Datos obtenidos correctamente.',
-            'data' => [
-               $datos
-            ]
-        ];
-
-        echo json_encode($response);
-        exit(); // Es crucial para detener la ejecución y evitar que la vista se renderice
-    } else {
-        // Lógica para peticiones GET que renderizan la vista
-        $datos = $this->modelo->all();
-        $this->render("api/index", ["titulo" => "Categorias: Mostrar Articulos", "datosTabla" => $datos]);
+    public function __construct() {
+        $this->modelo = new Api();
+        parent::__construct();
     }
-}
+
+    public function index() {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['miDato'])) {
+
+            // Limpiar cualquier salida previa
+            while (ob_get_level()) ob_end_clean();
+
+            header('Content-Type: application/json; charset=utf-8');
+
+            try {
+                $miDato = trim($_POST['miDato']);
+                $categoria = $this->modelo->find(['Nombre' => $miDato]);
+
+                if ($categoria) {
+                    $sql = "SELECT p.ID_Posts, p.Titulo, p.Contenido, u.Nombre AS Usuario, c.Nombre AS Categoria
+                            FROM Posts p
+                            JOIN Usuarios u ON p.ID_Usuario = u.ID_Usuarios
+                            JOIN Categorias c ON p.ID_Categoria = c.ID_Categoria
+                            WHERE p.ID_Categoria = ?";
+                    
+                    $posts = $this->modelo->executeRawQueryArray($sql, [$categoria['ID_Categoria']]);
+                } else {
+                    $posts = [
+                        ['Mensaje' => 'No existe la categoría']
+                    ];
+                }
 
 
+
+                echo json_encode([
+                    'status' => 'success',
+                    'message' => 'Datos obtenidos correctamente',
+                    'data' => $posts
+                ]);
+            } catch (\Throwable $e) {
+                // Captura cualquier error inesperado
+                echo json_encode([
+                    'status' => 'error',
+                    'message' => 'No existe la categoría',
+                    'data' => []
+                ]);
+            }
+
+
+            exit(); // Terminar ejecución inmediatamente
+        }
+
+        // GET: mostramos la vista normalmente
+        $categorias = $this->modelo->all();
+        $this->render("api/index", [
+            "titulo" => "Categorías: Mostrar Artículos",
+            "datosTabla" => $categorias
+        ]);
+    }
 }
