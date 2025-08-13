@@ -6,29 +6,30 @@ use App\Models\Post;
 
 class PostController extends Controller{
 
-	 private $modelo;		
+    private $modelo;        
 
     public function __construct(){
-		$this->modelo = new Post();
-		parent::__construct();
-	}
+        $this->modelo = new Post();
+        parent::__construct();
+    }
 
+    public function index($parm){
+        $pagina = $parm["pagina"] ?? 1;
 
-public function index($parm){
+        $sql = "SELECT 
+                    CONCAT(u.Nombre, ' ', u.Apellido) AS usuario,
+                    c.Nombre AS categoria,
+                    p.Titulo,
+                    p.Contenido
+                FROM Posts p
+                JOIN Categorias c ON p.ID_Categoria = c.ID_Categoria
+                JOIN Usuarios u ON u.ID_Usuarios = p.ID_Usuario
+                ORDER BY p.ID_Usuario, p.ID_Categoria";
 
-//	$datos = $this->modelo->all();
-$pagina = $parm["pagina"]??1;
+        $datos = $this->modelo->sqlPaginado($sql, $pagina);
+        $datos["baseUrl"] = "/post/paginar";
+        $datos["titulo"] = "Todos los Posts ingresados";
 
-	$sql = "select u.username, c.name, p.title, p.content FROM Posts p JOIN Categories c ON p.category_id = c.category_id JOIN Users u ON u.user_id = p.user_id ORDER BY p.user_id, p.category_id";
-$sql = "";
-	$datos = $this->modelo->sqlPaginado($sql, $pagina);
-	$datos["baseUrl"] = "/post/paginar";
-	$datos["titulo"] = "Todos los Post ingresados";
-
-	$this->render("post/index", $datos );
-
+        $this->render("post/index", $datos );
+    }
 }
-
-
-}
-

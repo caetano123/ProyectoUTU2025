@@ -4,4 +4,4 @@
 echo "<h1> $titulo </h1>";
 
 
-require BASE_PATH . "/app/Views/components/paginar.php";
+require BASE_PATH . "/Views/components/paginar.php";
