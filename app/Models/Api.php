@@ -6,8 +6,8 @@ use App\Core\Model;
 class Api extends Model{
 
 	public function __construct(){
-			$this->table = "Categories";
-			$this->primaryKey = "category_id";
+			$this->table = "Categorias";
+			$this->primaryKey = "ID_Categoria";
 
 			parent::__construct();
 	}

@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?= $title ?? 'Mini Framework' ?></title>
-    <link rel="stylesheet" href="css/style.css" />
+   <link rel="stylesheet" href="<?= BASE_URL ?>/css/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
 />
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -26,7 +26,7 @@
 
 <footer class="footer">
   <div class="footer-left">
-    <img src="./assets/logo-ServiciOS.png" alt="Logo ServiciOs" class="footer-logo" />
+    <img src="<?= BASE_URL ?>/assets/logo-ServiciOS.png" alt="Logo ServiciOs" class="footer-logo" />
     <span class="footer-copy">© ServiciOs Association Ltd. 2025</span>
   </div>
 
@@ -59,7 +59,7 @@
 </footer>
 
 
-    <script src="/js/script.js"> </script>
+    <script src="<?= BASE_URL ?>/js/script.js"> </script>
 </body>
 
 </html>

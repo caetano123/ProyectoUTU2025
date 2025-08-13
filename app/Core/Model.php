@@ -3,7 +3,7 @@ namespace App\Core;
 use App\Core\Container;
 
 
-class Model {
+abstract class Model {
     protected $db;
     protected $table;
     // La clave primaria puede seguir siendo un solo campo por defecto,
@@ -110,8 +110,72 @@ class Model {
      * @param array $params Los parámetros para la consulta preparada.
      * @return \PDOStatement El objeto PDOStatement.
      */
-    public function executeRawQuery(string $sql, array $params = []) {
-        return $this->db->query($sql, $params);
+
+
+    // Devuelve PDOStatement para uso interno (login, update, etc.)
+    public function executeRawQuery(string $sql, array $params = []): \PDOStatement {
+        // Usamos el query de Database que ya prepara y ejecuta
+        return $this->db->query($sql, $params); 
     }
+
+// Devuelve array listo para JSON (uso API)
+public function executeRawQueryArray(string $sql, array $params = []): array {
+    try {
+        $stmt = $this->executeRawQuery($sql, $params);
+        $result = $stmt->fetchAll(\PDO::FETCH_ASSOC);
+        return $result ?: [];
+    } catch (\Exception $e) {
+        // Retornar un array con error para depuración en API
+        return [
+            ['Error' => $e->getMessage()]
+        ];
+    }
+}
+
+    
+	public function rowCount($sql = ""){
+		if ( empty($sql)){
+			$sql = "SELECT count(*) nf FROM {$this->table}";
+		} else {
+			$sql = "SELECT count(*) nf FROM ($sql ) p";	
+		}
+
+        $query = $this->db->query($sql); 
+		
+        return $query->fetchAll(\PDO::FETCH_ASSOC)[0]["nf"]; 
+	}
+
+    public function allPaginado($offset= 2, $pagina = 1) {
+
+			$pagina = ( $pagina - 1 ) * $offset;
+
+			$sql = "SELECT *  FROM {$this->table} LIMIT $pagina,$offset ";
+	        $query = $this->db->query($sql); 
+		
+        return $query->fetchAll(\PDO::FETCH_ASSOC); 
+
+    }
+
+
+	public function sqlPaginado( $sql = "", $pag = 1, $offset=5){
+
+		$totalPaginas = $this->rowCount($sql);
+	
+		if ( empty( $sql ) ){
+
+			$datos = $this->allPaginado($offset, $pag);
+
+		}else{
+			$pagina = ($pag -1 ) * $offset;
+			$sql = "$sql  LIMIT   $pagina , $offset ";
+	        $query = $this->db->query($sql); 
+			$datos = 	$query->fetchAll(\PDO::FETCH_ASSOC); 
+		}
+		
+		$totalPaginas = ceil( $totalPaginas / $offset);
+
+		return [ "pagina" => $pag, "totalPaginas" => $totalPaginas, "datosTabla" => $datos];		
+	}
+
 }
 

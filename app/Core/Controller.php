@@ -1,8 +1,6 @@
 <?php
 namespace App\Core;
 
-use App\Core\View;
-use App\Core\Auth;
 
 /**
  * Clase Controller - Clase base para todos los controladores

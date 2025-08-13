@@ -166,91 +166,87 @@ document.addEventListener('DOMContentLoaded', () => {
 
 });
 
-  // ==============================
-  // API PHP
-  // ==============================
-        // Obtener referencias a los elementos del DOM
-        const fetchPostDataBtn = document.getElementById('fetchPostData');
-        const postInput = document.getElementById('postInput');
-        const postResultDiv = document.getElementById('postResult');
-	        
-		// --- Asignar Event Listeners a los botones ---
-        fetchPostDataBtn.addEventListener('click', () => {
-            const dataToPost = postInput.value;
-            postToApi(dataToPost);
+
+
+// ==============================
+// API PHP - Gestión de Posts
+// ==============================
+
+// Referencias a los elementos del DOM
+const btnEnviarPost = document.getElementById('fetchPostData');
+const inputPost = document.getElementById('postInput');
+const divResultado = document.getElementById('postResult');
+
+// --- Event Listener ---
+btnEnviarPost.addEventListener('click', () => {
+    const dato = inputPost.value.trim();
+    if (dato) {
+        apiEnviarPost(dato);
+    } else {
+        divResultado.innerHTML = '<span>Ingresa un dato válido</span>';
+    }
+});
+
+// --- Función para enviar datos al API ---
+async function apiEnviarPost(dato) {
+    divResultado.textContent = 'Enviando datos POST...';
+    try {
+        const formData = new FormData();
+        formData.append('miDato', dato);
+
+        const response = await fetch('/apicategorias', {
+            method: 'POST',
+            body: formData
         });
-        // --- Funciones para interactuar con la API PHP ---
-        /**
-         * Realiza una petición GET a la API PHP.
-         */
-        /**
-         * Realiza una petición POST a la API PHP.
-         * @param {string} dataToSend - El dato a enviar al servidor.
-         */
-        async function postToApi(dataToSend) {
-            postResultDiv.textContent = 'Enviando datos POST...';
-            try {
-                // Creamos un objeto FormData para enviar datos como un formulario HTML
-                // Esto es adecuado para datos simples clave-valor y $_POST en PHP
-                const formData = new FormData();
-                formData.append('miDato', dataToSend); // 'miDato' será la clave en $_POST en PHP
 
-                // Petición con FormData
-                const response = await fetch('/apicategorias', {
-                    method: 'POST',
-                    body: formData // Fetch automáticamente configura Content-Type para FormData
-                });
-
-                if (!response.ok) {
-                    throw new Error(`Error en la petición POST: ${response.status} ${response.statusText}`);
-                }
-
-                const VerDatos = await response.json();
-
-				crearListaDeArticulos(VerDatos.data);
-
-            } catch (error) {
-                console.error('Error al enviar datos:', error);
-                postResultDiv.innerHTML = `<span class="error-message">Error: ${error.message}</span>`;
-            }
+        if (!response.ok) {
+            throw new Error(`Error en la petición POST: ${response.status} ${response.statusText}`);
         }
 
-// Funcion que muestra una lista de los datos enviados desde el servidor
-// el Controlador ApiController, es en el metodo index que genera el resultado.
-   
-function crearListaDeArticulos(data) {
+        let datosJson;
+        try {
+            datosJson = await response.json();
+        } catch (e) {
+            throw new Error("La respuesta del servidor no es JSON válido");
+        }
 
-  // Verificamos si los datos son válidos
-  if (!Array.isArray(data) || data.length === 0) {
-    console.error("Los datos no son un array válido o están vacíos.");
-    return;
-  }
-  
-postResultDiv.innerHTML = ''; // Limpiamos el contenedor
+        // Validar que data sea un array
+        if (!datosJson.data || !Array.isArray(datosJson.data) || datosJson.data.length === 0) {
+            divResultado.innerHTML = `<span>${datosJson.message || 'No se encontraron posts para esta categoría'}</span>`;
+            return;
+        }
 
-  // Creamos el elemento <ul>
-  const lista = document.createElement('ul');
+        // Si el primer elemento tiene "Mensaje", mostrarlo
+        if (datosJson.data[0].Mensaje) {
+            divResultado.innerHTML = `<span>${datosJson.data[0].Mensaje}</span>`;
+            return;
+        }
 
-  // Iteramos sobre los datos para crear cada <li>
-  data.forEach(subarray => {
-    subarray.forEach(objeto => {
-      // Creamos un <li> por cada post
-      const listItem = document.createElement('li');
-      
-      // Asignamos el título del post como texto del <li>
-      listItem.textContent = objeto.title;
-      
-      // Agregamos el <li> a la <ul>
-      lista.appendChild(listItem);
-    });
-  });
+        // Mostrar la lista de posts
+        mostrarListaPosts(datosJson.data);
 
-  // Agregamos la <ul> al contenedor final
-  postResultDiv.appendChild(lista);
+    } catch (error) {
+        console.error('Error al enviar datos:', error);
+        divResultado.innerHTML = `<span class="error-message">Error: ${error.message}</span>`;
+    }
 }
 
+// --- Función para mostrar la lista de posts ---
+function mostrarListaPosts(posts) {
+    divResultado.innerHTML = ''; // limpiar contenedor
 
+    const ul = document.createElement('ul');
 
+    posts.forEach(post => {
+        const titulo = post.Titulo || 'Sin título';
+        const contenido = post.Contenido || 'Sin contenido';
+        const autor = post.Usuario || 'Desconocido';
+        const categoria = post.Categoria || 'Desconocida';
 
+        const li = document.createElement('li');
+        li.innerHTML = `<strong>${titulo}</strong> - ${contenido} (Autor: ${autor}, Categoría: ${categoria})`;
+        ul.appendChild(li);
+    });
 
-
+    divResultado.appendChild(ul);
+}
