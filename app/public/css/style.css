@@ -1324,7 +1324,7 @@ input[type="file"]:hover {
   display: inline-block;
   transition: border-color 0.3s ease;
   cursor: pointer;
-  white-space: nowrap; /* para que no rompa palabra */
+  white-space: normal;
 }
 
 .catlist-item:hover {
@@ -1403,3 +1403,4 @@ input[type="file"]:hover {
 .footer-icons a:hover {
     color: #007bff;
 }
+
