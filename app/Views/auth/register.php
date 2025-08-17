@@ -30,6 +30,11 @@
         <input type="password" name="password_confirm" required placeholder="Confirmar Contraseña">
       </div>
 
+     <p class="olvidaste">
+    Al registrarte, aceptas nuestros
+   <a href="<?= BASE_URL ?>/terminos" target="_blank">Términos y Condiciones</a>.
+    </p>
+
       <button type="submit" class="btn-cta">Registrar</button>
     </form>
 

@@ -9,8 +9,8 @@
 // Definir la ruta base
 define("BASE_PATH", dirname(__DIR__));
 
-// Suponiendo que tu proyecto corre en http://localhost:81
-define('BASE_URL', 'http://localhost:81');
+// El proyecto corre en el puerto http://localhost:80
+define('BASE_URL', 'http://localhost:80');
 
 
 // Cargar autoloader de Composer
@@ -71,3 +71,4 @@ require BASE_PATH."/../config/routes.php";
 
 // Procesar la solicitud actual
 $router->dispatch();
+

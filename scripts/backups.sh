@@ -1,6 +1,6 @@
 #!/bin/bash
-DB_USERNAME="root"
-DB_PASSWORD="cae2007"
+DB_USERNAME="flavia"
+DB_PASSWORD="12345"
 SERVICIOS_DB_DATABASE="ServiciOs"
 SERVICIOS_BACKUP_DIR="/opt/ProyectoUTU2025/backups"
 SERVICIOS_LOG_DIR="/opt/ProyectoUTU2025/logs"
