@@ -1,14 +1,12 @@
 <?php 
-
-if ( count( $datosTabla) > 0 ){
-
-	if ( isset($datosTabla[0]) ){ 
-			$columnas = array_keys($datosTabla[0]);
-
-	}else  {
-			$columnas = array_keys($datosTabla);
-			$datosTabla = [ $datosTabla ];
-	}?>
+if (count($datosTabla) > 0) {
+    if (isset($datosTabla[0])) { 
+        $columnas = array_keys($datosTabla[0]);
+    } else {
+        $columnas = array_keys($datosTabla);
+        $datosTabla = [ $datosTabla ];
+    } ?>
+    
     <table border="1">
         <thead>
             <tr>
@@ -28,4 +26,5 @@ if ( count( $datosTabla) > 0 ){
         </tbody>
     </table>
 
-<?php } else{ echo "<h1>SIN DATOS</h1>" ;} ?>
+<?php } ?>
+
