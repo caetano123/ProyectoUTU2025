@@ -27,7 +27,6 @@
 <footer class="footer">
   <div class="footer-left">
     <img src="<?= BASE_URL ?>/assets/logo-ServiciOS.png" alt="Logo ServiciOs" class="footer-logo" />
-    <span class="footer-copy">© ServiciOs Association Ltd. 2025</span>
   </div>
 
   <div class="footer-center">
@@ -49,13 +48,20 @@
         <i class="fab fa-tiktok"></i>
       </a>
       <a href="https://twitter.com" target="_blank" rel="noopener" aria-label="X">
-        <i class="fab fa-x-twitter"></i>
+        <i class="fab fa-twitter"></i>
       </a>
       <a href="https://www.pinterest.com" target="_blank" rel="noopener" aria-label="Pinterest">
         <i class="fab fa-pinterest-p"></i>
       </a>
     </div>
   </div>
+
+   <div class="footer-copy">
+    <a href="<?= BASE_URL ?>/terminos" target="_blank" title="Lee nuestros Términos y Condiciones">
+      Términos y Condiciones</a>
+      © ServiciOs Association Ltd. 2025 
+  </div>
+
 </footer>
 
 

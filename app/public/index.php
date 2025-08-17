@@ -10,7 +10,7 @@
 define("BASE_PATH", dirname(__DIR__));
 
 // Suponiendo que tu proyecto corre en http://localhost:81
-define('BASE_URL', 'http://localhost:81');
+define('BASE_URL', 'http://localhost:80');
 
 
 // Cargar autoloader de Composer

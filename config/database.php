@@ -4,8 +4,8 @@ return [
     'driver' => 'mysql',
     'host' => 'localhost',
     'database' => 'ServiciOs',
-    'username' => 'root',
-    'password' => '',
+    'username' => 'flavia',
+    'password' => '12345',
     'charset' => 'utf8mb4',
     'options' => [
         PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
