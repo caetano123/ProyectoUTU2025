@@ -4,8 +4,8 @@ return [
     'driver' => 'mysql',
     'host' => 'localhost',
     'database' => 'ServiciOs',
-    'username' => 'flavia',
-    'password' => '12345',
+    'username' => 'root',
+    'password' => '',
     'charset' => 'utf8mb4',
     'options' => [
         PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
@@ -13,3 +13,4 @@ return [
         PDO::ATTR_EMULATE_PREPARES => false,
     ]
 ];
+
