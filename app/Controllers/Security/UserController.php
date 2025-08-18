@@ -97,7 +97,7 @@ class UserController extends Controller
     }
     
     public function paginado(){
-        $datos = $this->modelo->sqlPaginado();
+        $datos = $this->userModel->sqlPaginado();
         $datos["baseUrl"] = "/usuarios/pagina";
         
         return $this->render( "usuarios/paginar", $datos );
