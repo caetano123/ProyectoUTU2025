@@ -1324,7 +1324,7 @@ input[type="file"]:hover {
   display: inline-block;
   transition: border-color 0.3s ease;
   cursor: pointer;
-  white-space: nowrap; /* para que no rompa palabra */
+  white-space: normal;
 }
 
 .catlist-item:hover {
@@ -1335,12 +1335,14 @@ input[type="file"]:hover {
 /* Footer*/
 
 .footer {
+  flex-wrap: wrap; /* permite saltar de línea */
+  text-align: center;
   border-top: 1px solid #3d3131;
   display: flex;
   align-items: center;
   justify-content: space-between;
   background-color: #ffffff; /* fondo oscuro */
-  color: #fff;
+  color: #000000;
   padding: 0 30px;
   font-family: Arial, sans-serif;
   font-size: 14px;
@@ -1349,6 +1351,8 @@ input[type="file"]:hover {
 .footer-left {
   display: flex;
   align-items: center;
+  flex: 1;
+  justify-content: center;
 }
 
 .footer-logo {
@@ -1358,17 +1362,36 @@ input[type="file"]:hover {
 
 .footer-center {
   flex-grow: 1; /* espacio flexible para separar izquierda y derecha */
+  flex: 1;
 }
 
 .footer-right {
   display: flex;
   align-items: center;
   gap: 15px;
+  flex: 1;
+  justify-content: center;
 }
 
 .footer-copy {
-  white-space: nowrap;
+  flex-basis: 100%;
+  display: block;       
+  text-align: center;   
+  margin-top: 20px;     
+  padding-bottom: 30px;
+  font-size: 13px;
+  color: #555;
 }
+
+.footer-copy a {
+  color: #007bff; 
+  text-decoration: none;
+}
+
+.footer-copy a:hover {
+  text-decoration: underline;
+}
+
 .footer-icons a {
   color: #000; /* negro */
   margin-right: 15px; /* separación entre íconos */
@@ -1378,5 +1401,6 @@ input[type="file"]:hover {
 }
 
 .footer-icons a:hover {
-  color: #555; /* gris oscuro al pasar el mouse */
+    color: #007bff;
 }
+

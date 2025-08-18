@@ -201,8 +201,8 @@ agregar_usuario_a_grupo() {
 
 abm_usuarios_bd() {
     DB_HOST="localhost"
-    DB_USERNAME="root"
-    DB_PASSWORD="cae2007"
+    DB_USERNAME="flavia"
+    DB_PASSWORD="12345"
     SERVICIOS_DB_DATABASE="ServiciOs"
 
     while true; do

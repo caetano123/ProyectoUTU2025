@@ -29,7 +29,8 @@ $router->addRoute("GET", "/buscar", "BuscarController@index");
 $router->addRoute("GET", "/post", "PostController@index");
 $router->addRoute("GET", "/post/paginar/:pagina", "PostController@index",[AuthMiddleware::class]);
 
-
+// Términos y Condiciones
+$router->addRoute("GET", "/terminos", "Legal\\LegalController@terminos");
 
 // Login
 $router->addRoute("GET", "/login", "Security\\AuthController@showLogin");
