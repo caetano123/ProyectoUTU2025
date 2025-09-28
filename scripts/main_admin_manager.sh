@@ -10,8 +10,8 @@ APACHE_LOG_DIR="/var/log/httpd"
 DB_HOST="localhost"
 DB_USERNAME="root"
 DB_PASSWORD="caetano2007"
-SERVICIOS_DB_USER="root"
-SERVICIOS_DB_PASS="caetano2007"
+SERVICIOS_DB_USER="serviciosuser"
+SERVICIOS_DB_PASS="cae2007"
 SERVICIOS_DB_DATABASE="ServiciOs"
 SERVICIOS_BACKUP_DIR="/opt/ProyectoUTU2025/backups"
 SERVICIOS_LOG_DIR="/opt/ProyectoUTU2025/logs"
@@ -422,7 +422,7 @@ EOF
 crear_database_structure() {
     log_info "Creando estructura de base de datos..."
     
-    mysql -u "$SERVICIOS_DB_USER" -p"$SERVICIOS_DB_PASS" "$SERVICIOS_DB_DATABASE" << 'EOF'
+    mysql -h localhost -u serviciosuser -pcae2007 ServiciOs << EOF
 -- Crear base de datos y usarla
 CREATE DATABASE IF NOT EXISTS ServiciOs;
 USE ServiciOs;
