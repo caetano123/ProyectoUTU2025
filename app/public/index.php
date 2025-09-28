@@ -10,7 +10,9 @@
 define("BASE_PATH", dirname(__DIR__));
 
 // El proyecto corre en el puerto http://localhost:80
-define('BASE_URL', 'http://localhost:80');
+$protocolo = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? "https" : "http";
+$host = $_SERVER['HTTP_HOST'];
+define('BASE_URL', $protocolo . "://" . $host);
 
 
 // Cargar autoloader de Composer
