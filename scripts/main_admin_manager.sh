@@ -423,7 +423,7 @@ crear_database_structure() {
     log_info "Creando estructura de base de datos..."
     
     mysql -u "$SERVICIOS_DB_USER" -p"$SERVICIOS_DB_PASS" "$SERVICIOS_DB_DATABASE" << 'EOF'
--- Crear base de datos y seleccionarla
+-- Crear base de datos y usarla
 CREATE DATABASE IF NOT EXISTS ServiciOs;
 USE ServiciOs;
 
@@ -553,8 +553,24 @@ CREATE TABLE Portafolio (
 );
 CREATE INDEX idx_portafolio_usuario ON Portafolio(ID_Usuario);
 
--- Roles base
-INSERT IGNORE INTO Roles (Nombre) VALUES ('cliente'), ('proveedor'), ('admin');
+CREATE TABLE Posts ( 
+    ID_Posts INT AUTO_INCREMENT PRIMARY KEY, 
+    ID_Usuario INT NOT NULL,
+    ID_Categoria INT DEFAULT NULL,
+    Titulo VARCHAR(255) NOT NULL,
+    Contenido TEXT NOT NULL,
+    FechaCreacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FechaActualizacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (ID_Usuario) REFERENCES Usuarios(ID_Usuarios),
+    FOREIGN KEY (ID_Categoria) REFERENCES Categorias(ID_Categoria)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+
+
+INSERT INTO Roles (Nombre) VALUES ('cliente');
+INSERT INTO Roles (Nombre) VALUES ('proveedor');
+INSERT INTO Roles (Nombre) VALUES ('admin');
+
 EOF
 
     if [ $? -eq 0 ]; then
