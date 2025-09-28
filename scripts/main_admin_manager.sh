@@ -9,7 +9,9 @@ APACHE_CONF="/etc/httpd/conf.d"
 APACHE_LOG_DIR="/var/log/httpd"
 DB_HOST="localhost"
 DB_USERNAME="root"
-DB_PASSWORD=""
+DB_PASSWORD="caetano2007"
+SERVICIOS_DB_USER="root"
+SERVICIOS_DB_PASS="caetano2007"
 SERVICIOS_DB_DATABASE="ServiciOs"
 SERVICIOS_BACKUP_DIR="/opt/ProyectoUTU2025/backups"
 SERVICIOS_LOG_DIR="/opt/ProyectoUTU2025/logs"
@@ -175,7 +177,7 @@ cambiar_contrasena() {
     fi
     
     passwd "$username"
-    log_exitoso "Contraseña actualizada para '$username'"
+    log_success "Contraseña actualizada para '$username'"
 }
 
 agregar_usuario_a_grupo() {
@@ -196,13 +198,13 @@ agregar_usuario_a_grupo() {
     fi
     
     usermod -aG "$groupname" "$username"
-    log_exitoso "Usuario '$username' agregado al grupo '$groupname'"
+    log_success "Usuario '$username' agregado al grupo '$groupname'"
 }
 
 abm_usuarios_bd() {
     DB_HOST="localhost"
-    DB_USERNAME="flavia"
-    DB_PASSWORD="12345"
+    DB_USERNAME="root"
+    DB_PASSWORD="cae2007"
     SERVICIOS_DB_DATABASE="ServiciOs"
 
     while true; do
@@ -305,8 +307,8 @@ abm_usuarios_bd() {
 
 actualizar_sistema() {
     log_info "Actualizando sistema CentOS..."
-    yum update -y
-    yum install -y epel-release
+    dnf update -y
+    dnf install -y epel-release
     log_success "Sistema actualizado"
 }
 
@@ -314,7 +316,7 @@ actualizar_sistema() {
 instalar_apache() {
     log_info "Instalando y configurando Apache..."
 
-    yum install -y httpd php php-mysqlnd
+    dnf install -y httpd php php-mysqlnd
 
     # Crear dir de logs si no existe
     mkdir -p "$APACHE_LOG_DIR"
@@ -359,7 +361,7 @@ EOF
 instalar_php() {
     log_info "Instalando PHP y extensiones..."
     
-    yum install -y php php-mysql php-gd php-ldap php-odbc php-pear php-xml \
+    dnf install -y php php-mysql php-gd php-ldap php-odbc php-pear php-xml \
                    php-xmlrpc php-mbstring php-snmp php-soap php-zip php-curl \
                    php-bcmath php-json php-session php-fileinfo
     
@@ -376,28 +378,44 @@ instalar_php() {
 instalar_mysql() {
     log_info "Instalando y configurando MariaDB..."
 
-    yum install -y mariadb-server mariadb
+    # Instalar MariaDB
+    dnf install -y mariadb-server mariadb
 
+    # Habilitar y arrancar el servicio
     systemctl enable mariadb
     systemctl start mariadb
 
-    # Configuración segura básica
-    mysql -u root -p"$DB_PASSWORD" -e "UPDATE mysql.user SET authentication_string=PASSWORD('$DB_PASSWORD') WHERE User='root';"
-    mysql -u root -p"$DB_PASSWORD" -e "DELETE FROM mysql.user WHERE User='';"
-    mysql -u root -p"$DB_PASSWORD" -e "DELETE FROM mysql.user WHERE User='root' AND Host NOT IN ('localhost', '127.0.0.1', '::1');"
-    mysql -u root -p"$DB_PASSWORD" -e "DROP DATABASE IF EXISTS test;"
-    mysql -u root -p"$DB_PASSWORD" -e "DELETE FROM mysql.db WHERE Db='test' OR Db='test\\_%';"
-    mysql -u root -p"$DB_PASSWORD" -e "FLUSH PRIVILEGES;"
+    # Configuración inicial segura
+    mysql -u root <<EOF
+-- Cambiar contraseña de root
+ALTER USER 'root'@'localhost' IDENTIFIED BY '${DB_PASSWORD}';
 
-    # Crear base de datos si no existe
-    mysql -u root -p"$DB_PASSWORD" -e "CREATE DATABASE IF NOT EXISTS $SERVICIOS_DB_DATABASE CHARACTER SET utf8 COLLATE utf8_spanish_ci;"
+-- Eliminar usuarios anónimos
+DELETE FROM mysql.user WHERE User='';
 
-     mysql -u root -p"$DB_PASSWORD" -e "CREATE USER '$SERVICIOS_DB_USER'@'localhost' IDENTIFIED BY '$SERVICIOS_DB_PASS';"
-     mysql -u root -p"$DB_PASSWORD" -e "GRANT ALL PRIVILEGES ON $SERVICIOS_DB_DATABASE.* TO '$SERVICIOS_DB_USER'@'localhost';"
-     mysql -u root -p"$DB_PASSWORD" -e "FLUSH PRIVILEGES;"
+-- Restringir root solo a localhost
+DELETE FROM mysql.user WHERE User='root' AND Host NOT IN ('localhost', '127.0.0.1', '::1');
 
-    log_success "MariaDB instalado y configurado"
+-- Eliminar base de datos de prueba
+DROP DATABASE IF EXISTS test;
+
+-- Eliminar permisos sobre bases de prueba
+DELETE FROM mysql.db WHERE Db='test' OR Db LIKE 'test\\_%';
+
+FLUSH PRIVILEGES;
+
+-- Crear base de datos del proyecto
+CREATE DATABASE IF NOT EXISTS ${SERVICIOS_DB_DATABASE} CHARACTER SET utf8 COLLATE utf8_spanish_ci;
+
+-- Crear usuario del proyecto y otorgarle permisos
+CREATE USER IF NOT EXISTS '${SERVICIOS_DB_USER}'@'localhost' IDENTIFIED BY '${SERVICIOS_DB_PASS}';
+GRANT ALL PRIVILEGES ON ${SERVICIOS_DB_DATABASE}.* TO '${SERVICIOS_DB_USER}'@'localhost';
+FLUSH PRIVILEGES;
+EOF
+
+    log_success "MariaDB instalado y configurado correctamente"
 }
+
 
 
 # Función para crear estructura de base de datos
@@ -548,7 +566,7 @@ EOF
 
 clonar_actualizar_repo() {
     echo "==> Clonando o actualizando proyecto desde Git..."
-    yum install -y git
+    dnf install -y git
 
     if [ -d "$DIR_PROYECTO/.git" ]; then
         echo "Repositorio ya existe, actualizando..."
@@ -576,44 +594,12 @@ clonar_actualizar_repo() {
 }
 
 
-# Configuración de Apache (opcional, comentada por ahora)
-# configurar_apache() {
-#    echo "==> Instalando Apache y configurando VirtualHost..."
-
-#    yum install -y httpd php php-mysql mariadb-server php-mbstring php-pdo
-
-#    systemctl enable httpd
-#    systemctl start httpd
-
-#   cat <<EOF > "$APACHE_CONF"
-#<VirtualHost *:80>
-#    ServerName localhost
-#    DocumentRoot $DIR_PROYECTO/public
-
-#    <Directory $DIR_PROYECTO/public>
-#        Options Indexes FollowSymLinks
-#        AllowOverride All
-#        Require all granted
-#    </Directory>
-
-#    ErrorLog $APACHE_LOG_DIR/proyecto_error.log
-#    CustomLog $APACHE_LOG_DIR/proyecto_access.log combined
-#</VirtualHost>
-#EOF
-
-#    systemctl restart httpd
-
-#    echo "Apache configurado para servir $DIR_PROYECTO/public"
-# }
-
-
 setup_backups() {
     log_info "Configurando sistema de backups..."
 
     mkdir -p "$DIR_PROYECTO/scripts"
 
     cat > "$DIR_PROYECTO/scripts/backups.sh" << EOF
-#!/bin/bash
 
 TIMESTAMP=\$(date +%Y%m%d_%H%M%S)
 BACKUP_FILE="${SERVICIOS_BACKUP_DIR}/servicios_backup_\$TIMESTAMP.tar.gz"
@@ -663,7 +649,6 @@ setup_firewall() {
     log_success "Firewall configurado"
 }
 
-#!/bin/bash
 # Script maestro de instalación y administración del sistema ServiciOS
 
 set -e
