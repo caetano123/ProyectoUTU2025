@@ -11,7 +11,6 @@ private $modelo;
 
 public function __construct(){
 $this->modelo = new User();
-
 parent::__construct();
 
 }
@@ -30,10 +29,8 @@ $insertar = [
 $this->modelo->create($insertar);
 */
 
-$clientes = $this->modelo->findByRol('cliente');
-return $this->render( "clientes/index",["clientes" =>  $clientes]);
-
-}
-
-
+$clientes = $this->modelo->findByRol('USUARIO');
+return $this->render( "clientes/index",["clientes" =>  $clientes
+        ]);
+    }
 }
