@@ -67,17 +67,20 @@
       <a href="/vender" class="<?= isActive('/vender', $currentUrl) ?>">Vender Servicio</a>
 
       <div class="dropdown">
-        <a href="javascript:void(0)" class="btn-exp" onclick="toggleDropdown('explorarDropdown')">Explorar ▼</a>
-        <div id="explorarDropdown" class="dropdown-content">
-          <a href="/informatica">Informática</a>
-          <a href="/carpinteria">Carpintería</a>
-          <a href="/arquitecto">Arquitecto</a>
-          <a href="/albanil">Albañil</a>
-          <a href="/plomero">Plomero</a>
-          <a href="/electricista">Electricista</a>
-          <a href="/todos">Ver Todos</a>
-        </div>
-      </div>
+    <a href="javascript:void(0)" class="btn-exp" onclick="toggleDropdown('explorarDropdown')">Explorar ▼</a>
+    <div id="explorarDropdown" class="dropdown-content">
+        <a href="#" data-query="Informática">Informática</a>
+        <a href="#" data-query="Carpintería">Carpintería</a>
+        <a href="#" data-query="Arquitecto">Arquitecto</a>
+        <a href="#" data-query="Albañil">Albañil</a>
+        <a href="#" data-query="Plomero">Plomero</a>
+        <a href="#" data-query="Electricista">Electricista</a>
+        <a href="#" data-query="">Ver Todos</a>
+    </div>
+</div>
+
+
+
 
       <?php if (strpos($currentUrl, '/servicios') === false): ?>
         <form class="navbar-search-form" action="/buscar" method="get">
