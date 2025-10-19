@@ -111,6 +111,7 @@ public function updatePassword($ci, $newHash) {
     $this->executeRawQuery($sql, [':hash' => $newHash, ':ci' => $ci]);
 }
 
+
    public function updateById($id, $data) {
         // Si no hay datos para actualizar, no hacemos nada.
         if (empty($data)) {
@@ -136,4 +137,5 @@ public function updatePassword($ci, $newHash) {
         
         return $stmt->execute();
     }
+
 }
