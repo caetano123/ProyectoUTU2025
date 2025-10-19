@@ -82,13 +82,13 @@ class ProfileController extends Controller {
         if (!empty($data['correo'])) {
             $email = filter_var(trim($data['correo']), FILTER_SANITIZE_EMAIL);
 
-
             if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
                 $this->session->flash('error', 'El correo electrónico proporcionado no es válido.');
                 return $this->redirect('/profile/edit'); // Redirigir de vuelta al formulario de edición
             }
             $validatedData['Correo'] = $email;
         }
+
 
         if (isset($files['nueva_foto']) && $files['nueva_foto']['error'] === UPLOAD_ERR_OK) {
             $foto = $files['nueva_foto'];
@@ -113,26 +113,6 @@ class ProfileController extends Controller {
         if (empty($validatedData)) {
             $this->session->flash('error', 'No se proporcionaron datos para actualizar.');
 
-        if (isset($files['nueva_foto']) && $files['nueva_foto']['error'] === UPLOAD_ERR_OK) {
-            $foto = $files['nueva_foto'];
-            $nombreArchivo = uniqid('perfil_', true) . '.' . pathinfo($foto['name'], PATHINFO_EXTENSION);
-            
-            // Ruta absoluta construida dinámicamente.
-            // Esto asume que la carpeta 'public' está en el directorio raíz de la aplicación.
-            $directorioSubidas = dirname(__DIR__, 3) . '/public/assets/profiles/';
-            $rutaDestino = $directorioSubidas . $nombreArchivo;
-
-            if (move_uploaded_file($foto['tmp_name'], $rutaDestino)) {
-                $validatedData['UrlFoto'] = '/assets/profiles/' . $nombreArchivo;
-            } else {
-                $this->session->flash('error', 'Error al guardar la imagen.');
-                return $this->redirect('/profile/edit');
-            }
-        }
-
-        if (empty($validatedData)) {
-            $this->session->flash('info', 'No se proporcionaron datos para actualizar.');
-
             return $this->redirect('/profile/edit');
         }
 
@@ -148,23 +128,25 @@ class ProfileController extends Controller {
 
 
                  $this->auth->login($updatedUserSession);
-                // Forzamos al sistema de autenticación a actualizar la sesión con los datos combinados y actualizados.
+
+                 // Forzamos al sistema de autenticación a actualizar la sesión con los datos combinados y actualizados.
                 $this->auth->login($updatedUserSession);
 
             } else {
                 // Esto puede pasar si el usuario guarda sin cambiar nada.
                 $this->session->flash('info', 'No se realizaron cambios en el perfil.');
-                }
+
+            }
 
         } catch (\Exception $e) {
             error_log("Profile update error: " . $e->getMessage());
             $this->session->flash('error', 'Error interno al intentar actualizar el perfil.');
         }
         
+
         // --> Al final, redirigimos a la página de VER el perfil.
         return $this->redirect('/profile');
     }
 
     }
     }
-}
