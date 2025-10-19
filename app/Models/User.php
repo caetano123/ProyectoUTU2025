@@ -70,6 +70,7 @@ class User extends Model {
         return [$tipo]; // Retorna un array con el rol
     }
 
+//<<<<<<< HEAD
     // Buscar usuario por email o CI
 public function getByEmailOrCI($value) {
     $sql = "SELECT * FROM {$this->table} WHERE Correo = :correo OR ID_Persona = :ci LIMIT 1";
