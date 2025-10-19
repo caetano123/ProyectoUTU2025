@@ -10,6 +10,19 @@ class Servicio extends Model {
         parent::__construct();
     }
 
+    public function createServicio($data) {
+        return $this->create([
+            'NombreServicio' => $data['Nombre'] ?? null,
+            'Descripcion' => $data['Descripcion'] ?? null,
+            'Precio' => $data['Precio'] ?? null,
+            'ID_Categoria' => $data['ID_Categoria'] ?? null,
+            'ID_Subcategoria' => $data['ID_Subcategoria'] ?? null,
+            'ID_Persona' => $data['ID_Persona'] ?? null,
+            'ID_Zona' => $data['ID_Zona'] ?? null,
+            'FechaPublicacion' => date('Y-m-d H:i:s')
+        ]);
+    }
+
     public function search($q = '', $categoria = '') {
     $sql = "SELECT * FROM {$this->table} WHERE 1=1";
     $params = [];
@@ -25,8 +38,14 @@ class Servicio extends Model {
     }
 
     return $this->executeRawQueryArray($sql, $params);
-}
+    }
 
+    public function getByUserId($userId) {
+        $sql = "SELECT * FROM {$this->table} WHERE ID_Persona = :userId";
+        $params = [':userId' => $userId];
+
+        return $this->executeRawQueryArray($sql, $params);
+    }
 
 }
 

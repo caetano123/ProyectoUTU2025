@@ -18,10 +18,11 @@ use App\Middleware\AuthMiddleware;
 // API
 $router->addRoute("POST","/apicategorias", "ApiController@index");
 $router->addRoute("GET","/apicategorias", "ApiController@index");
+
 // Página de inicio
 $router->addRoute("GET", "/", "HomeController@index");
-//Pagina Vender Servicio
 
+//Pagina Vender Servicio
 $router->addRoute("GET", "/vender", "VenderController@index");      // formulario
 $router->addRoute("POST", "/vender/crear", "VenderController@crear"); // procesar formulario
 $router->addRoute("GET", "/buscar", "BuscarController@index");     // mostrar servicios
@@ -62,8 +63,8 @@ $router->addRoute("GET", "/dashboard/:id", "Usuarios\\DashboardController@show",
 
 // Perfil de usuario
 $router->addRoute("GET", "/profile", "Usuarios\\ProfileController@index", [AuthMiddleware::class]);
-$router->addRoute("POST", "/profile", "Usuarios\\ProfileController@update", [AuthMiddleware::class]);
-
+$router->addRoute("GET", "/profile/edit", "Usuarios\\ProfileController@edit", [AuthMiddleware::class]);
+$router->addRoute("POST", "/profile/save", "Usuarios\\ProfileController@save", [AuthMiddleware::class]);
 
 $router->addRoute("GET", "/usuarios", "Security\\UserController@index", [AuthMiddleware::class]);
 $router->addRoute("GET", "/usuarios/show/:id", "Security\\UserController@show", [AuthMiddleware::class]);
