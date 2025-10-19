@@ -55,6 +55,12 @@ class Servicio extends Model
         return $this->executeRawQueryArray($sql, $params);
     }
 
+    public function getByUserId($userId) {
+        $sql = "SELECT * FROM {$this->table} WHERE ID_Persona = :userId";
+        $params = [':userId' => $userId];
+
+        return $this->executeRawQueryArray($sql, $params);
+    }
 
 
 

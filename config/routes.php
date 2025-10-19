@@ -16,14 +16,24 @@ use App\Middleware\AuthMiddleware;
 // RUTAS PÚBLICAS
 // =========================
 
+<<<<<<< HEAD
 //prueba
-$router->addRoute( "GET", "/servicio/valorar", "Servicios\\ServicioController@valorarForm", [AuthMiddleware::class]);
+$router->addRoute("GET", "/servicio/valorar", "Servicios\\ServicioController@valorarForm", [AuthMiddleware::class]);
 $router->addRoute("POST", "/servicio/valorar", "Servicios\\ServicioController@valorar", [AuthMiddleware::class]);
+=======
+// API
+$router->addRoute("POST","/apicategorias", "ApiController@index");
+$router->addRoute("GET","/apicategorias", "ApiController@index");
+>>>>>>> 4ce35c1 (Perfiles de Usuarios, con posibilidad de editarlo)
 
 // Página de inicio
 $router->addRoute("GET", "/", "HomeController@index");
 
+<<<<<<< HEAD
 // Pagina Vender Servicio
+=======
+//Pagina Vender Servicio
+>>>>>>> 4ce35c1 (Perfiles de Usuarios, con posibilidad de editarlo)
 $router->addRoute("GET", "/vender", "VenderController@index");      // formulario
 $router->addRoute("POST", "/vender/crear", "VenderController@crear"); // procesar formulario
 $router->addRoute("GET", "/buscar", "BuscarController@index");     // mostrar servicios
@@ -79,6 +89,13 @@ $router->addRoute("POST", "/usuarios/save/:id", "Security\\UserController@save",
 $router->addRoute("GET", "/notificaciones", "NotificacionController@index", [AuthMiddleware::class]);
 $router->addRoute("GET", "/notificaciones/check", "NotificacionController@check", [AuthMiddleware::class]);
 
+
 // Panel para administradores
-$router->addRoute("GET", "/paneladmin", "Admin\\AdminController@index", [AuthMiddleware::class]);
-$router->addRoute("POST", "/paneladmin/deleteUser", "Admin\\AdminController@deleteUser", [AuthMiddleware::class]);
+$router->addRoute("GET", "/admin", "Admin\\AdminController@index", [AuthMiddleware::class]);
+$router->addRoute("POST", "/admin/deleteUser", "Admin\\AdminController@deleteUser", [AuthMiddleware::class]);
+$router->addRoute("GET", "/admin/notificar", "Admin\\AdminController@showNotifyForm");
+$router->addRoute("POST", "/admin/notificar/send", "Admin\\AdminController@sendNotification");
+$router->addRoute("POST", "/admin/makeAdmin", "Admin\\AdminController@makeAdmin");
+
+// Esta ruta es para que JavaScript pueda pedir los datos
+$router->addRoute("GET", "/api/subcategorias", "SubcategoriaController@getByCategoria");
