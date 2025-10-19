@@ -51,7 +51,7 @@ class Auth
             unset($user["ContrasenaHash"]);
 
             // Cargar roles y agregarlos al usuario
-            $roles = $this->userModel->getRolesByUserId($user['ID_Usuarios']);
+            $roles = $this->userModel->getRolesByUserId($user['ID_Persona']);
             $user['roles'] = $roles;
 
             $this->session->set("user", $user);
@@ -72,7 +72,7 @@ class Auth
         unset($user["ContrasenaHash"]);
 
         if (!isset($user['roles'])) {
-            $roles = $this->userModel->getRolesByUserId($user['ID_Usuarios']);
+            $roles = $this->userModel->getRolesByUserId($user['ID_Persona']);
             $user['roles'] = $roles;
         }
 
@@ -123,4 +123,7 @@ class Auth
     {
         $this->session->remove("user");
     }
+
+
+  
 }

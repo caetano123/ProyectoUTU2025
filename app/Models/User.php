@@ -66,5 +66,15 @@ class User extends Model {
         $stmt = $this->executeRawQuery($sql, [':rol' => strtoupper($rolNombre)]);
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+
+    public function getRolesByUserId(int $userId): array
+    {
+        $sql = "SELECT Tipo FROM {$this->table} WHERE ID_Persona = :id LIMIT 1";
+        
+        $stmt = $this->executeRawQuery($sql, [':id' => $userId]);
+        $tipo = $stmt->fetchColumn();
+        
+        return $tipo ? [strtolower($tipo)] : [];
+    }
 }
 

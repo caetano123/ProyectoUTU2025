@@ -8,6 +8,7 @@ CREATE TABLE Personas (
     Nombre VARCHAR(50),
     Apellido VARCHAR(50),
     Correo VARCHAR(100) UNIQUE,
+    Telefono VARCHAR(20),
     ContrasenaHash VARCHAR(255),
     Verificado BOOLEAN DEFAULT FALSE,
     FechaRegistro TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
