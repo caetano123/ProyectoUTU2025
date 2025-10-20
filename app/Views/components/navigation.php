@@ -57,7 +57,7 @@
           Perfil ▼
         </a>
         <div id="perfilDropdown" class="dropdown-content">
-          <a href="/perfil">Ver Perfil</a>
+          <a href="/profile">Ver Perfil</a>
           <a href="/configuracion">Configuración</a>
           <a href="/logout">Cerrar sesión</a>
         </div>

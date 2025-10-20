@@ -66,5 +66,40 @@ class User extends Model {
         $stmt = $this->executeRawQuery($sql, [':rol' => strtoupper($rolNombre)]);
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
-}
 
+    public function getRolesByUserId(int $userId): array
+    {
+        $sql = "SELECT Tipo FROM {$this->table} WHERE ID_Persona = :id LIMIT 1";
+        
+        $stmt = $this->executeRawQuery($sql, [':id' => $userId]);
+        $tipo = $stmt->fetchColumn();
+        
+        return $tipo ? [strtolower($tipo)] : [];
+    }
+
+   public function updateById($id, $data) {
+        // Si no hay datos para actualizar, no hacemos nada.
+        if (empty($data)) {
+            return false;
+        }
+
+        $setParts = [];
+        foreach ($data as $key => $value) {
+            $setParts[] = "`$key` = :$key";
+        }
+
+        $setString = implode(', ', $setParts);
+
+        $sql = "UPDATE {$this->table} SET {$setString} WHERE ID_Persona = :id";
+        
+        $stmt = $this->db->prepare($sql);
+
+        foreach ($data as $key => &$value) {
+            $stmt->bindParam(":$key", $value);
+        }
+        
+        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+        
+        return $stmt->execute();
+    }
+}
