@@ -7,7 +7,8 @@
     <?php if (isset($errors['general'])): ?>
         <p class="alert alert-error"><?= $errors['general'] ?></p>
     <?php endif; ?>
-    <?php if (isset($flash['error'])): // Para mensajes de error flasheados genéricos ?>
+   
+    <?php if (isset($flash['error'])): ?>
         <p class="alert alert-error"><?= $flash['error'] ?></p>
     <?php endif; ?>
 

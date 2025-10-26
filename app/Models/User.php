@@ -5,16 +5,19 @@ use App\Core\Model;
 use PDO;
 
 class User extends Model {
-    protected $table = "Personas"; // Define la tabla usada por este modelo
 
-    // Buscar usuario por correo (campo 'Correo' en la BD)
+    public function __construct() {
+        parent::__construct();
+        $this->table = "Personas";
+        $this->primaryKey = "ID_Persona";
+    }
+
     public function findByEmail($email) {
         $sql = "SELECT * FROM {$this->table} WHERE Correo = :email LIMIT 1";
         $stmt = $this->executeRawQuery($sql, [':email' => $email]);
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
-    // Crear usuario (registro)
     public function createUser(array $data) {
         $data['Verificado'] = 0; // Por defecto no verificado
         $data['Tipo'] = $data['Tipo'] ?? 'USUARIO'; // Por defecto usuario normal
@@ -51,14 +54,6 @@ class User extends Model {
             'Apellido' => $data['Apellido'] ?? null
         ]);
     }
-    
- // Verificar si un usuario tiene un rol (con el campo Tipo)
-    public function hasRole($userId, $roleName) {
-        $sql = "SELECT Tipo FROM {$this->table} WHERE ID_Persona = :id LIMIT 1";
-        $stmt = $this->executeRawQuery($sql, [':id' => $userId]);
-        $tipo = $stmt->fetchColumn();
-        return strtoupper($tipo) === strtoupper($roleName);
-    }
 
     // Obtener usuarios por rol (ADMIN o USUARIO)
     public function findByRol($rolNombre) {
@@ -67,39 +62,12 @@ class User extends Model {
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public function getRolesByUserId(int $userId): array
-    {
+    public function getRolByUserId($userId) {
         $sql = "SELECT Tipo FROM {$this->table} WHERE ID_Persona = :id LIMIT 1";
-        
         $stmt = $this->executeRawQuery($sql, [':id' => $userId]);
         $tipo = $stmt->fetchColumn();
-        
-        return $tipo ? [strtolower($tipo)] : [];
+        return [$tipo]; // Retorna un array con el rol
     }
 
-   public function updateById($id, $data) {
-        // Si no hay datos para actualizar, no hacemos nada.
-        if (empty($data)) {
-            return false;
-        }
 
-        $setParts = [];
-        foreach ($data as $key => $value) {
-            $setParts[] = "`$key` = :$key";
-        }
-
-        $setString = implode(', ', $setParts);
-
-        $sql = "UPDATE {$this->table} SET {$setString} WHERE ID_Persona = :id";
-        
-        $stmt = $this->db->prepare($sql);
-
-        foreach ($data as $key => &$value) {
-            $stmt->bindParam(":$key", $value);
-        }
-        
-        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
-        
-        return $stmt->execute();
-    }
 }

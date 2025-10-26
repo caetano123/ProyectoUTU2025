@@ -1,6 +1,7 @@
 <?php
 namespace App\Models;
 use App\Core\Model;
+use PDO;
 
 class Servicio extends Model {
 
@@ -12,7 +13,7 @@ class Servicio extends Model {
 
     public function createServicio($data) {
         return $this->create([
-            'NombreServicio' => $data['Nombre'] ?? null,
+            'Nombre' => $data['Nombre'] ?? null,
             'Descripcion' => $data['Descripcion'] ?? null,
             'Precio' => $data['Precio'] ?? null,
             'ID_Categoria' => $data['ID_Categoria'] ?? null,
@@ -40,6 +41,7 @@ class Servicio extends Model {
     return $this->executeRawQueryArray($sql, $params);
     }
 
+
     public function getByUserId($userId) {
         $sql = "SELECT * FROM {$this->table} WHERE ID_Persona = :userId";
         $params = [':userId' => $userId];
@@ -47,6 +49,39 @@ class Servicio extends Model {
         return $this->executeRawQueryArray($sql, $params);
     }
 
+    public function updateById($id, array $data) {
+        if (empty($data)) {
+            return false;
+        }
+
+        $sets = [];
+        $values = [];
+        
+        foreach ($data as $column => $value) {
+            $sets[] = "`$column` = ?";
+            $values[] = $value;
+        }
+
+        $values[] = $id;
+        
+        $sql = "UPDATE {$this->table} SET " . implode(', ', $sets) . " WHERE id = ?";
+        
+        try {
+            $stmt = $this->db->prepare($sql);
+            return $stmt->execute($values);
+        } catch (\PDOException $e) {
+            error_log("Error actualizando el servicio: " . $e->getMessage());
+            return false;
+        }
+    }
+
+    public function findById($id) {
+        $sql = "SELECT * FROM {$this->table} WHERE {$this->primaryKey} = :id";
+        $params = [':id' => $id];
+
+        $result = $this->executeRawQueryArray($sql, $params);
+        return !empty($result) ? $result[0] : null;
+    }
+
+
 }
-
-

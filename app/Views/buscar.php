@@ -42,8 +42,8 @@
         <span>Barberia</span>
     </button>
     <button type="button" class="servicio-btn">
-        <img src="assets/diseño.png" alt="Diseñador gráfico">
-        <span>Diseñador gráfico</span>
+        <img src="assets/diseño.png" alt="Diseñador">
+        <span>Diseñador</span>
     </button>
     <button type="button" class="servicio-btn">
         <img src="assets/Electricista.png" alt="Electricista">

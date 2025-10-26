@@ -5,7 +5,7 @@
             <?= htmlspecialchars($title ?? 'Perfil de Usuario de ' . $user['Nombre']) ?>
         </h1>
         <div class="foto-perfil">
-            <img src="profile-picture.jpg" alt="Profile Picture" class="foto-perfil-img">
+            <img src="https://i.pinimg.com/736x/87/22/ec/8722ec261ddc86a44e7feb3b46836c10.jpg" alt="Foto de Perfil" class="foto-perfil-img">
         </div>
 
         <div class="info">
@@ -20,12 +20,26 @@
     </div>
 
     </div>
+    <br>
     <h3>Servicios</h3>
-    <div class="servicios">
-        <ul>
-            <?php foreach ($servicios as $servicio): ?>
-                <li><?= htmlspecialchars($servicio['NombreServicio']) ?> - <?= htmlspecialchars($servicio['Descripcion']) ?></li>
-            <?php endforeach; ?>
-        </ul>
-    </div>
+ <div class="servicios-grid">
+    <?php if(!empty($servicios)): ?>
+        <?php foreach($servicios as $s): ?>
+        <div class="servicio-card">
+            <h3><?= htmlspecialchars($s['Nombre']) ?></h3>
+            <p><?= htmlspecialchars($s['Descripcion']) ?></p>
+            <p class="precio">$<?= number_format($s['Precio'],2) ?></p>
+
+           
+            <a href="/buscar/eliminar?id=<?= $s['ID_Servicio'] ?>" 
+               class="btn-eliminar" 
+               onclick="return confirm('¿Estás seguro que quieres eliminar este servicio?');">
+               Eliminar
+            </a>
+        </div>
+        <?php endforeach; ?>
+    <?php else: ?>
+        <p>No hay servicios cargados aún.</p>
+    <?php endif; ?>
+</div>
 </body>

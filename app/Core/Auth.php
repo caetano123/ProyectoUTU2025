@@ -50,9 +50,9 @@ class Auth
         if ($user && password_verify($password, $user["ContrasenaHash"])) {
             unset($user["ContrasenaHash"]);
 
-            // Cargar roles y agregarlos al usuario
-            $roles = $this->userModel->getRolesByUserId($user['ID_Persona']);
-            $user['roles'] = $roles;
+            // Cargar rol y agregarlo al usuario
+            $rol = $this->userModel->getRolByUserId($user['ID_Persona']);
+            $user['tipo'] = $rol;
 
             $this->session->set("user", $user);
             return true;
@@ -71,9 +71,9 @@ class Auth
     {
         unset($user["ContrasenaHash"]);
 
-        if (!isset($user['roles'])) {
-            $roles = $this->userModel->getRolesByUserId($user['ID_Persona']);
-            $user['roles'] = $roles;
+        if (!isset($user['tipo'])) {
+            $rol = $this->userModel->getRolByUserId($user['ID_Persona']);
+            $user['tipo'] = $rol;
         }
 
         $this->session->set("user", $user);

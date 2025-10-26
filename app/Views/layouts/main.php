@@ -27,6 +27,7 @@
 <footer class="footer">
   <div class="footer-left">
     <img src="<?= BASE_URL ?>/assets/logo-ServiciOS.png" alt="Logo ServiciOs" class="footer-logo" />
+    <img src="<?= BASE_URL ?>/assets/logo-quadstack.png" alt="Logo Quadstack" class="footer-logo" />
   </div>
 
   <div class="footer-center">

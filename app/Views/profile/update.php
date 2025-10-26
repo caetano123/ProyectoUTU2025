@@ -8,13 +8,6 @@
                 <?= htmlspecialchars($title ?? 'Editar Perfil de ' . $user['Nombre']) ?>
             </h1>
 
-            <div class="foto-perfil">
-                <img src="<?= htmlspecialchars($user['UrlFoto'] ?? 'profile-picture.jpg') ?>" alt="Profile Picture" class="foto-perfil-img">
-                
-                <label for="nueva-foto">Cambiar foto de perfil:</label>
-                <input type="file" name="nueva_foto" id="nueva-foto" accept="image/png, image/jpeg">
-            </div>
-
             <div class="info">
                 <p>
                     <strong>Nombre:</strong>

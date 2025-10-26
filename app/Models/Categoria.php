@@ -2,15 +2,15 @@
 
 namespace App\Models;
 use App\Core\Model;
+use PDO;
 
 class Categoria extends Model{
 
-		public function __construct(){
-			$this->table = "Categories";
-			$this->primaryKey = "category_id";
+	public function __construct(){
+			$this->table = "Categorias";
+			$this->primaryKey = "ID_Categoria";
 
-			parent::__construct();	
-		}
-
+			parent::__construct();
+	}
 
 }
