@@ -41,6 +41,22 @@ class Servicio extends Model {
     return $this->executeRawQueryArray($sql, $params);
     }
 
+        $values[] = $id;
+        
+        $sql = "UPDATE {$this->table} SET " . implode(', ', $sets) . " WHERE id = ?";
+        
+        try {
+            $stmt = $this->db->prepare($sql);
+            return $stmt->execute($values);
+        } catch (\PDOException $e) {
+            error_log("Error actualizando el servicio: " . $e->getMessage());
+            return false;
+        }
+    }
+
+    public function findById($id) {
+        $sql = "SELECT * FROM {$this->table} WHERE {$this->primaryKey} = :id";
+        $params = [':id' => $id];
 
     public function getByUserId($userId) {
         $sql = "SELECT * FROM {$this->table} WHERE ID_Persona = :userId";
