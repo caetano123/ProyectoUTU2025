@@ -2,7 +2,7 @@
 CREATE DATABASE IF NOT EXISTS ServiciOs;
 USE ServiciOs;
 
--- Tabla de Usuarios
+-- Tabla de Usuarios y Administradores
 CREATE TABLE Personas (
     ID_Persona INT PRIMARY KEY AUTO_INCREMENT,
     Nombre VARCHAR(50),
@@ -14,7 +14,7 @@ CREATE TABLE Personas (
     FechaRegistro TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     Tipo ENUM('ADMIN','USUARIO') NOT NULL DEFAULT 'USUARIO'
     );
-CREATE INDEX idx_nombre_apellido ON Usuarios(Nombre, Apellido);
+CREATE INDEX idx_nombre_apellido ON Personas(Nombre, Apellido);
 
 -- Tabla de Categorías
 CREATE TABLE Categorias (
