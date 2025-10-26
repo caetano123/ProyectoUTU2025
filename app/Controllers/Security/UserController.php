@@ -5,8 +5,7 @@ use App\Core\Controller;
 use App\Models\User;
 use App\Core\View;
 
-class UserController extends Controller
-{
+class UserController extends Controller{
     protected $userModel;
     protected $view;
 
@@ -17,12 +16,6 @@ class UserController extends Controller
         $this->view = new View();
     }
 
-    private function checkAuth()
-    {
-        if (!$this->auth->check()) {
-            return $this->redirect('/login');
-        }
-    }
 
     public function index()
     {

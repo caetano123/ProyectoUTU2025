@@ -28,13 +28,29 @@
     </div>
 
     <div class="busqueda-linea">
+      <h4 class="h4Nom">Zona:</h4>
+      <select name="zona" class="busquedaCategoria" required>
+        <option value="">Selecciona una zona</option>
+        <option value="1">18 de Mayo</option>
+        <option value="2">Canelones</option>
+        <option value="3">La Paz</option>
+        <option value="4">Las Brujas</option>
+        <option value="5">Las Piedras</option>
+        <option value="6">Los Cerrillos</option>
+        <option value="7">Montevideo</option>
+        <option value="8">Progreso</option>
+        <option value="9">Toledo</option>
+      </select>
+    </div>
+
+    <div class="busqueda-linea">
       <h4 class="h4Nom">Descripción:</h4>
       <textarea name="descripcion" class="descripcion" placeholder="Escribe una descripción" required></textarea>
     </div>
 
     <div class="busqueda-linea">
-      <h4 class="h4Nom">Precio:</h4>
-      <input type="text" name="precio" class="busquedaVender" placeholder="Ej: 4000$ por hora trabajada" required />
+      <h4 class="h4Nom">Precio (por hora trabajada en pesos $):</h4>
+      <input type="text" name="precio" class="busquedaVender" placeholder="Ej: 4000" required />
     </div>
 
     <div class="busqueda-linea">

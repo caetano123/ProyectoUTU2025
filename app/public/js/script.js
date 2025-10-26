@@ -165,19 +165,17 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
   
-    // Desplegable "Explorar"
-    
+    // Desplegable "Explorar" en navegación
     const dropdownLinks = document.querySelectorAll('#explorarDropdown a[data-query]');
     dropdownLinks.forEach(link => {
         link.addEventListener('click', (e) => {
             e.preventDefault();
             const query = link.dataset.query;
             if (query) {
-                window.location.href = `/buscar?query=${encodeURIComponent(query)}`;
+                window.location.href = "/buscar?query=" + encodeURIComponent(query);
             } else {
-                window.location.href = `/buscar`;
+                window.location.href = "/buscar";
             }
         });
     });
-
-});
+    });

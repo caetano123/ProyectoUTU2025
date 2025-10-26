@@ -128,4 +128,14 @@ abstract class Controller {
         
         return $errors;
     }
+
+    protected function checkAuth()
+    {
+        if (!$this->auth->check()) {
+            $this->session->flash('info', 'Debes iniciar sesión para acceder a esta página.');
+            $this->redirect('/login');
+            exit(); 
+        }
+    }
+
 }

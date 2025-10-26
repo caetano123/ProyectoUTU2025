@@ -26,7 +26,7 @@ class AdminController extends Controller
         }
 
         $userId = $user['ID_Usuarios'] ?? null;
-        if (!$userId || !$this->userModel->hasRole($userId, 'admin')) {
+        if (!$userId || !$this->userModel->hasRole($userId, 'ADMIN')) {
             return $this->redirect('/login');
         }
     }
