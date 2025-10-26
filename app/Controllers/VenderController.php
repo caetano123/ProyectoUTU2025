@@ -3,14 +3,17 @@ namespace App\Controllers;
 
 use App\Core\Controller;
 use App\Models\Servicio;
+use App\Models\Subcategoria;
 
 class VenderController extends Controller {
 
     private $modelo;
+    private $subcategoriaModelo;
 
     public function __construct() {
         parent::__construct();
         $this->modelo = new Servicio();
+        $this->subcategoriaModelo = new Subcategoria();
 
         $this->checkAuth();
     }
@@ -24,20 +27,15 @@ class VenderController extends Controller {
     public function crear() {
         $currentUser = $this->auth->user();
 
-        $titulo = trim($_POST['Titulo'] ?? '');
-        $id_categoria = $_POST['ID_Categoria'] ?? null;
-        $id_zona = $_POST['ID_Zona'] ?? null;
-        $precio = $_POST['Precio'] ?? null;
-        $descripcion = trim($_POST['Descripcion'] ?? '');
+        $titulo = trim($_POST['titulo'] ?? '');
 
+        $descripcion = trim($_POST['descripcion'] ?? '');
+        $precio = $_POST['precio'] ?? null;
+        $id_categoria = $_POST['categoria'] ?? null;
+        $subcategoria = $_POST['subcategoria'] ?? null;
+        
         $id_persona = $currentUser['ID_Persona'];
-
-        if (!is_numeric($precio) || $precio < 0) {
-            $this->session->flash("error", "El precio ingresado no es válido. Por favor, introduce solo números.");
-    
-            header("Location: /vender");
-            exit;
-        }
+        $id_zona = $_POST['zona'] ?? null;
 
         if (empty($titulo)) {
             $this->session->flash("error", "El título del servicio es obligatorio.");
@@ -45,14 +43,26 @@ class VenderController extends Controller {
             exit;
         }
 
+        if (!is_numeric($precio)) {
+            $this->session->flash("error", "El precio ingresado no es válido. Por favor, introduce solo números.");
+            header("Location: /vender");
+            exit;
+        }
+
+        if (isset($subcategoria) && !empty($subcategoria)) {
+            $id_subcategoria = $this->subcategoriaModelo->addSubcategoria($subcategoria, $id_categoria);
+        }
+
         try {
             $this->modelo->create([
                 'Nombre' => $titulo,
-                'ID_Categoria' => $id_categoria,
-                'ID_Zona' => $id_zona,
                 'Descripcion' => $descripcion,
-                'Precio' => (float)$precio, 
-                'ID_Persona' => $id_persona
+                'Precio' => $precio, 
+                'ID_Categoria' => $id_categoria,
+                'ID_Subcategoria' => $id_subcategoria,
+                'ID_Persona' => $id_persona,
+                'ID_Zona' => $id_zona,
+                'FechaPublicacion' => date('Y-m-d H:i:s')
             ]);
 
             $this->session->flash("success","¡Servicio agregado correctamente!");

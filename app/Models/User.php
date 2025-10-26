@@ -25,6 +25,7 @@ class User extends Model {
             'Nombre' => $data['Nombre'] ?? null,
             'Apellido' => $data['Apellido'] ?? null,
             'Correo' => $data['Correo'] ?? null,
+            'Telefono' => $data['Telefono'] ?? null,
             'ContrasenaHash' => $data['ContrasenaHash'] ?? null,
             'Verificado' => $data['Verificado'],
             'Tipo' => $data['Tipo']
@@ -33,14 +34,14 @@ class User extends Model {
 
     // Obtener todos los usuarios (sin contraseñas)
     public function getAllUsers() {
-        $sql = "SELECT ID_Persona, Nombre, Apellido, Correo, Verificado, FechaRegistro, Tipo FROM {$this->table}";
+        $sql = "SELECT ID_Persona, Nombre, Apellido, Correo, Telefono, Verificado, FechaRegistro, Tipo FROM {$this->table}";
         $stmt = $this->executeRawQuery($sql);
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
     // Buscar usuario por ID
     public function findById($id) {
-        $sql = "SELECT ID_Persona, Nombre, Apellido, Correo, Verificado, FechaRegistro, Tipo 
+        $sql = "SELECT ID_Persona, Nombre, Apellido, Correo, Telefono, Verificado, FechaRegistro, Tipo 
                 FROM {$this->table} 
                 WHERE ID_Persona = :id LIMIT 1";
         $stmt = $this->executeRawQuery($sql, [':id' => $id]);

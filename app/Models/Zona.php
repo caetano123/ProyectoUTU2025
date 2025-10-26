@@ -4,11 +4,11 @@ namespace App\Models;
 use App\Core\Model;
 use PDO;
 
-class Categoria extends Model{
+class Zona extends Model{
 
 	public function __construct(){
-			$this->table = "Categorias";
-			$this->primaryKey = "ID_Categoria";
+			$this->table = "Zonas";
+			$this->primaryKey = "ID_Zona";
 
 			parent::__construct();
 	}
@@ -20,3 +20,4 @@ class Categoria extends Model{
 	}
 
 }
+

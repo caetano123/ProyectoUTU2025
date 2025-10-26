@@ -4,19 +4,17 @@ namespace App\Controllers\Servicios;
 use App\Core\Controller;
 use App\Models\User;
 
-class ClientesController extends Controller{
+class ClientesController extends Controller {
 
-private $modelo;
+    private $modelo;
 
-
-public function __construct(){
-$this->modelo = new User();
-parent::__construct();
-
-}
+    public function __construct() {
+        $this->modelo = new User();
+        parent::__construct();
+    }
 
 
-public function index(){
+    public function index(){
 /*
 $insertar = [
 "rut" => 32132,
@@ -29,8 +27,7 @@ $insertar = [
 $this->modelo->create($insertar);
 */
 
-$clientes = $this->modelo->findByRol('USUARIO');
-return $this->render( "clientes/index",["clientes" =>  $clientes
-        ]);
-    }
+    $clientes = $this->modelo->findByRol('USUARIO');
+    return $this->render("clientes/index", ["clientes" => $clientes]);
+}
 }

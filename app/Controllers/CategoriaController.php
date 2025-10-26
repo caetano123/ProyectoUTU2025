@@ -19,7 +19,10 @@ class CategoriaController extends Controller{
 
 		$datos = $this->modelo->all();
 
-		$this->render("categoria/index", ["titulo" => "Las categorias", "datosTabla" => $datos]); 
+		$this->render("categoria/index", [
+			"titulo" => "Las categorias", 
+			"datosTabla" => $datos
+		]); 
 	}
 
 

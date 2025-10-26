@@ -64,7 +64,7 @@ class Servicio extends Model {
 
         $values[] = $id;
         
-        $sql = "UPDATE {$this->table} SET " . implode(', ', $sets) . " WHERE id = ?";
+        $sql = "UPDATE {$this->table} SET " . implode(', ', $sets) . " WHERE {$this->primaryKey} = ?";
         
         try {
             $stmt = $this->db->prepare($sql);
@@ -75,13 +75,21 @@ class Servicio extends Model {
         }
     }
 
-    public function findById($id) {
+  public function findById($id) {
+        
+        if (is_array($id)) {
+            $id = $id[0];
+        }
+
         $sql = "SELECT * FROM {$this->table} WHERE {$this->primaryKey} = :id";
         $params = [':id' => $id];
 
         $result = $this->executeRawQueryArray($sql, $params);
-        return !empty($result) ? $result[0] : null;
+
+        if (empty($result) || !is_array($result)) {
+            return null;
+        }
+
+        return $result[0];
     }
-
-
-}
+}   

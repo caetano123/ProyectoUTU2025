@@ -22,17 +22,19 @@ $router->addRoute("GET","/apicategorias", "ApiController@index");
 // Página de inicio
 $router->addRoute("GET", "/", "HomeController@index");
 
-//Pagina Vender Servicio
+// Pagina Vender Servicio
 $router->addRoute("GET", "/vender", "VenderController@index");      // formulario
 $router->addRoute("POST", "/vender/crear", "VenderController@crear"); // procesar formulario
 $router->addRoute("GET", "/buscar", "BuscarController@index");     // mostrar servicios
 
+// Pagina de Servicio Individual
+$router->addRoute("GET", "/servicio", "Servicios\\ServicioController@show");
 
-//Pagina de Buscar Servicio
+// Pagina de Buscar Servicio
 $router->addRoute("GET", "/buscar", "BuscarController@index");
 $router->addRoute("GET", "/buscar/eliminar", "VenderController@eliminar");
 
-//Pagina de Posts
+// Pagina de Posts
 $router->addRoute("GET", "/post", "PostController@index");
 $router->addRoute("GET", "/post/paginar/:pagina", "PostController@index",[AuthMiddleware::class]);
 

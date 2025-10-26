@@ -715,8 +715,8 @@ input[type="file"]:hover {
 }
 
 .banner-video {
-  position: relative;
-  z-index: 1;
+  position: absolute;
+  z-index: 0;
   top: 0;
   left: 0;
   width: 100%;
