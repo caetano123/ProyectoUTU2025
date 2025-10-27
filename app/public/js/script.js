@@ -159,7 +159,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (textoCategoria === "Ver Todos") {
                 window.location.href = "/buscar";
             } else {
-                window.location.href = `/buscar?query=${encodeURIComponent(textoCategoria)}`;
+                window.location.href = "/buscar?categoria=" + encodeURIComponent(textoCategoria);
             }
         });
     });

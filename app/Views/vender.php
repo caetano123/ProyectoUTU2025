@@ -13,7 +13,7 @@
     </div>
 
     <div class="busqueda-linea">
-      <h4 class="h4Nom">Precio (Por hora trabajada en pesos $):</h4>
+      <h4 class="h4Nom">Precio (por hora trabajada en pesos uruguayos):</h4>
       <input type="text" name="precio" class="busquedaVender" placeholder="Ej: 4000" required />
     </div>
 

@@ -1508,3 +1508,101 @@ input[type="file"]:hover {
   align-self: center;
 }
 
+/* Servicio individual*/
+/* --- Contenedor Principal --- */
+.servicio-container {
+    max-width: 800px; /* Un poco más angosto */
+    margin: 20px auto;
+    padding: 20px;
+    border: 1px solid #eee; /* Borde simple */
+    border-radius: 8px;
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+}
+
+/* --- Título y Descripción --- */
+.servicio-container h1 {
+    font-size: 2.2rem;
+    font-weight: 700;
+    color: #222;
+    margin-top: 0;
+}
+
+.servicio-imagen {
+    width: 100%;
+    height: 350px; /* Altura fija */
+    object-fit: cover;
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+.servicio-descripcion {
+    font-size: 1.1rem;
+    color: #555;
+    margin-bottom: 20px;
+}
+
+/* --- Caja de Info (Precio, Cat, etc.) --- */
+.servicio-info-box {
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 25px;
+}
+
+.servicio-info-box p {
+    font-size: 1rem;
+    margin: 10px 0;
+    color: #333;
+}
+
+.servicio-info-box p strong {
+    color: #000;
+    margin-right: 8px;
+}
+
+.servicio-precio {
+    font-size: 2rem !important; /* Grande */
+    font-weight: 700;
+    color: #007bff; /* Color de acento */
+    margin-bottom: 15px !important;
+}
+
+/* --- BOTÓN DE CONTRATAR --- */
+.btn-contratar {
+    display: block; /* Ocupa todo el ancho */
+    width: 100%;
+    padding: 15px;
+    background-color: #007bff; /* Color primario */
+    color: #ffffff; /* Texto blanco */
+    text-align: center;
+    text-decoration: none;
+    font-size: 1.2rem;
+    font-weight: 600;
+    border-radius: 8px;
+    margin-bottom: 25px;
+    box-sizing: border-box; /* Para que el padding no rompa el ancho */
+    transition: background-color 0.3s;
+}
+
+.btn-contratar:hover {
+    background-color: #0056b3; /* Más oscuro al pasar el mouse */
+}
+
+/* --- Meta Info (Autor y Fecha) --- */
+.servicio-meta {
+    border-top: 1px solid #f0f0f0;
+    padding-top: 15px;
+    font-size: 0.9rem;
+    color: #777;
+}
+
+.servicio-meta p {
+    margin: 5px 0;
+}
+
+.servicio-meta a {
+    color: #0056b3;
+    text-decoration: none;
+    font-weight: 600;
+}

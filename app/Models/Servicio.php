@@ -92,4 +92,11 @@ class Servicio extends Model {
 
         return $result[0];
     }
+
+    public function getByCategoryId($categoryId) {
+        $sql = "SELECT * FROM {$this->table} WHERE ID_Categoria = :catId";
+        $params = [':catId' => $categoryId];
+
+        return $this->executeRawQueryArray($sql, $params);
+    }
 }   

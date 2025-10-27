@@ -15,8 +15,8 @@
             <p><strong>Correo Electrónico:</strong> <?= htmlspecialchars($user['Correo']) ?></p>
         </div>
 
-    <div class="acciones-perfil" style="margin-top: 20px;">
-        <a href="profile/edit" class="boton-editar">Editar Perfil</a>
+    <div class="botones-accion" style="margin-top: 20px;">
+        <a href="profile/edit" class="btnAceptar">Editar Perfil</a>
     </div>
 
     </div>
@@ -30,16 +30,19 @@
             <p><?= htmlspecialchars($s['Descripcion']) ?></p>
             <p class="precio">$<?= number_format($s['Precio'],2) ?></p>
 
+            <div class="botones-accion">
             <a href="/servicio?id=<?= $s['ID_Servicio'] ?>" 
-               class="btn-servicio">
+               class="btnAceptar">
                Ver más
             </a>
-        <br>
+            </div>
+        <div class="botones-accion">
             <a href="/buscar/eliminar?id=<?= $s['ID_Servicio'] ?>" 
-               class="btn-eliminar" 
+               class="btnBorrar" 
                onclick="return confirm('¿Estás seguro que quieres eliminar este servicio?');">
                Eliminar
             </a>
+        </div>
         </div>
         <?php endforeach; ?>
     <?php else: ?>

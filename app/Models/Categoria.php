@@ -19,4 +19,9 @@ class Categoria extends Model{
 		return $stmt->fetch(PDO::FETCH_ASSOC);
 	}
 
+	public function findByName($name) {
+		$sql = "SELECT {$this->primaryKey} FROM {$this->table} WHERE Nombre = :name";
+		$stmt = $this->executeRawQuery($sql, [':name' => $name]);
+		return $stmt->fetchColumn();
+	}
 }

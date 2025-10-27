@@ -27,8 +27,8 @@
                 </p>
             </div>
 
-            <div class="acciones">
-                <button type="submit">Actualizar Perfil</button>
+            <div class="botones-accion">
+                <button type="submit" class="btnAceptar">Actualizar Perfil</button>
             </div>
 
         </div>

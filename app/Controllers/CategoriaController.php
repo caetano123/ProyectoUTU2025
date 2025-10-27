@@ -7,7 +7,7 @@ use App\Models\Categoria;
 
 class CategoriaController extends Controller{
 
-		private $modelo;
+	private $modelo;
 
 	public function __construct(){
 		$this->modelo = new Categoria();
@@ -16,7 +16,6 @@ class CategoriaController extends Controller{
 }
 
 	public function index(){
-
 		$datos = $this->modelo->all();
 
 		$this->render("categoria/index", [
@@ -24,6 +23,5 @@ class CategoriaController extends Controller{
 			"datosTabla" => $datos
 		]); 
 	}
-
 
 }

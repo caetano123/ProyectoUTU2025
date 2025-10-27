@@ -8,26 +8,26 @@
 
 <div class="servicios-container">
   <button class="servicio-btn">
-    <img src="assets/informatica.png" alt="Informática">
-    <span>Informatica</span>
+    <img src="assets/informatica.png" alt="Tecnología y Programación">
+    <span>Tecnología y Programación</span>
   </button>
   <button class="servicio-btn">
-    <img src="assets/barberia.png" alt="Barbería">
-    <span>Barberia</span>
+    <img src="assets/barberia.png" alt="Cuidado y Bienestar">
+    <span>Cuidado y Bienestar</span>
   </button>
   <button class="servicio-btn">
-    <img src="assets/diseño.png" alt="Diseñador gráfico">
-    <span>Diseñador gráfico</span>
+    <img src="assets/diseño.png" alt="Diseño Gráfico y Creatividad">
+    <span>Diseño Gráfico y Creatividad</span>
   </button>
 
    <button class="servicio-btn">
-    <img src="assets/Electricista.png" alt="Electricista">
-    <span>Electricista</span>
+    <img src="assets/Electricista.png" alt="Clases y Tutorías">
+    <span>Clases y Tutorías</span>
   </button>
 
    <button class="servicio-btn">
-    <img src="assets/carpinteria.png" alt="Carpinteria">
-    <span>Carpinteria</span>
+    <img src="assets/carpinteria.png" alt="Hogar y Reparaciones">
+    <span>Hogar y Reparaciones</span>
   </button>
   <!-- Agregá más botones según necesites -->
 </div>

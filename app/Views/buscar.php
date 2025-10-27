@@ -17,10 +17,11 @@
             <p><?= htmlspecialchars($s['Descripcion']) ?></p>
             <p class="precio">$<?= number_format($s['Precio'],2) ?></p>
 
-            <a href="/servicio?id=<?= $s['ID_Servicio'] ?>" 
-               class="btn-servicio">
-               Ver más
-            </a>
+            <div class="botones-accion">
+                 <a href="/servicio?id=<?= $s['ID_Servicio'] ?>" class="btnAceptar">
+                     Ver más
+                </a>
+            </div>
         </div>
         <?php endforeach; ?>
     <?php else: ?>
@@ -32,20 +33,32 @@
 <h4>Buscar por categoría:</h4>
 <div class="busqueda-container">
     <button type="button" class="servicio-btn">
-        <img src="assets/informatica.png" alt="Informática">
-        <span>Informática</span>
+        <img src="assets/informatica.png" alt="Tecnología y Programación">
+        <span>Tecnología y Programación</span>
     </button>
     <button type="button" class="servicio-btn">
-        <img src="assets/barberia.png" alt="Barbería">
-        <span>Barberia</span>
+        <img src="assets/barberia.png" alt="Cuidado y Bienestar">
+        <span>Cuidado y Bienestar</span>
     </button>
     <button type="button" class="servicio-btn">
-        <img src="assets/diseño.png" alt="Diseñador">
-        <span>Diseñador</span>
+        <img src="assets/diseño.png" alt="Diseño Gráfico y Creatividad">
+        <span>Diseño Gráfico y Creatividad</span>
     </button>
     <button type="button" class="servicio-btn">
-        <img src="assets/Electricista.png" alt="Electricista">
-        <span>Electricista</span>
+        <img src="assets/Electricista.png" alt="Clases y Tutorías">
+        <span>Clases y Tutorías</span>
+    </button>
+    <button type="button" class="servicio-btn">
+        <img src="assets/carpinteria.png" alt="Hogar y Reparaciones">
+        <span>Hogar y Reparaciones</span>
+    </button>
+      <button type="button" class="servicio-btn">
+        <img src="assets/contador.png" alt="Negocios y Asistencia Virtual">
+        <span>Negocios y Asistencia Virtual</span>
+    </button>
+       <button type="button" class="servicio-btn">
+        <img src="assets/foto.png" alt="Video, Foto y Animación">
+        <span>Video, Foto y Animación</span>
     </button>
     <button type="button" class="servicio-btn">
         <img src="assets/vertodo.png" alt="VerTodos">

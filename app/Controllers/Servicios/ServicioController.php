@@ -49,7 +49,8 @@ class ServicioController extends Controller {
             'subcategoria' => $subcategoria,
             'zona' => $zona,
             'usuario' => $usuario,
-            'id_usuario' => $id_usuario
+            'id_usuario' => $id_usuario,
+            'imgPath' => BASE_URL . '/assets/uploads/servicios/' . $servicio['ID_Categoria'] . '.jpg'
         ]);
     }
 }   
