@@ -5,7 +5,7 @@ return [
     'host' => 'localhost',
     'database' => 'ServiciOs',
     'username' => 'serviciosuser',
-    'password' => 'cae2007c',
+    'password' => 'cae2007',
     'charset' => 'utf8mb4',
     'options' => [
         PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,

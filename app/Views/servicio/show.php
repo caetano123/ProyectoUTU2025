@@ -32,6 +32,18 @@
                 <strong>Fecha de Publicación:</strong> 
                 <?= date('d/m/Y H:i', strtotime($servicio['FechaPublicacion'])); ?>
             </p>
-        </div>
+
+app/Controllers/Servicios/ServicioController.php
+app/Models/Servicio.php
+app/Views/buscar.php
+app/Views/profile/index.php
+app/Views/profile/update.php
+app/Views/servicio/show.php
+app/Views/vender.php
+app/public/css/style.css
+
+    config/database.php
+
+</div>
 
     </div> </body>
