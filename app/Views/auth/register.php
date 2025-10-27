@@ -7,14 +7,14 @@
     <?php if (isset($errors['general'])): ?>
         <p class="alert alert-error"><?= $errors['general'] ?></p>
     <?php endif; ?>
-   
     <?php if (isset($flash['error'])): ?>
         <p class="alert alert-error"><?= $flash['error'] ?></p>
     <?php endif; ?>
 
+
     <form method="POST" class="login-form">
 
-      <!-- CAMPO NOMBRE -->
+    <!-- NOMBRE -->
       <div class="form-group">
         <input type="text" name="nombre" required placeholder="Nombre" value="<?= $this->e($input['nombre'] ?? '') ?>">
         <?php if (isset($errors['nombre'])): ?>
@@ -22,7 +22,7 @@
         <?php endif; ?>
       </div>
 
-      <!-- CAMPO APELLIDO -->
+      <!--  APELLIDO -->
       <div class="form-group">
         <input type="text" name="apellido" required placeholder="Apellido" value="<?= $this->e($input['apellido'] ?? '') ?>">
         <?php if (isset($errors['apellido'])): ?>
@@ -30,7 +30,7 @@
         <?php endif; ?>
       </div>
 
-      <!-- CAMPO TELÉFONO -->
+      <!-- TELÉFONO -->
       <div class="form-group">
         <input type="text" name="telefono" required placeholder="Número de Teléfono" value="<?= $this->e($input['telefono'] ?? '') ?>">
         <?php if (isset($errors['telefono'])): ?>
@@ -38,7 +38,7 @@
         <?php endif; ?>
       </div>
 
-      <!-- CAMPO CORREO -->
+      <!-- CORREO -->
       <div class="form-group">
         <input type="email" name="correo" required placeholder="Correo Electrónico" value="<?= $this->e($input['correo'] ?? '') ?>">
         <?php if (isset($errors['correo'])): ?>
@@ -46,7 +46,7 @@
         <?php endif; ?>
       </div>
 
-      <!-- CAMPO CONTRASEÑA -->
+      <!-- CONTRASEÑA -->
       <div class="form-group">
         <input type="password" name="password" required placeholder="Contraseña">
         <?php if (isset($errors['password'])): ?>

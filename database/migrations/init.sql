@@ -22,6 +22,19 @@ CREATE TABLE Categorias (
     Nombre VARCHAR(50)
 );
 CREATE INDEX idx_categoria_nombre ON Categorias(Nombre);
+-- Insertar Categorías predefinidas
+INSERT INTO Categorias (ID_Categoria, Nombre) 
+VALUES
+(1, 'Diseño Gráfico y Creatividad'),
+(2, 'Tecnología y Programación'),
+(3, 'Marketing Digital y Ventas'),
+(4, 'Video, Foto y Animación'),
+(5, 'Negocios y Asistencia Virtual'),
+(6, 'Hogar y Reparaciones'),
+(7, 'Clases y Tutorías'),
+(8, 'Eventos'),
+(9, 'Cuidado y Bienestar'),
+(10, 'Otra (especificar)');
 
 -- Tabla de Subcategorías
 CREATE TABLE Subcategorias (
@@ -38,6 +51,18 @@ CREATE TABLE Zonas (
     Nombre VARCHAR(100)
 );
 CREATE INDEX idx_zona_nombre ON Zonas(Nombre);
+
+-- Insertar Zonas predefinidas
+INSERT INTO Zonas (Nombre) VALUES
+('18 de Mayo'),   -- ID_Zona: 1
+('Canelones'),    -- ID_Zona: 2
+('La Paz'),       -- ID_Zona: 3
+('Las Brujas'),   -- ID_Zona: 4
+('Las Piedras'),  -- ID_Zona: 5
+('Los Cerrillos'),-- ID_Zona: 6
+('Montevideo'),   -- ID_Zona: 7
+('Progreso'),     -- ID_Zona: 8
+('Toledo');       -- ID_Zona: 9
 
 -- Tabla de Servicios
 CREATE TABLE Servicios (

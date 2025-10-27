@@ -41,6 +41,22 @@ class Servicio extends Model {
     return $this->executeRawQueryArray($sql, $params);
     }
 
+        $values[] = $id;
+        
+        $sql = "UPDATE {$this->table} SET " . implode(', ', $sets) . " WHERE id = ?";
+        
+        try {
+            $stmt = $this->db->prepare($sql);
+            return $stmt->execute($values);
+        } catch (\PDOException $e) {
+            error_log("Error actualizando el servicio: " . $e->getMessage());
+            return false;
+        }
+    }
+
+    public function findById($id) {
+        $sql = "SELECT * FROM {$this->table} WHERE {$this->primaryKey} = :id";
+        $params = [':id' => $id];
 
     public function getByUserId($userId) {
         $sql = "SELECT * FROM {$this->table} WHERE ID_Persona = :userId";
@@ -64,7 +80,7 @@ class Servicio extends Model {
 
         $values[] = $id;
         
-        $sql = "UPDATE {$this->table} SET " . implode(', ', $sets) . " WHERE id = ?";
+        $sql = "UPDATE {$this->table} SET " . implode(', ', $sets) . " WHERE {$this->primaryKey} = ?";
         
         try {
             $stmt = $this->db->prepare($sql);
@@ -75,13 +91,21 @@ class Servicio extends Model {
         }
     }
 
-    public function findById($id) {
+  public function findById($id) {
+        
+        if (is_array($id)) {
+            $id = $id[0];
+        }
+
         $sql = "SELECT * FROM {$this->table} WHERE {$this->primaryKey} = :id";
         $params = [':id' => $id];
 
         $result = $this->executeRawQueryArray($sql, $params);
-        return !empty($result) ? $result[0] : null;
+
+        if (empty($result) || !is_array($result)) {
+            return null;
+        }
+
+        return $result[0];
     }
-
-
-}
+}   

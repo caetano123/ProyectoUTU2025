@@ -11,18 +11,17 @@ class ProfileController extends Controller {
     protected $servicioModel;
 
     public function __construct() {
-        parent::__construct();
+        
         $this->userModel = new User();
         $this->servicioModel = new Servicio();
+        parent::__construct();
         $this->checkAuth();
     }
 
     public function index($userId = null) {
-        $user = $userId ? $this->userModel->findById($userId) : $this->auth->user();
-        
-        if (!$user) {
-             return $this->redirect('/dashboard');
-        }
+        $id = $_GET['id'] ?? null;
+
+        $user = $id ? $this->userModel->findById($id) : $this->auth->user();
 
         $servicios = [];
         try {

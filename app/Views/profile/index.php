@@ -30,7 +30,11 @@
             <p><?= htmlspecialchars($s['Descripcion']) ?></p>
             <p class="precio">$<?= number_format($s['Precio'],2) ?></p>
 
-           
+            <a href="/servicio?id=<?= $s['ID_Servicio'] ?>" 
+               class="btn-servicio">
+               Ver más
+            </a>
+        <br>
             <a href="/buscar/eliminar?id=<?= $s['ID_Servicio'] ?>" 
                class="btn-eliminar" 
                onclick="return confirm('¿Estás seguro que quieres eliminar este servicio?');">
