@@ -16,10 +16,6 @@ use App\Middleware\AuthMiddleware;
 // RUTAS PÚBLICAS
 // =========================
 
-// API
-$router->addRoute("POST", "/apicategorias", "ApiController@index");
-$router->addRoute("GET", "/apicategorias", "ApiController@index");
-
 // Página de inicio
 $router->addRoute("GET", "/", "HomeController@index");
 

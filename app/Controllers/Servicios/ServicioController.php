@@ -71,7 +71,7 @@ class ServicioController extends Controller {
         return $this->redirect('/buscar');
     }
 
-    $servicio = $this->servicioModel->getById($idServicio);
+    $servicio = $this->servicioModel->findById($idServicio);
 
     if (!$servicio) {
         $this->session->flash('error', 'El servicio que intentas eliminar no existe.');
@@ -131,7 +131,7 @@ class ServicioController extends Controller {
             return $this->redirect('/login');
         }
 
-        $servicio = $this->servicioModel->getById($idServicio);
+        $servicio = $this->servicioModel->findById($idServicio);
         if (!$servicio) {
             $this->session->flash('error', 'El servicio que intentas editar no existe.');
             return $this->redirect('/buscar');
@@ -191,10 +191,10 @@ class ServicioController extends Controller {
             $validatedData['ID_Subcategoria'] = $newSubcatId;
         }
         try {
-            $this->servicioModel->update(['ID_Servicio' => $idServicio], $validatedData);
+            $this->servicioModel->updateById($idServicio, $validatedData);
             
             $this->session->flash('success', 'Servicio actualizado correctamente.');
-            return $this->redirect('/servicio?id=' . $idServicio); // Redirigir a la vista del servicio
+            return $this->redirect('/servicio?id=' . $idServicio); 
 
         } catch (\Exception $e) {
             error_log("Error al actualizar servicio: " . $e->getMessage());
@@ -213,17 +213,12 @@ class ServicioController extends Controller {
             return $this->redirect('/buscar'); 
         }
         
-        // 1. Obtenemos el ARRAY de resultados
-        $servicio_array = $this->servicioModel->getById($idServicio); 
+        $servicio = $this->servicioModel->findById($idServicio); 
 
-        // 2. Comprobamos si el ARRAY está vacío
-        if (empty($servicio_array)) {
+        if (empty($servicio)) {
             $this->session->flash('error', 'El servicio ya no existe.');
             return $this->redirect('/buscar');
         }
-
-        // 3. Extraemos el servicio (la primera fila)
-        $servicio = $servicio_array[0]; 
 
         $currentUser = $this->auth->user();
         if (!$currentUser) {
