@@ -76,22 +76,4 @@ class VenderController extends Controller {
             exit;
         }
     }
-
-    public function eliminar($id) {
-
-        $currentUser = $this->auth->user();
-        $servicio = $this->modelo->findById($id);
-
-        if (!$servicio || $servicio['ID_Persona'] !== $currentUser['ID_Persona']) {
-            $this->session->flash("error", "No tienes permiso para eliminar este servicio.");
-            header("Location: /buscar");
-            exit;
-        }
-        
-        $this->modelo->delete(['ID_Servicio' => $id]);
-        $this->session->flash("success", "Servicio eliminado correctamente.");
-        header("Location: /buscar"); 
-        exit;
-    }
 }
-

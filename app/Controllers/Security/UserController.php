@@ -96,5 +96,6 @@ class UserController extends Controller{
         return $this->render( "usuarios/paginar", $datos );
 
     }
+
 }
 

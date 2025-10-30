@@ -13,7 +13,7 @@
     </div>
 
     <div class="busqueda-linea">
-      <h4 class="h4Nom">Precio (Por hora trabajada en pesos $):</h4>
+      <h4 class="h4Nom">Precio (por hora trabajada en pesos uruguayos):</h4>
       <input type="text" name="precio" class="busquedaVender" placeholder="Ej: 4000" required />
     </div>
 
@@ -53,15 +53,6 @@
         <option value="8">Progreso</option>
         <option value="9">Toledo</option>
       </select>
-    </div>
-
-    <div class="busqueda-linea">
-      <h4 class="h4Nom">Subir imagen:</h4>
-      <div class="file-upload-wrapper">
-        <label for="imagen" class="file-upload-label">Elegir archivo</label>
-        <input type="file" id="imagen" name="imagen" accept="image/*" class="file-upload-input" />
-        <span class="file-upload-name" id="file-name">Ningún archivo seleccionado</span>
-      </div>
     </div>
 
     <div class="botones-accion">

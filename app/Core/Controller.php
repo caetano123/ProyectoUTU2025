@@ -129,13 +129,23 @@ abstract class Controller {
         return $errors;
     }
 
-    protected function checkAuth()
-    {
+    protected function checkAuth(){
         if (!$this->auth->check()) {
             $this->session->flash('info', 'Debes iniciar sesión para acceder a esta página.');
             $this->redirect('/login');
             exit(); 
         }
+    }
+
+    /* * Envía una respuesta en formato JSON y detiene el script.
+     *
+     * @param mixed $data Los datos a convertir en JSON.
+     * @param int $statusCode El código de estado HTTP (ej. 200, 404, 500).*/
+    protected function json($data, $statusCode = 200) {
+        http_response_code($statusCode);
+        header('Content-Type: application/json; charset=utf-8');
+        echo json_encode($data);
+        exit;
     }
 
 }

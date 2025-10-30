@@ -138,6 +138,18 @@ CREATE TABLE Portafolio (
 );
 CREATE INDEX idx_portafolio_persona ON Portafolio(ID_Persona);
 
+-- Tabla de Notificaciones
+CREATE TABLE Notificaciones (
+    ID_Notificacion INT PRIMARY KEY AUTO_INCREMENT,
+    ID_Persona INT NOT NULL,
+    Mensaje TEXT NOT NULL,
+    URL VARCHAR(255) NOT NULL,
+    Leida TINYINT(1) DEFAULT 0,
+    FechaCreacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    
+    FOREIGN KEY (ID_Persona) REFERENCES Personas(ID_Persona) ON DELETE CASCADE
+);
+
 CREATE TABLE Posts ( 
     ID_Posts INT AUTO_INCREMENT PRIMARY KEY, 
     ID_Persona INT NOT NULL,
