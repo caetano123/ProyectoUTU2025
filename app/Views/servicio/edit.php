@@ -38,7 +38,8 @@
     </div>
         <div class="busqueda-linea">
       <h4 class="h4Nom">Subcategoria:</h4>
-      <input name="subcategoria" class="busquedaVender" value="<?= htmlspecialchars($servicio['Subcategoria']) ?>" required />
+      
+    <input name="subcategoria" class="busquedaVender" value="<?= htmlspecialchars($subcategoria_nombre) ?>" required />
     </div>
 
     <div class="busqueda-linea">

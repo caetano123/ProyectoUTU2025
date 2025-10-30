@@ -111,10 +111,16 @@ class ServicioController extends Controller {
         if (empty($servicio)) {
             return $this->render('errors/404', ['title' => 'Servicio No Encontrado']);
         }
+          
+        $subcategoria = $this->subcategoriaModel->findById($servicio['ID_Subcategoria']);
+
+        $subcategoria_nombre = $subcategoria['Nombre'] ?? ''; 
 
         return $this->render('servicio/edit', [
             'title' => 'Editar Servicio',
-            'servicio' => $servicio
+            'servicio' => $servicio,
+            'subcategoria_nombre' => $subcategoria_nombre 
+
         ]);
     }
 
@@ -191,7 +197,8 @@ class ServicioController extends Controller {
             $validatedData['ID_Subcategoria'] = $newSubcatId;
         }
         try {
-            $this->servicioModel->updateById($idServicio, $validatedData);
+
+            $this->servicioModel->update(['ID_Servicio' => $idServicio], $validatedData);
             
             $this->session->flash('success', 'Servicio actualizado correctamente.');
             return $this->redirect('/servicio?id=' . $idServicio); 

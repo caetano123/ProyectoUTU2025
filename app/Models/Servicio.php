@@ -55,34 +55,7 @@ class Servicio extends Model
         return $this->executeRawQueryArray($sql, $params);
     }
 
-    public function updateById($id, array $data)
-    {
-        if (empty($data)) {
-            return false;
-        }
 
-        $sets = [];
-        $values = [];
-
-        foreach ($data as $column => $value) {
-            // Aseguramos que el nombre de la columna esté entre comillas invertidas
-            $sets[] = "`$column` = ?";
-            $values[] = $value;
-        }
-
-        // El ID va al final del array de valores para el WHERE
-        $values[] = $id;
-
-        $sql = "UPDATE {$this->table} SET " . implode(', ', $sets) . " WHERE {$this->primaryKey} = ?";
-
-        try {
-            $stmt = $this->db->prepare($sql);
-            return $stmt->execute($values);
-        } catch (\PDOException $e) {
-            error_log("Error actualizando el servicio: " . $e->getMessage());
-            return false;
-        }
-    }
 
 
     public function findById($id)
