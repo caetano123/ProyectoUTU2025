@@ -56,7 +56,7 @@ class AuthController extends Controller
         if ($this->auth->attempt($email, $password)) {
             $this->session->flash('success', 'Has iniciado sesión correctamente');
             error_log('Usuario autenticado: ' . $email);
-            return $this->redirect('/dashboard');
+            return $this->redirect('/profile');
         }
 
         // Fallo de autenticación
@@ -75,7 +75,7 @@ class AuthController extends Controller
     public function showRegister()
     {
         if ($this->auth->check()) {
-            return $this->redirect('/dashboard');
+            return $this->redirect('/profile');
         }
 
         return $this->render('auth/register', [
@@ -151,7 +151,7 @@ class AuthController extends Controller
             // Auto-login después del registro
             if ($user && $this->auth->login($user)) {
                 $this->session->flash('success', 'Te has registrado correctamente. Bienvenido/a.');
-                return $this->redirect('/dashboard');
+                return $this->redirect('/profile');
             }
         }
         

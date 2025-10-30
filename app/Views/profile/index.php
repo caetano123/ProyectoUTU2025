@@ -15,38 +15,37 @@
             <p><strong>Correo Electrónico:</strong> <?= htmlspecialchars($user['Correo']) ?></p>
         </div>
 
-    <div class="botones-accion" style="margin-top: 20px;">
-        <a href="profile/edit" class="btnAceptar">Editar Perfil</a>
-    </div>
-
+        <?php if ($is_owner): ?>
+            <div class="botones-accion" style="margin-top: 20px;">
+                 <a href="/profile/edit" class="btnAceptar">Editar Perfil</a>
+                  <a href="/logout" class="btnBorrar">Cerrar sesión</a>
+            </div>
+        <?php endif; ?>
     </div>
     <br>
     <h3>Servicios</h3>
- <div class="servicios-grid">
-    <?php if(!empty($servicios)): ?>
-        <?php foreach($servicios as $s): ?>
-        <div class="servicio-card">
-            <h3><?= htmlspecialchars($s['Nombre']) ?></h3>
-            <p><?= htmlspecialchars($s['Descripcion']) ?></p>
-            <p class="precio">$<?= number_format($s['Precio'],2) ?></p>
+        <div class="servicios-grid">
+              <?php if(!empty($servicios)): ?>
+                    <?php foreach($servicios as $s): ?>
+                        <div class="servicio-card">
+                             <h3><?= htmlspecialchars($s['Nombre']) ?></h3>
+                             <p><?= htmlspecialchars($s['Descripcion']) ?></p>
+                             <p class="precio">$<?= number_format($s['Precio'],2) ?></p>
 
-            <div class="botones-accion">
-            <a href="/servicio?id=<?= $s['ID_Servicio'] ?>" 
-               class="btnAceptar">
-               Ver más
-            </a>
-            </div>
-        <div class="botones-accion">
-            <a href="/buscar/eliminar?id=<?= $s['ID_Servicio'] ?>" 
-               class="btnBorrar" 
-               onclick="return confirm('¿Estás seguro que quieres eliminar este servicio?');">
-               Eliminar
-            </a>
-        </div>
-        </div>
-        <?php endforeach; ?>
-    <?php else: ?>
-        <p>No hay servicios cargados aún.</p>
-    <?php endif; ?>
-</div>
+                             <div class="botones-accion">
+                              <a href="/servicio?id=<?= $s['ID_Servicio'] ?>" class="btnAceptar">Ver más</a>
+                            </div>
+                             <?php if ($is_owner): ?>
+                                <form method="POST" action="/buscar/eliminar" style="display: inline-block;">
+                                    <input type="hidden" name="id" value="<?= $s['ID_Servicio'] ?>">
+                                    <button type="submit" class="btnBorrar" 
+                                    onclick="return confirm('¿Estás seguro que quieres eliminar este servicio?');">Eliminar</button>
+                                </form>
+                            <?php endif; ?>
+                         </div>
+                    <?php endforeach; ?>
+             <?php else: ?>
+                 <p>No hay servicios cargados aún.</p>
+            <?php endif; ?>
+    </div>
 </body>

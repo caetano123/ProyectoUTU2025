@@ -1,3 +1,6 @@
+:root {
+  --navbar-height: 70px;}
+
 body {
   font-family: Arial, sans-serif;
   margin: 0;
@@ -21,6 +24,7 @@ body::before {
   background-color: rgba(255, 255, 255, 0.384); /* blanco con opacidad */
   z-index: -1;
 }
+
 header {
   background: rgba(255, 255, 255, 0.3);
   backdrop-filter: blur(10px);
@@ -29,7 +33,6 @@ header {
   padding: 10px 40px;
   border-radius: 0 0 12px 12px;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-  color: white;
   padding: 1rem;
   background-color: #f0f0f0;
 }
@@ -55,6 +58,7 @@ header {
   border-radius: 10px;
   cursor: pointer;
   transition: background-color 0.3s;
+  text-decoration: none;
 }
 
 .btnAceptar:hover {
@@ -69,58 +73,68 @@ header {
   border-radius: 10px;
   cursor: pointer;
   transition: background-color 0.3s;
+  text-decoration: none;
 }
 
 .btnBorrar:hover {
   background-color: #a71d2a;
 }
 
-/* NAVBAR GENERAL */
+/* --- NAVBAR GENERAL --- */
 .navbar {
-  border-bottom: 1px solid #e0e0e0;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 40px;
-  height: 70px;
-  position: relative;
-  z-index: 100;
+  padding: 0 20px; 
+  height: var(--navbar-height);
+  background-color: rgba(255, 255, 255, 0.3);
+  border-bottom: 1px solid grey;
+  position: sticky; 
+  top: 0;
+z-index: 1000
 }
 
-/* LOGO */
+/* --- LOGO --- */
 .nav-logo {
-  height: 80px;
+  height: calc(var(--navbar-height) - 20px); /* Arreglado: Más pequeño que la navbar */
   width: auto;
   object-fit: contain;
-  display: block;
 }
 
-/* CONTENEDOR DE ENLACES */
+/* --- CONTENEDOR DE ENLACES (Móvil Oculto) --- */
 .nav-links {
   display: flex;
   align-items: center;
-  gap: 25px;
+  gap: 20px;
 }
 
-/* ENLACES */
-.nav-links a {
-  color: #333;
+/* --- ENLACES Y BOTONES DE DROPDOWN --- */
+/* Estilo base unificado para enlaces y botones */
+.nav-links a,
+.btn-exp {
+  display: inline-block;
+  color: #3b3333;
   text-decoration: none;
   font-size: 16px;
+  font-weight: 500;
   padding: 8px 12px;
   border-radius: 8px;
   transition: background-color 0.25s, color 0.25s;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-family: inherit;
 }
 
-.nav-links a:hover {
-  background-color: #f5f5f5;
-  color: #000;
+.nav-links a:hover,
+.btn-exp:hover {
+  background-color: rgb(207, 206, 206);
+  color: #221d1d;
 }
 
-/* BOTÓN DE LLAMADA A LA ACCIÓN */
+/* --- BOTÓN DE LLAMADA A LA ACCIÓN (CTA) --- */
 .nav-links a.btn-cta {
   background: linear-gradient(135deg, #ff9800, #ffb74d);
-  color: #fff;
   font-weight: 600;
   padding: 8px 16px;
   border-radius: 30px;
@@ -131,69 +145,93 @@ header {
 .nav-links a.btn-cta:hover {
   transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(255, 152, 0, 0.5);
+  background: linear-gradient(135deg, #ff9800, #ffb74d); /* Mantiene el fondo en hover */
 }
 
-/* DROPDOWN */
+
+/* --- DROPDOWN --- */
 .dropdown {
   position: relative;
-  z-index: 101;
+  display: inline-block;
+  z-index: 1001
 }
 
 .dropdown-content {
   display: none;
   position: absolute;
-  top: 110%;
-  right: 0;
-  background-color: #fff;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
-  border-radius: 10px;
+  top: 110%; 
+  right: 0; 
+  background-color: white;
+  min-width: 200px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.1); 
+  z-index: 1002;
+  border-radius: 8px;
   overflow: hidden;
-  min-width: 180px;
-  z-index: 100;
-  animation: fadeIn 0.2s ease-in-out;
-}
+  border: 1px solid grey;}
 
-.dropdown-content.active {
+/* APLICAMOS LA ANIMACIÓN */
+.dropdown-content.show {
   display: block;
-  z-index: 100;
+  animation: fadeIn 0.2s ease-out;
 }
 
 .dropdown-content a {
-  display: block;
-  padding: 10px 16px;
-  color: #333;
+  color: #000000;
+  padding: 12px 16px;
   text-decoration: none;
+  display: block;
   font-size: 15px;
-  transition: background-color 0.2s;
-  z-index: 100;
 }
 
 .dropdown-content a:hover {
-  background-color: #f0f0f0;
+  background-color: white;
+  color: #000;
 }
 
-/* BOTÓN EXPANDIBLE */
-.btn-exp {
+/* --- BARRA DE BÚSQUEDA --- */
+.navbar-search-form {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background-color: #f0f0f0; /* Un gris más claro */
+  padding: 5px 12px;
+  border-radius: 20px;
+  width: 260px;
+}
+
+.navbar-search-input {
+  border: none;
+  outline: none;
+  background: transparent;
+  font-size: 14px;
+  color: #000000;
+  width: 100%; /* Ocupa el espacio disponible */
+  padding: 4px;
+}
+
+.navbar-search-input::placeholder {
+  color: #888;
+}
+
+.navbar-search-button {
+  background: none;
+  border: none;
   cursor: pointer;
-  padding: 8px 12px;
-  border-radius: 8px;
-  transition: background-color 0.2s;
+  font-size: 16px; /* Ligeramente más pequeño */
+  color: #2c3e50;
+  padding: 0;
+  transition: color 0.2s ease;
 }
 
-.btn-exp:hover {
-  background-color: #f5f5f5;
+.navbar-search-button:hover {
+  color: #000;
 }
 
-/* CLASE PARA MOSTRAR DROPDOWN */
-.show {
-  display: block;
-}
-
-/* ANIMACIÓN SUAVE */
+/* --- ANIMACIÓN DE FADE-IN (para Dropdowns) --- */
 @keyframes fadeIn {
   from {
     opacity: 0;
-    transform: translateY(-8px);
+    transform: translateY(-10px);
   }
   to {
     opacity: 1;
@@ -241,7 +279,7 @@ header {
 }
 
 .navbar-search-button:hover {
-  color: #000;
+  color: #ffffff;
 }
 
 
@@ -637,56 +675,6 @@ input[type="file"] {
   max-height: 200px;
 }
 
-input[type="file"] {
-  padding: 6px 10px;
-  cursor: pointer;
-  border: 1.5px solid #ccc;
-  background-color: #fff;
-}
-
-input[type="file"]:hover {
-  border-color: #3498db;
-}
-
-
-.file-upload-wrapper {
-  position: relative;
-  display: flex;
-  align-items: center;
-  gap: 15px;
-  flex: 1;
-}
-
-.file-upload-label {
-  background-color: #3498db;
-  color: white;
-  padding: 10px 18px;
-  border-radius: 8px;
-  cursor: pointer;
-  font-weight: 600;
-  font-size: 0.95rem;
-  transition: background-color 0.25s ease;
-  white-space: nowrap;
-}
-
-.file-upload-label:hover {
-  background-color: #2980b9;
-}
-
-.file-upload-input {
-  display: none;
-}
-
-.file-upload-name {
-  font-size: 0.95rem;
-  color: #555;
-  flex: 1;
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-}
-
-
 
 
 /* === Banner completo modernizado y menos ancho === */
@@ -704,11 +692,10 @@ input[type="file"]:hover {
   overflow: visible;
   position: relative;
   z-index: 1;
-  /* Ya no usamos background-image */
 }
 
 .banner-inner {
-  overflow: hidden;
+  overflow: visible;
   border-radius: 24px;
   position: relative;
   z-index: 1;
@@ -737,8 +724,6 @@ input[type="file"]:hover {
   box-shadow: 0 8px 24px rgba(0,0,0,0.3);
   z-index: 1;
 }
-
-/* Mantengo tus estilos originales para textos y formulario */
 
 .banner-title {
   position: relative;
@@ -832,28 +817,12 @@ input[type="file"]:hover {
   opacity: 0.7;
   font-size: 1rem;
   transition: opacity 0.3s;
-  cursor: default; /* 👈 que no parezca clickeable */
+  cursor: default; /* que no parezca clickeable */
 }
 
 .trusted-logos li:hover {
-  opacity: 0.7; /* 👈 sin cambio en hover */
+  opacity: 0.7; /*  sin cambio en hover */
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -982,12 +951,10 @@ input[type="file"]:hover {
   /* stronger blur for glow */
   backdrop-filter: blur(30px);
   -webkit-backdrop-filter: blur(30px);
-
   /* radiant edges */
   border: 1px solid rgba(255, 255, 255, 0.4);
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2),
     inset 0 0 8px rgba(255, 255, 255, 0.15);
-
   /* subtle light reflection */
   position: relative;
   overflow: hidden;
@@ -1128,12 +1095,12 @@ input[type="file"]:hover {
   min-width: 300px;
   height: 350px;
   position: relative;  /* para posicionar iframe absoluto */
-  overflow: hidden;    /* ocultar lo que sobresalga */
+  overflow: visible;    
   border-radius: 10px; /* aplicar borde redondeado */
 }
 
 .info-video iframe {
-  position: absolute; /* absoluto para llenar el contenedor */
+  position: relative;
   top: 50%;
   left: 50%;
   width: 100vw;       /* ancho muy grande para asegurar */
@@ -1212,7 +1179,6 @@ input[type="file"]:hover {
 
 
 /* Categorías de servicios */
-
 
 .categories-section {
   max-width: 1200px;
@@ -1570,23 +1536,23 @@ input[type="file"]:hover {
 
 /* --- BOTÓN DE CONTRATAR --- */
 .btn-contratar {
-    display: block; /* Ocupa todo el ancho */
+    display: block; 
     width: 100%;
     padding: 15px;
-    background-color: #007bff; /* Color primario */
-    color: #ffffff; /* Texto blanco */
+    background-color: #007bff; 
+    color: #ffffff; 
     text-align: center;
     text-decoration: none;
     font-size: 1.2rem;
     font-weight: 600;
     border-radius: 8px;
     margin-bottom: 25px;
-    box-sizing: border-box; /* Para que el padding no rompa el ancho */
+    box-sizing: border-box; 
     transition: background-color 0.3s;
 }
 
 .btn-contratar:hover {
-    background-color: #0056b3; /* Más oscuro al pasar el mouse */
+    background-color: #0056b3; 
 }
 
 /* --- Meta Info (Autor y Fecha) --- */
@@ -1606,3 +1572,132 @@ input[type="file"]:hover {
     text-decoration: none;
     font-weight: 600;
 }
+
+/* --- Estilos de la Campana de Notificaciones --- */
+.notificaciones-icono {
+    position: relative; 
+    cursor: pointer;
+    z-index: 1001; 
+    height: max-content;
+    width: max-content;
+}
+
+/* Panel que se despliega */
+.notificaciones-panel {
+    display: none; 
+    position: absolute;
+    top: 120%; /* Que aparezca justo debajo del ícono (con un margen) */
+    right: 0;   /* Alineado a la derecha del ícono */
+    width: 320px; /* Ancho del panel */
+    background-color: #ffffff;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    z-index: 1002; 
+}
+
+/* --- Estilos internos del panel --- */
+.notificacion-header,
+.notificacion-footer {
+    padding: 10px 15px;
+    font-weight: bold;
+    background-color: #f9f9f9;
+    border-bottom: 1px solid #eee;
+    color: #333;
+}
+
+.notificacion-footer {
+    text-align: center;
+    border-top: 1px solid #eee;
+    border-bottom: none;
+}
+
+.notificacion-footer a {
+    color: #007bff;
+    text-decoration: none;
+}
+
+#notificaciones-items {
+    max-height: 400px; 
+    overflow-y: auto;
+}
+
+/* Estilo de cada item individual */
+#notificaciones-items a {
+    text-decoration: none;
+    color: #333;
+}
+
+#notificaciones-items li {
+    list-style: none;
+    padding: 12px 15px;
+    border-bottom: 1px solid #f0f0f0;
+    font-size: 14px;
+}
+
+#notificaciones-items li:hover {
+    background-color: #f5f5f5;}
+
+#notificaciones-items a:last-child li {
+    border-bottom: none;
+}
+
+#campana-imagen {
+    width: 28px;  
+    height: 28px; 
+    cursor: pointer; 
+    vertical-align: middle; }
+
+/* Contenedor general de la página */
+.container-general {
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 20px;
+    background: #fff;
+    border-radius: 8px;
+}
+
+.notificaciones-listado {
+    border-top: 1px solid #eee;
+}
+
+.notificacion-vacia {
+    padding: 40px;
+    text-align: center;
+    color: #777;
+}
+
+/* Estilo de cada item de la lista */
+.notificacion-item {
+    display: flex;
+    align-items: center;
+    padding: 15px;
+    border-bottom: 1px solid #eee;
+    text-decoration: none;
+    color: #333;
+    transition: background-color 0.2s ease;
+}
+
+.notificacion-item:hover {
+    background-color: #f9f9f9;
+}
+
+.icono-notificacion {
+    font-size: 20px;
+    margin-right: 15px;
+    color: #007bff;
+}
+
+.contenido-notificacion {
+    flex-grow: 1; /* Ocupa el espacio restante */
+}
+
+.contenido-notificacion .mensaje {
+    margin: 0;
+}
+
+.contenido-notificacion .fecha {
+    font-size: 13px;
+    color: #999;
+}
+

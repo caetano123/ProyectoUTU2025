@@ -1,35 +1,54 @@
 
-// Funciones globales
-
-
-// Toggle de dropdown
-function toggleDropdown(id) {
-    const content = document.getElementById(id);
-    if (!content) return;
-
-    // Cerrar todos menos el actual
-    document.querySelectorAll('.dropdown-content').forEach(div => {
-        if (div !== content) div.classList.remove('active');
-    });
-
-    content.classList.toggle('active');
-}
-
-window.toggleDropdown = toggleDropdown; // Hacemos accesible desde HTML onclick
-
-// Cerrar dropdowns al hacer click fuera
-document.addEventListener('click', (event) => {
-    if (!event.target.closest('.dropdown')) {
-        document.querySelectorAll('.dropdown-content.active').forEach(div => div.classList.remove('active'));
-    }
-});
-
-
 // DOMContentLoaded
-
 
 document.addEventListener('DOMContentLoaded', () => {
 
+  // Cierra todos los menús abiertos
+  function closeAllDropdowns() {
+    document.querySelectorAll('.dropdown-content.show').forEach(menu => {
+      menu.classList.remove('show');
+      // Restablece el ARIA del botón que lo controla
+      const trigger = document.querySelector(`[aria-controls="${menu.id}"]`);
+      if (trigger) {
+        trigger.setAttribute('aria-expanded', 'false');
+      }
+    });
+  }
+
+  // Busca todos los botones que activan menús
+  const dropdownTriggers = document.querySelectorAll('button[aria-haspopup="true"]');
+
+  dropdownTriggers.forEach(trigger => {
+    trigger.addEventListener('click', (event) => {
+      // Evita que el clic en el botón cierre el menú inmediatamente
+      event.stopPropagation(); 
+      
+      const menuId = trigger.getAttribute('aria-controls');
+      const menu = document.getElementById(menuId);
+
+      if (menu) {
+        // Verifica si este menú ya está abierto
+        const isExpanded = menu.classList.contains('show');
+        
+        // Cierra todos los menús ANTES de abrir el nuevo
+        closeAllDropdowns();
+
+        // Si no estaba abierto, ábrelo
+        if (!isExpanded) {
+          menu.classList.add('show');
+          trigger.setAttribute('aria-expanded', 'true');
+        }
+      }
+    });
+  });
+
+  // Cierra los menús si se hace clic fuera de ellos
+  window.addEventListener('click', (event) => {
+    if (!event.target.matches('button[aria-haspopup="true"]')) {
+      closeAllDropdowns();
+    }
+  });
+});
    
     // Carrusel con scroll centrado
    
@@ -164,18 +183,58 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-  
-    // Desplegable "Explorar" en navegación
-    const dropdownLinks = document.querySelectorAll('#explorarDropdown a[data-query]');
-    dropdownLinks.forEach(link => {
-        link.addEventListener('click', (e) => {
-            e.preventDefault();
-            const query = link.dataset.query;
-            if (query) {
-                window.location.href = "/buscar?query=" + encodeURIComponent(query);
-            } else {
-                window.location.href = "/buscar";
+    // CAMPANA DE NOTIFICACIONES 
+    var campanaContainer = document.getElementById('campana-container');
+    var notificacionesLista = document.getElementById('notificaciones-lista');
+    var notificacionesItems = document.getElementById('notificaciones-items');
+
+    var panelVisible = false;
+    var notificacionesCargadas = false;
+
+    // Función para cargar las notificaciones
+    async function loadNotifications() {
+        try {
+            var response = await fetch('/notificaciones/check');
+            
+            if (!response.ok) {
+                throw new Error('Error en la respuesta de la red');
             }
-        });
-    });
+
+            var data = await response.json(); // Parsea la respuesta JSON
+
+            notificacionesItems.innerHTML = '';
+
+            if (data.items && data.items.length > 0) {
+                data.items.forEach(function(item) {
+                    var itemHtml = `
+                        <a href="${item.URL}">
+                            <li>${item.Mensaje}</li>
+                        </a>
+                    `;
+                    notificacionesItems.innerHTML += itemHtml;
+                });
+            } else {
+                notificacionesItems.innerHTML = '<li>No tienes notificaciones.</li>';
+            }
+            
+            notificacionesCargadas = true; // Marcamos como cargadas
+
+        } catch (err) {
+            console.error("Error al cargar notificaciones:", err);
+            notificacionesItems.innerHTML = '<li>Error al cargar notificaciones.</li>';
+        }
+    }
+
+    campanaContainer.addEventListener('click', function() {
+        
+        if (panelVisible) {
+            notificacionesLista.style.display = 'none';
+        } else {
+            notificacionesLista.style.display = 'block';
+        }
+        panelVisible = !panelVisible;
+
+        if (panelVisible && !notificacionesCargadas) {
+            loadNotifications();
+        }
     });

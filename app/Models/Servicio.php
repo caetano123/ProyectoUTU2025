@@ -1,7 +1,6 @@
 <?php
 namespace App\Models;
 use App\Core\Model;
-use PDO;
 
 class Servicio extends Model {
 
@@ -22,6 +21,13 @@ class Servicio extends Model {
             'ID_Zona' => $data['ID_Zona'] ?? null,
             'FechaPublicacion' => date('Y-m-d H:i:s')
         ]);
+    }
+
+    public function getById($id) {
+        $sql = "SELECT * FROM {$this->table} WHERE {$this->primaryKey} = :id";
+        $params = [':id' => $id];
+
+        return $this->executeRawQueryArray($sql, $params);
     }
 
     public function search($q = '', $categoria = '') {
@@ -98,5 +104,10 @@ class Servicio extends Model {
         $params = [':catId' => $categoryId];
 
         return $this->executeRawQueryArray($sql, $params);
+    }
+
+    public function findAll() {
+        $sql = "SELECT * FROM {$this->table}";
+        return $this->executeRawQueryArray($sql);
     }
 }   

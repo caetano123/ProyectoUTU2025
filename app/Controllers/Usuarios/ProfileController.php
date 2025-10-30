@@ -18,23 +18,36 @@ class ProfileController extends Controller {
         $this->checkAuth();
     }
 
-    public function index($userId = null) {
+    public function index() {
         $id = $_GET['id'] ?? null;
 
-        $user = $id ? $this->userModel->findById($id) : $this->auth->user();
+        $loggedInUser = $this->auth->user();
+        $loggedInUserId = $loggedInUser['ID_Persona'] ?? null;
+
+        $profileUser = $id ? $this->userModel->findById($id) : $loggedInUser;
+
+         if (!$profileUser) {
+            $this->session->flash('error', 'El perfil solicitado no existe.');
+            return $this->redirect('/home'); 
+        }
+
+        $profileUserId = $profileUser['ID_Persona'];
+        $is_owner = ($loggedInUserId == $profileUserId);
+
 
         $servicios = [];
         try {
-            $servicios = $this->servicioModel->getByUserId($user['ID_Persona']);
+            $servicios = $this->servicioModel->getByUserId($profileUserId);
         } catch (\Exception $e) {
-            error_log("Error al cargar servicios del usuario " . ($user['ID_Persona'] ?? 'N/A') . ": " . $e->getMessage());
+            error_log("Error al cargar servicios del usuario " . ($profileUserId ?? 'N/A') . ": " . $e->getMessage());
             $servicios = []; 
         }
 
         return $this->render('profile/index', [
-            'title' => 'Perfil de ' . ($user['Nombre'] ?? 'Usuario'),
-            'user' => $user,
-            'servicios' => $servicios
+            'title' => 'Perfil de ' . ($profileUser['Nombre'] ?? 'Usuario'),
+            'user' => $profileUser,
+            'servicios' => $servicios,
+            'is_owner' => $is_owner
         ]);
     }
 

@@ -96,55 +96,57 @@
   <h2 class="categories-title">Lo necesitas, nosotros lo tenemos</h2>
   <div class="categories-grid">
 
-    <a href="#" class="category-btn">
-      <img src="https://cdn-icons-png.flaticon.com/512/2921/2921222.png" alt="Artes gráficas y diseño" />
-      <span>Artes gráficas y diseño</span>
+    <a href="buscar?categoria=Diseño Gráfico y Creatividad" class="category-btn">
+      <img src="https://cdn-icons-png.flaticon.com/512/2921/2921222.png" alt="Diseño Gráfico y Creatividad" />
+      <span>Diseño Gráfico y Creatividad</span>
     </a>
 
-    <a href="#" class="category-btn">
-      <img src="https://cdn-icons-png.flaticon.com/512/2913/2913926.png" alt="Marketing digital" />
-      <span>Marketing digital</span>
+    <a href="buscar?categoria=Marketing Digital y Ventas" class="category-btn">
+      <img src="https://cdn-icons-png.flaticon.com/512/2913/2913926.png" alt="Marketing Digital y Ventas" />
+      <span>Marketing Digital y Ventas</span>
     </a>
 
-    <a href="#" class="category-btn">
-      <img src="https://cdn-icons-png.flaticon.com/512/3159/3159989.png" alt="Escritura y traducción" />
-      <span>Escritura y traducción</span>
+    <a href="buscar?categoria=Clases y Tutorías" class="category-btn">
+      <img src="https://cdn-icons-png.flaticon.com/512/3159/3159989.png" alt="Clases y Tutorías" />
+      <span>Clases y Tutorías</span>
     </a>
 
-    <a href="#" class="category-btn">
-      <img src="https://cdn-icons-png.flaticon.com/512/3237/3237873.png" alt="Video y animación" />
-      <span>Video y animación</span>
+    <a href="buscar?categoria=Video, Foto y Animación" class="category-btn">
+      <img src="https://cdn-icons-png.flaticon.com/512/3237/3237873.png" alt="Video, Foto y Animación" />
+      <span>Video, Foto y Animación</span>
     </a>
 
-    <a href="#" class="category-btn">
-      <img src="https://cdn-icons-png.flaticon.com/512/727/727218.png" alt="Música y audio" />
-      <span>Música y audio</span>
+    <a href="buscar?categoria=Música y Audio" class="category-btn">
+      <img src="https://cdn-icons-png.flaticon.com/512/727/727218.png" alt="Música y Audio" />
+      <span>Música y Audio</span>
     </a>
 
-    <a href="#" class="category-btn">
-      <img src="https://cdn-icons-png.flaticon.com/512/847/847969.png" alt="Programación y tecnología" />
-      <span>Programación y tecnología</span>
+    <a href="buscar?categoria=Tecnología y Programación" class="category-btn">
+      <img src="https://cdn-icons-png.flaticon.com/512/847/847969.png" alt="Tecnología y Programación" />
+      <span>Tecnología y Programación</span>
     </a>
 
-    <a href="#" class="category-btn">
-      <img src="https://cdn-icons-png.flaticon.com/512/1399/1399417.png" alt="Negocios" />
-      <span>Negocios</span>
+    <a href="buscar?categoria=Negocios y Asistencia Virtual" class="category-btn">
+      <img src="https://cdn-icons-png.flaticon.com/512/1399/1399417.png" alt="Negocios y Asistencia Virtual" />
+      <span>Negocios y Asistencia Virtual</span>
     </a>
 
-    <a href="#" class="category-btn">
-      <img src="https://cdn-icons-png.flaticon.com/512/891/891462.png" alt="Estilo de vida" />
-      <span>Estilo de vida</span>
+    <a href="buscar?categoria=Cuidado y Bienestar" class="category-btn">
+      <img src="https://cdn-icons-png.flaticon.com/512/891/891462.png" alt="Cuidado y Bienestar" />
+      <span>Cuidado y Bienestar</span>
     </a>
 
-    <a href="#" class="category-btn">
-      <img src="https://cdn-icons-png.flaticon.com/512/3132/3132693.png" alt="Datos" />
-      <span>Datos</span>
+    <a href="buscar?categoria=Eventos" class="category-btn">
+      <img src="https://cdn-icons-png.flaticon.com/512/2921/2921221.png" alt="Eventos" />
+      <span>Eventos</span>
     </a>
 
-    <a href="#" class="category-btn">
-      <img src="https://cdn-icons-png.flaticon.com/512/2921/2921221.png" alt="Fotografía" />
-      <span>Fotografía</span>
+    <a href="buscar?categoria=Otra (especificar)" class="category-btn">
+      <img src="https://cdn-icons-png.flaticon.com/512/3132/3132693.png" alt="Otra (especificar)" />
+      <span>Otra (especificar)</span>
     </a>
+
+
 
   </div>
 </section>

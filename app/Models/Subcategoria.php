@@ -34,4 +34,10 @@ class Subcategoria extends Model{
 		return $stmt->fetch(PDO::FETCH_ASSOC);
 	}
 
+	public function findByName($nombre) {
+		$sql = "SELECT * FROM {$this->table} WHERE Nombre = :nombre LIMIT 1";
+		$stmt = $this->executeRawQuery($sql, [':nombre' => $nombre]);
+		return $stmt->fetch(PDO::FETCH_ASSOC);
+	}
+
 }

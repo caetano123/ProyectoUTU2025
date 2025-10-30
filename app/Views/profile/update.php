@@ -1,5 +1,4 @@
-
- <body>
+<body>
 
     <form action="/profile/save" method="POST" enctype="multipart/form-data">
 

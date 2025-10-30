@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controllers\Legal;
+namespace App\Controllers;
 
 use App\Core\Controller;
 
