@@ -8,6 +8,8 @@ use App\Models\Subcategoria;
 use App\Models\Zona;
 use App\Models\User;
 use App\Models\Notificacion;
+use App\Models\Valoracion;   
+
 
 class ServicioController extends Controller {
 
@@ -17,6 +19,7 @@ class ServicioController extends Controller {
     protected $zonaModel;
     protected $usuarioModel;
     protected $notificacionModel;
+    protected $valoracionModel;
 
     public function __construct(){
         $this->servicioModel = new Servicio();
@@ -25,41 +28,56 @@ class ServicioController extends Controller {
         $this->zonaModel = new Zona();
         $this->usuarioModel = new User();
         $this->notificacionModel = new Notificacion();
+        $this->valoracionModel = new Valoracion(); 
 
         parent::__construct();
     }
 
     public function show(){
-        $idServicio = $_GET['id'] ?? null;
+    $idServicio = $_GET['id'] ?? null;
 
-        $servicio = $this->servicioModel->findById($idServicio);
+    $servicio = $this->servicioModel->findById($idServicio);
 
-        if (!$servicio) {
-            return $this->render('errors/404', ['title' => 'Servicio No Encontrado']);
-        }
-
-        $categoria = $this->categoriaModel->findById($servicio['ID_Categoria']);
-        $subcategoria = $this->subcategoriaModel->findById($servicio['ID_Subcategoria']);
-        $zona = $this->zonaModel->findById($servicio['ID_Zona']);
-        $usuario = $this->usuarioModel->findById($servicio['ID_Persona']);
-
-        $loggedInUser = $this->auth->user();
-        $loggedInUserId = $loggedInUser['ID_Persona'] ?? null;
-        $is_owner = ($loggedInUserId === $servicio['ID_Persona']);
-
-
-        return $this->render('servicio/show', [
-            'title' => $servicio['Nombre'],
-            'servicio' => $servicio,
-            'categoria' => $categoria,
-            'subcategoria' => $subcategoria,
-            'zona' => $zona,
-            'usuario' => $usuario,
-            'id_usuario' => $usuario['ID_Persona'],
-            'imgPath' => BASE_URL . '/assets/uploads/servicios/' . $servicio['ID_Categoria'] . '.jpg',
-            'is_owner' => $is_owner
-        ]);
+    if (!$servicio) {
+        return $this->render('errors/404', ['title' => 'Servicio No Encontrado']);
     }
+
+    if (isset($_GET['accion']) && $_GET['accion'] === 'valorar') {
+        return $this->valorarForm($servicio);
+    }
+
+    $categoria = $this->categoriaModel->findById($servicio['ID_Categoria']);
+    $subcategoria = $this->subcategoriaModel->findById($servicio['ID_Subcategoria']);
+    $zona = $this->zonaModel->findById($servicio['ID_Zona']);
+    $usuario = $this->usuarioModel->findById($servicio['ID_Persona']);
+
+    $loggedInUser = $this->auth->user();
+    $loggedInUserId = $loggedInUser['ID_Persona'] ?? null;
+    $is_owner = ($loggedInUserId === $servicio['ID_Persona']);
+
+    
+    $valoracion = $this->valoracionModel->promedioValoraciones($usuario['ID_Persona']);
+    $comentarios = $this->valoracionModel->obtenerComentarios($usuario['ID_Persona']);
+    $promedio = round($valoracion['promedio'] ?? 0, 1);
+    $totalValoraciones = $valoracion['total'] ?? 0;
+
+    return $this->render('servicio/show', [
+        'title' => $servicio['Nombre'],
+    'servicio' => $servicio,
+    'categoria' => $categoria,
+    'subcategoria' => $subcategoria,
+    'zona' => $zona,
+    'usuario' => $usuario,
+    'id_usuario' => $usuario['ID_Persona'],
+    'imgPath' => BASE_URL . '/assets/uploads/servicios/' . $servicio['ID_Categoria'] . '.jpg',
+    'is_owner' => $is_owner,
+    'valoracion' => $valoracion,
+    'promedio' => $promedio,
+    'totalValoraciones' => $totalValoraciones,
+    'comentarios' => $comentarios
+    ]);
+}
+
 
 
 
@@ -262,4 +280,79 @@ class ServicioController extends Controller {
 
         return $this->redirect('/servicio?id=' . $servicio['ID_Servicio']);
     }
+
+   public function valorarForm($servicio)
+{
+    $currentUser = $this->auth->user();
+    if (!$currentUser) {
+        $this->session->flash('error', 'Debes iniciar sesión para valorar.');
+        return $this->redirect('/login');
+    }
+
+    // Verificar que el usuario no sea el dueño del servicio
+    if ($currentUser['ID_Persona'] === $servicio['ID_Persona']) {
+        $this->session->flash('error', 'No puedes valorar tu propio servicio.');
+        return $this->redirect('/servicio?id=' . $servicio['ID_Servicio']);
+    }
+
+    return $this->render('servicio/valorar', [
+        'title' => 'Valorar proveedor',
+        'servicio' => $servicio
+    ]);
+}
+
+
+
+    public function valorar()
+{
+    $currentUser = $this->auth->user();
+    if (!$currentUser) {
+        $this->session->flash('error', 'Debes iniciar sesión para valorar.');
+        return $this->redirect('/login');
+    }
+
+    $idProveedor = $_POST['id_proveedor'] ?? null;
+    $puntos = $_POST['puntos'] ?? null;
+    $comentario = $_POST['comentario'] ?? '';
+
+    if (!$idProveedor || !$puntos || $puntos < 1 || $puntos > 5) {
+        $this->session->flash('error', 'Datos de valoración inválidos.');
+        return $this->redirect('/buscar');
+    }
+
+    $idCliente = $currentUser['ID_Persona'];
+
+
+    $contacto = $this->notificacionModel->verificarContacto($idCliente, $idProveedor);
+    if (!$contacto) {
+        $this->session->flash('error', 'Solo puedes valorar proveedores que contactaste.');
+        return $this->redirect('/buscar');
+    }
+
+    // Se fija que no haya valorado antes
+    if ($this->valoracionModel->yaValoro($idCliente, $idProveedor)) {
+        $this->session->flash('error', 'Ya valoraste a este proveedor.');
+        return $this->redirect('/servicio?id=' . $idProveedor);
+    }
+
+    // Guardar valoración
+$idServicio = $_POST['id_servicio'] ?? null;
+$idProveedor = $_POST['id_proveedor'] ?? null;
+
+$this->valoracionModel->crearValoracion([
+    'ID_Cliente'   => $idCliente,
+    'ID_Proveedor' => $idProveedor,
+    'Puntos'       => $puntos,
+    'Comentario'   => $comentario
+]);
+
+$this->session->flash('success', '¡Gracias por valorar al proveedor!');
+
+// Redirigir al mismo servicio
+return $this->redirect('/servicio?id=' . $idServicio);
+}
+
+
+
+
 }

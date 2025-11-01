@@ -42,4 +42,23 @@ class Notificacion extends Model{
 
     }
 
+    // ✅ Nuevo método para verificar si un cliente contactó a un proveedor
+    public function verificarContacto($idCliente, $idProveedor)
+    {
+        $sql = "SELECT COUNT(*) AS total
+                FROM {$this->table}
+                WHERE ID_Persona = :proveedor
+                  AND URL LIKE :cliente_id";
+
+        $params = [
+            ':proveedor' => $idProveedor,
+            ':cliente_id' => "%id={$idCliente}%"
+        ];
+
+        $result = $this->executeRawQueryArray($sql, $params);
+
+        return ($result[0]['total'] ?? 0) > 0;
+    }
+    
+
 }
