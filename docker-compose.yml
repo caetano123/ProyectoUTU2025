@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   web:
     build:
@@ -24,8 +22,8 @@ services:
       MYSQL_ROOT_PASSWORD: cae2007
       MYSQL_DATABASE: ServiciOs
     volumes:
+      - "C:/xampp/htdocs/ProyectoUTU2025/database/migrations/init.sql:/docker-entrypoint-initdb.d/init.sql"
       - db_data:/var/lib/mysql
-      - /opt/ProyectoUTU2025/database/migrations/init.sql:/docker-entrypoint-initdb.d/init.sql
     networks:
       - serviciOS_net
 

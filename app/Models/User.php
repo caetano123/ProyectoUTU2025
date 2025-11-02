@@ -70,7 +70,6 @@ class User extends Model {
         return [$tipo]; // Retorna un array con el rol
     }
 
-//<<<<<<< HEAD
     // Buscar usuario por email o CI
 public function getByEmailOrCI($value) {
     $sql = "SELECT * FROM {$this->table} WHERE Correo = :correo OR ID_Persona = :ci LIMIT 1";
@@ -104,7 +103,6 @@ public function markTokenUsed($id) {
     $sql = "UPDATE password_resets SET used = 1 WHERE id = :id";
     $this->executeRawQuery($sql, [':id' => $id]);
 }
-
 
 // Actualizar contraseña del usuario
 public function updatePassword($ci, $newHash) {
