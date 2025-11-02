@@ -227,3 +227,15 @@ CREATE TABLE Posts (
     FOREIGN KEY (ID_Categoria) REFERENCES Categorias(ID_Categoria)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+-- Tabla para tokens de recuperación de contraseña
+CREATE TABLE IF NOT EXISTS password_resets (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    CI INT NOT NULL,
+    token_hash VARCHAR(255) NOT NULL,
+    expires_at DATETIME NOT NULL,
+    used TINYINT(1) DEFAULT 0,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (CI) REFERENCES Personas(ID_Persona) ON DELETE CASCADE
+);
+CREATE INDEX idx_password_reset_ci ON password_resets(CI);
+CREATE INDEX idx_password_reset_token ON password_resets(token_hash);

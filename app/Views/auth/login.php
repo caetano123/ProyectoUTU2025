@@ -50,7 +50,7 @@
       <button type="submit" class="btn-cta">Iniciar Sesión</button>
 
       <p class="olvidaste">
-        <a href="/recuperar_contraseña.php">¿Olvidaste tu contraseña?</a>
+        <a href="/recuperar_contraseña">¿Olvidaste tu contraseña?</a>
       </p>
     </form>
   </div>

@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   web:
     build:
@@ -24,8 +22,8 @@ services:
       MYSQL_ROOT_PASSWORD: cae2007
       MYSQL_DATABASE: ServiciOs
     volumes:
+      - "C:/xampp/htdocs/ProyectoUTU2025/database/migrations/init.sql:/docker-entrypoint-initdb.d/init.sql"
       - db_data:/var/lib/mysql
-      - /opt/ProyectoUTU2025/database/migrations/init.sql:/docker-entrypoint-initdb.d/init.sql
     networks:
       - serviciOS_net
 
@@ -43,6 +41,15 @@ services:
       - db
     networks:
       - serviciOS_net
+      
+  mailhog:
+    image: mailhog/mailhog
+    container_name: serviciOS_mailhog
+    ports:
+      - "8025:8025"  # interfaz web para ver mails
+      - "1025:1025"  # puerto SMTP
+    networks:
+      - serviciOS_net
 
 volumes:
   db_data:
@@ -50,4 +57,3 @@ volumes:
 networks:
   serviciOS_net:
     driver: bridge
-
