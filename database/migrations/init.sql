@@ -258,6 +258,8 @@ CREATE TABLE IF NOT EXISTS password_resets (
 CREATE INDEX idx_password_reset_ci ON password_resets(CI);
 CREATE INDEX idx_password_reset_token ON password_resets(token_hash);
 
+
+
 -- ====================================
 -- Datos de prueba para Personas
 -- ====================================
