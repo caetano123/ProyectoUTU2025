@@ -8,7 +8,6 @@
     <a href="/vender" class="<?= isActive('/vender', $currentUrl) ?>">Vender Servicio</a>
     <a href="/buscar" class="<?= isActive('/buscar', $currentUrl) ?>">Servicios</a>
 
-    <?php if (!isActive('/buscar', $currentUrl)): ?>
       <form class="navbar-search-form" action="/buscar" method="get">
         <input
           type="text"
@@ -20,7 +19,6 @@
           <i class="fas fa-search" aria-hidden="true"></i><span class="sr-only">Buscar</span>
         </button>
       </form>
-    <?php endif; ?>
 
 
     <?php if (isset($auth) && $auth->check()): 
