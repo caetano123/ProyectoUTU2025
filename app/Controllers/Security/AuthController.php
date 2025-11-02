@@ -19,7 +19,7 @@ class AuthController extends Controller
     public function showLogin()
     {
         if ($this->auth->check()) {
-            return $this->redirect('/dashboard');
+            return $this->redirect('/profile');
         }
 
         return $this->render('auth/login', [
@@ -45,10 +45,11 @@ class AuthController extends Controller
         ]);
 
         if (!empty($errors)) {
-            
+            // Flash de errores y datos antiguos (email)
             $this->session->flash('errors', $errors);
             $this->session->flash('old', ['email' => $email]);
             
+            // Volver al formulario sin intentar el login
             return $this->redirect('/login');
         }
 
@@ -109,7 +110,7 @@ class AuthController extends Controller
             'apellido' => 'required|min:2',
             'correo' => 'required|email',
             'telefono' => 'required|min:8', 
-            'password' => 'required|min:4',
+            'password' => 'required|min:8',
             'password_confirm' => 'required'
         ];
 
@@ -123,7 +124,7 @@ class AuthController extends Controller
         
         // Validación de confirmación de contraseña
         if ($password !== $passwordConfirm) {
-            $errors['password_confirm'] = 'Las contraseñas no coinciden';
+            $errors['clave_confirm'] = 'Las contraseñas no coinciden';
         }
 
 
