@@ -54,6 +54,19 @@ $router->addRoute("GET", "/logout", "Security\\AuthController@logout");
 $router->addRoute("GET", "/register", "Security\\AuthController@showRegister");
 $router->addRoute("POST", "/register", "Security\\AuthController@register");
 
+// =========================
+// RECUPERACIÓN DE CONTRASEÑA
+// =========================
+
+// Mostrar formulario "Olvidé mi contraseña"
+$router->addRoute("GET", "/recuperar_contraseña", "Security\\AuthController@showRequestReset");
+
+// Procesar formulario y enviar email con token
+$router->addRoute("POST", "/recuperar_contraseña", "Security\\AuthController@requestReset");
+
+$router->addRoute("GET", "/recuperar_contraseña/:token", "Security\\AuthController@showResetPassword");
+$router->addRoute("POST", "/recuperar_contraseña/:token", "Security\\AuthController@resetPassword");
+
 
 // =========================
 // RUTAS PROTEGIDAS POR MIDDLEWARE

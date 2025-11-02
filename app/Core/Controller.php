@@ -148,4 +148,13 @@ abstract class Controller {
         exit;
     }
 
+protected function redirectBack($fallback = '/')
+{
+    if (!empty($_SERVER['HTTP_REFERER'])) {
+        header('Location: ' . $_SERVER['HTTP_REFERER']);
+        exit;
+    }
+    $this->redirect($fallback);
+}
+
 }
