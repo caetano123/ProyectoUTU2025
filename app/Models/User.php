@@ -104,13 +104,6 @@ public function markTokenUsed($id) {
     $this->executeRawQuery($sql, [':id' => $id]);
 }
 
-// Actualizar contraseña del usuario
-public function updatePassword($ci, $newHash) {
-    $sql = "UPDATE {$this->table} SET ContrasenaHash = :hash WHERE ID_Persona = :ci";
-    $this->executeRawQuery($sql, [':hash' => $newHash, ':ci' => $ci]);
-}
-
-
 
 // Actualizar contraseña del usuario
 public function updatePassword($ci, $newHash) {
