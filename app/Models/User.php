@@ -112,4 +112,35 @@ public function updatePassword($ci, $newHash) {
 
 
 
+// Actualizar contraseña del usuario
+public function updatePassword($ci, $newHash) {
+    $sql = "UPDATE {$this->table} SET ContrasenaHash = :hash WHERE ID_Persona = :ci";
+    $this->executeRawQuery($sql, [':hash' => $newHash, ':ci' => $ci]);
+}
+
+   public function updateById($id, $data) {
+        // Si no hay datos para actualizar, no hacemos nada.
+        if (empty($data)) {
+            return false;
+        }
+
+        $setParts = [];
+        foreach ($data as $key => $value) {
+            $setParts[] = "`$key` = :$key";
+        }
+
+        $setString = implode(', ', $setParts);
+
+        $sql = "UPDATE {$this->table} SET {$setString} WHERE ID_Persona = :id";
+        
+        $stmt = $this->db->prepare($sql);
+
+        foreach ($data as $key => &$value) {
+            $stmt->bindParam(":$key", $value);
+        }
+        
+        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+        
+        return $stmt->execute();
+    }
 }

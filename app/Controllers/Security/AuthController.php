@@ -10,8 +10,7 @@ class AuthController extends Controller
 {
     protected $userModel;
 
-    public function __construct()
-    {
+    public function __construct() {
         parent::__construct();
         $this->userModel = new User();
     }
@@ -20,7 +19,7 @@ class AuthController extends Controller
     public function showLogin()
     {
         if ($this->auth->check()) {
-            return $this->redirect('/dashboard');
+            return $this->redirect('/profile');
         }
 
         return $this->render('auth/login', [

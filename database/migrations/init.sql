@@ -39,7 +39,7 @@ CREATE TABLE Categorias (
     ID_Categoria INT PRIMARY KEY AUTO_INCREMENT,
     Nombre VARCHAR(50)
 );
-CREATE INDEX idx_categoria_nombre ON Categorias(Nombre);
+CREATE INDEX idx_categoria_nombre ON Categorias(ID_Categoria);
 -- Insertar Categorías predefinidas
 INSERT INTO Categorias (ID_Categoria, Nombre) 
 VALUES
@@ -52,7 +52,7 @@ VALUES
 (7, 'Clases y Tutorías'),
 (8, 'Eventos'),
 (9, 'Cuidado y Bienestar'),
-(10, 'Otra (especificar)');
+(10, 'Otros Servicios');
 
 -- Tabla de Subcategorías
 CREATE TABLE Subcategorias (
@@ -62,6 +62,71 @@ CREATE TABLE Subcategorias (
     FOREIGN KEY (ID_Categoria) REFERENCES Categorias(ID_Categoria)
 );
 CREATE INDEX idx_subcategoria_categoria ON Subcategorias(ID_Categoria);
+INSERT INTO Subcategorias (ID_Subcategoria, Nombre, ID_Categoria) VALUES
+-- Categoría 1: Diseño Gráfico y Creatividad
+(1, 'Diseño de Logos e Identidad Visual', 1),
+(2, 'Diseño Web y UI/UX', 1),
+(3, 'Ilustración y Arte Digital', 1),
+(4, 'Diseño para Redes Sociales', 1),
+(5, 'Edición de Imágenes (Retoque)', 1),
+
+-- Categoría 2: Tecnología y Programación
+(6, 'Desarrollo Web (Full Stack)', 2),
+(7, 'Desarrollo de Aplicaciones Móviles', 2),
+(8, 'Soporte Técnico y Reparación de PC', 2),
+(9, 'Desarrollo E-commerce', 2),
+(10, 'Administración de Bases de Datos', 2),
+
+-- Categoría 3: Marketing Digital y Ventas
+(11, 'Manejo de Redes Sociales', 3),
+(12, 'SEO (Optimización para Buscadores)', 3),
+(13, 'Publicidad Paga (Google/Meta Ads)', 3),
+(14, 'Redacción Publicitaria (Copywriting)', 3),
+(15, 'Email Marketing y Automatización', 3),
+
+-- Categoría 4: Video, Foto y Animación
+(16, 'Edición de Video', 4),
+(17, 'Fotografía de Eventos', 4),
+(18, 'Fotografía de Producto', 4),
+(19, 'Animación 2D y Motion Graphics', 4),
+(20, 'Filmación y Producción de Video', 4),
+
+-- Categoría 5: Negocios y Asistencia Virtual
+(21, 'Asistencia Virtual (Tareas Administrativas)', 5),
+(22, 'Carga de Datos (Data Entry)', 5),
+(23, 'Contabilidad y Finanzas', 5),
+(24, 'Consultoría de Negocios', 5),
+(25, 'Gestión de Proyectos', 5),
+
+-- Categoría 6: Hogar y Reparaciones
+(26, 'Plomería (Sanitaria)', 6),
+(27, 'Electricidad', 6),
+(28, 'Carpintería (Armado de muebles)', 6),
+(29, 'Pintura', 6),
+(30, 'Jardinería y Mantenimiento', 6),
+
+-- Categoría 7: Clases y Tutorías
+(31, 'Clases de Idiomas (Inglés, etc.)', 7),
+(32, 'Tutorías Escolares (Matemática, Física)', 7),
+(33, 'Clases de Música (Guitarra, Piano)', 7),
+(34, 'Entrenamiento Personalizado', 7),
+(35, 'Preparación de Exámenes', 7),
+
+-- Categoría 8: Eventos
+(36, 'Organización de Eventos', 8),
+(37, 'Servicios de Catering y Gastronomía', 8),
+(38, 'DJ, Sonido e Iluminación', 8),
+(39, 'Decoración y Ambientación', 8),
+(40, 'Mozos y Bartenders', 8),
+
+-- Categoría 9: Cuidado y Bienestar
+(41, 'Peluquería y Estilismo', 9),
+(42, 'Manicura y Pedicura', 9),
+(43, 'Masajes Terapéuticos y Relajantes', 9),
+(44, 'Cuidado de Mascotas (Paseos, Alojamiento)', 9),
+(45, 'Cuidado de Adultos Mayores o Niños', 9),
+
+(46, 'Otro Servicio', 10);
 
 -- Tabla de Zonas geográficas de cobertura
 CREATE TABLE Zonas (

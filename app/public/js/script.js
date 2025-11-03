@@ -1,9 +1,8 @@
-
-// DOMContentLoaded
-
+// ENVUELVE TODO en DOMContentLoaded
 document.addEventListener('DOMContentLoaded', () => {
 
-  // Cierra todos los menús abiertos
+  // --- 1. Lógica de Menús Dropdown ---
+    // Cierra todos los menús abiertos
   function closeAllDropdowns() {
     document.querySelectorAll('.dropdown-content.show').forEach(menu => {
       menu.classList.remove('show');
@@ -14,26 +13,16 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
   }
-
-  // Busca todos los botones que activan menús
+    // Busca todos los botones que activan menús
   const dropdownTriggers = document.querySelectorAll('button[aria-haspopup="true"]');
-
   dropdownTriggers.forEach(trigger => {
     trigger.addEventListener('click', (event) => {
-      // Evita que el clic en el botón cierre el menú inmediatamente
       event.stopPropagation(); 
-      
       const menuId = trigger.getAttribute('aria-controls');
       const menu = document.getElementById(menuId);
-
       if (menu) {
-        // Verifica si este menú ya está abierto
         const isExpanded = menu.classList.contains('show');
-        
-        // Cierra todos los menús ANTES de abrir el nuevo
         closeAllDropdowns();
-
-        // Si no estaba abierto, ábrelo
         if (!isExpanded) {
           menu.classList.add('show');
           trigger.setAttribute('aria-expanded', 'true');
@@ -42,17 +31,14 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // Cierra los menús si se hace clic fuera de ellos
   window.addEventListener('click', (event) => {
     if (!event.target.matches('button[aria-haspopup="true"]')) {
       closeAllDropdowns();
     }
   });
-});
    
-    // Carrusel con scroll centrado
-   
-    const track = document.getElementById("track");
+  // --- 2. Lógica del Carrusel ---
+     const track = document.getElementById("track");
     if (track) {
         const wrap = track.parentElement;
         const cards = Array.from(track.children);
@@ -139,9 +125,7 @@ document.addEventListener('DOMContentLoaded', () => {
         center(0);
     }
 
-  
-    // FAQ toggle
-   
+  // --- 3. Lógica de FAQ ---
     const faqButtons = document.querySelectorAll('.faq-question');
     faqButtons.forEach(button => {
         button.addEventListener('click', () => {
@@ -157,21 +141,8 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-   
-    // Mostrar nombre archivo subido
-   
-    const input = document.getElementById('imagen');
-    const fileName = document.getElementById('file-name');
-    if (input && fileName) {
-        input.addEventListener('change', function () {
-            fileName.textContent = this.files[0] ? this.files[0].name : 'Ningún archivo seleccionado';
-        });
-    }
-
-  
-    // Botones de categoría en búsqueda
-    
-    const botonesCategoria = document.querySelectorAll('.servicio-btn');
+  // --- 5. Lógica de Botones de categoría en búsqueda ---
+const botonesCategoria = document.querySelectorAll('.servicio-btn');
     botonesCategoria.forEach(btn => {
         btn.addEventListener('click', () => {
             const textoCategoria = btn.querySelector('span').textContent.trim();
@@ -183,7 +154,8 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // CAMPANA DE NOTIFICACIONES 
+
+  // --- 6. Lógica de la Campana de Notificaciones ---
     var campanaContainer = document.getElementById('campana-container');
     var notificacionesLista = document.getElementById('notificaciones-lista');
     var notificacionesItems = document.getElementById('notificaciones-items');
@@ -238,3 +210,68 @@ document.addEventListener('DOMContentLoaded', () => {
             loadNotifications();
         }
     });
+
+  
+  // --- 7. Lógica de Categorías y Subcategorías (CON DEPURACIÓN) ---
+
+  // Control 1: Ver si este bloque de código se ejecuta.
+  console.log("Bloque de Categorías: Iniciado.");
+
+  var categoriaSelect = document.getElementById('select-categoria');
+  var subcategoriaSelect = document.getElementById('select-subcategoria');
+
+  // Control 2: Ver si JavaScript encontró los elementos.
+  console.log("Buscando #select-categoria:", categoriaSelect);
+  console.log("Buscando #select-subcategoria:", subcategoriaSelect);
+
+  // Comprueba si los selects existen en esta página
+  if (categoriaSelect && subcategoriaSelect) { 
+      
+      // Control 3: Ver si el script entró en el 'if'.
+      console.log("Elementos encontrados. Adjuntando 'change' listener...");
+
+      categoriaSelect.addEventListener('change', function() {
+          
+          // Control 4: Ver si el 'listener' se dispara al cambiar.
+          console.log("¡Categoría cambiada! El 'listener' funciona.");
+
+          var categoriaId = this.value; 
+          subcategoriaSelect.innerHTML = '<option value="">Cargando...</option>';
+          subcategoriaSelect.disabled = true;
+
+          if (!categoriaId) {
+              subcategoriaSelect.innerHTML = '<option value="">Selecciona una categoría primero</option>';
+              return;
+          }
+
+          // Control 5: Ver si el 'fetch' se está preparando.
+          console.log("Llamando a API: /api/subcategorias?categoria_id=" + categoriaId);
+
+          fetch('/api/subcategorias?categoria_id=' + categoriaId)
+              .then(function(response) {
+                  if (!response.ok) {
+                      throw new Error('Error en la respuesta de la red');
+                  }
+                  return response.json();
+              })
+              .then(function(subcategorias) {
+                  subcategoriaSelect.innerHTML = '<option value="">Selecciona una subcategoría</option>';
+                  subcategorias.forEach(function(subcat) {
+                      var option = document.createElement('option');
+                      option.value = subcat.ID_Subcategoria;
+                      option.textContent = subcat.Nombre;
+                      subcategoriaSelect.appendChild(option);
+                  });
+                  subcategoriaSelect.disabled = false;
+              })
+              .catch(function(error) {
+                  console.error('Error al cargar subcategorías:', error);
+                  subcategoriaSelect.innerHTML = '<option value="">Error al cargar</option>';
+              });
+      });
+  } else {
+      // Control 6: (El más probable) Ver si el 'if' falló.
+      console.error("ERROR: No se encontraron los 'selects' (#select-categoria o #select-subcategoria) en esta página. El 'listener' no fue adjuntado.");
+  }
+
+}); // <-- FIN DEL DOMContentLoaded

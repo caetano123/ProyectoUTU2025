@@ -24,18 +24,13 @@ class BuscarController extends Controller {
     if (!empty($q)) {
         $servicios = $this->modelo->search($q, $categoria);
 
-    } elseif (!empty($categoria)) {
-        $id_categoria = $this->categoriaModel->findByName($categoria);
+    } elseif (is_numeric($categoria)) {
+            $servicios = $this->modelo->getByCategoryId($categoria);
 
-        if ($id_categoria) {
-            $servicios = $this->modelo->getByCategoryId($id_categoria);
         } else {
             $servicios = []; 
-        }
 
-    } else {
-        $servicios = $this->modelo->all();
-    }
+        }
 
     return $this->render("buscar", [
         "title" => "Buscar Servicios",

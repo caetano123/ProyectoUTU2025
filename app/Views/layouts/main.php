@@ -17,9 +17,9 @@
 </head>
 
 <body>
-    <header>
+  <div class="main-header">
         <?php $this->component('navigation') ?>
-    </header>
+  </div>
 
     <main class="container">
         <?php $this->component('flash-messages') ?>

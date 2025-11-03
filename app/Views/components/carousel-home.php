@@ -1,6 +1,6 @@
 <section class="carousel-wrapper">
   <div class="head">
-    <h2>Servicios populares cerca de ti</h2>
+    <h2>Explore los servicios</h2>
 
     <div class="controls">
       <button id="prev" class="nav-btn" aria-label="Anterior">‹</button>
