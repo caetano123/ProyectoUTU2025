@@ -16,18 +16,9 @@ use App\Middleware\AuthMiddleware;
 // RUTAS PÚBLICAS
 // =========================
 
-<<<<<<< HEAD
-//valoraciones
-$router->addRoute( "GET", "/servicio/valorar", "Servicios\\ServicioController@valorarForm", [AuthMiddleware::class]);
-$router->addRoute("POST", "/servicio/valorar", "Servicios\\ServicioController@valorar", [AuthMiddleware::class]);
-
-
-=======
-//prueba
 $router->addRoute("GET", "/servicio/valorar", "Servicios\\ServicioController@valorarForm", [AuthMiddleware::class]);
 $router->addRoute("POST", "/servicio/valorar", "Servicios\\ServicioController@valorar", [AuthMiddleware::class]);
 
->>>>>>> origin/main
 // Página de inicio
 $router->addRoute("GET", "/", "HomeController@index");
 

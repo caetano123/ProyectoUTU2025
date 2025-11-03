@@ -90,7 +90,6 @@ class ProfileController extends Controller {
             $validatedData['Correo'] = $email;
         }
 
-
         if (isset($files['nueva_foto']) && $files['nueva_foto']['error'] === UPLOAD_ERR_OK) {
             $foto = $files['nueva_foto'];
             $nombreArchivo = uniqid('perfil_', true) . '.' . pathinfo($foto['name'], PATHINFO_EXTENSION);
