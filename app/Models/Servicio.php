@@ -89,4 +89,60 @@ class Servicio extends Model
         $sql = "SELECT * FROM {$this->table}";
         return $this->executeRawQueryArray($sql);
     }
-} 
+
+
+    public function getServicios($pagina = 1, $categoriaId = null, $porPagina = 6, $query = null)
+{
+    $sql = "SELECT * FROM {$this->table} WHERE 1=1";
+    $params = [];
+
+    // Filtrar por ID de categoría
+    if ($categoriaId) {
+        $sql .= " AND ID_Categoria = :categoria";
+        $params[':categoria'] = $categoriaId;
+    }
+
+    // Filtrar por búsqueda de texto
+    if ($query) {
+        $sql .= " AND Nombre LIKE :query";
+        $params[':query'] = "%$query%";
+    }
+
+    $sql .= " ORDER BY FechaPublicacion DESC";
+
+    // Calcular offset
+    $inicio = (int)(($pagina - 1) * $porPagina);
+    $porPaginaInt = (int)$porPagina;
+    
+    // Agregar LIMIT directamente
+    $sql .= " LIMIT {$inicio}, {$porPaginaInt}";
+
+    // Ejecutar query
+    $stmt = $this->db->query($sql, $params);
+    $data = $stmt->fetchAll(\PDO::FETCH_ASSOC);
+
+    // Total registros
+    $sqlCount = "SELECT COUNT(*) as total FROM {$this->table} WHERE 1=1";
+    $countParams = [];
+
+    if ($categoriaId) {
+        $sqlCount .= " AND ID_Categoria = :categoria";
+        $countParams[':categoria'] = $categoriaId;
+    }
+    if ($query) {
+        $sqlCount .= " AND Nombre LIKE :query";
+        $countParams[':query'] = "%$query%";
+    }
+
+    $totalRegistros = $this->db->query($sqlCount, $countParams)->fetch(\PDO::FETCH_ASSOC)['total'];
+    $totalPaginas = ceil($totalRegistros / $porPagina);
+
+    return [
+        'data' => $data,
+        'totalRegistros' => $totalRegistros,
+        'totalPaginas' => $totalPaginas
+    ];
+}
+}
+
+
