@@ -16,7 +16,7 @@
 
     <!-- NOMBRE -->
       <div class="form-group">
-        <input type="text" name="nombre" required placeholder="Nombre" value="<?= $this->e($input['nombre'] ?? '') ?>">
+        <input type="text" name="nombre" required placeholder="Nombre" minlength="3" maxlength="15" value="<?= $this->e($input['nombre'] ?? '') ?>">
         <?php if (isset($errors['nombre'])): ?>
             <p class="alert alert-error"><?= $errors['nombre'] ?></p>
         <?php endif; ?>
@@ -24,7 +24,7 @@
 
       <!--  APELLIDO -->
       <div class="form-group">
-        <input type="text" name="apellido" required placeholder="Apellido" value="<?= $this->e($input['apellido'] ?? '') ?>">
+        <input type="text" name="apellido" required placeholder="Apellido" minlength="3" maxlength="25" value="<?= $this->e($input['apellido'] ?? '') ?>">
         <?php if (isset($errors['apellido'])): ?>
             <p class="alert alert-error"><?= $errors['apellido'] ?></p>
         <?php endif; ?>
@@ -32,7 +32,7 @@
 
       <!-- TELÉFONO -->
       <div class="form-group">
-        <input type="text" name="telefono" required placeholder="Número de Teléfono" value="<?= $this->e($input['telefono'] ?? '') ?>">
+        <input type="text" name="telefono" required placeholder="Número de Teléfono" minlength="8" maxlength="9" value="<?= $this->e($input['telefono'] ?? '') ?>">
         <?php if (isset($errors['telefono'])): ?>
             <p class="alert alert-error"><?= $errors['telefono'] ?></p>
         <?php endif; ?>
@@ -40,7 +40,7 @@
 
       <!-- CORREO -->
       <div class="form-group">
-        <input type="email" name="correo" required placeholder="Correo Electrónico" value="<?= $this->e($input['correo'] ?? '') ?>">
+        <input type="email" name="correo" required placeholder="Correo Electrónico"  value="<?= $this->e($input['correo'] ?? '') ?>" minlength="13" maxlength="30">
         <?php if (isset($errors['correo'])): ?>
             <p class="alert alert-error"><?= $errors['correo'] ?></p>
         <?php endif; ?>
@@ -48,7 +48,7 @@
 
       <!-- CONTRASEÑA -->
       <div class="form-group">
-        <input type="password" name="password" required placeholder="Contraseña">
+        <input type="password" name="password" required placeholder="Contraseña" minlength="8" maxlength="20" >
         <?php if (isset($errors['password'])): ?>
             <p class="alert alert-error"><?= $errors['password'] ?></p>
         <?php endif; ?>
@@ -56,7 +56,7 @@
 
       <!-- CAMPO CONFIRMAR CONTRASEÑA -->
       <div class="form-group">
-        <input type="password" name="password_confirm" required placeholder="Confirmar Contraseña">
+        <input type="password" name="password_confirm" required placeholder="Confirmar Contraseña" minlength="8" maxlength="20" >
         <?php if (isset($errors['password_confirm'])): ?>
             <p class="alert alert-error"><?= $errors['password_confirm'] ?></p>
         <?php endif; ?>

@@ -4,17 +4,17 @@
 
     <div class="busqueda-linea">
       <h4 class="h4Nom">Título:</h4>
-      <input type="text" name="titulo" class="busquedaTitulo" placeholder="Ej: Carpintero con 5 años de experiencia" required />
+      <input type="text" name="titulo" class="busquedaTitulo" placeholder="Ej: Carpintero con 5 años de experiencia" minlength="4" maxlength="20" required />
     </div>
 
     <div class="busqueda-linea">
       <h4 class="h4Nom">Descripción:</h4>
-      <textarea name="descripcion" class="descripcion" placeholder="Escribe una descripción" required></textarea>
+      <textarea name="descripcion" class="descripcion" placeholder="Escribe una descripción" maxlength="200" required></textarea>
     </div>
 
     <div class="busqueda-linea">
       <h4 class="h4Nom">Precio (por hora trabajada en pesos uruguayos):</h4>
-      <input type="text" name="precio" class="busquedaVender" placeholder="Ej: 4000" required />
+      <input type="text" name="precio" class="busquedaVender" placeholder="Ej: 4000" minlength="1" maxlength="10" required />
     </div>
 
     <div class="busqueda-linea">
@@ -36,7 +36,7 @@
 
     <div class="busqueda-linea">
       <h4 class="h4Nom">Subcategoria:</h4>
-      <input name="subcategoria" class="busquedaVender" placeholder="Escribe la subcategoría. Por ej: Carpintería" required />
+      <input name="subcategoria" class="busquedaVender" placeholder="Escribe la subcategoría. Por ej: Carpintería" minlength="4" maxlength="25" required />
     </div>
 
     <div class="busqueda-linea">
