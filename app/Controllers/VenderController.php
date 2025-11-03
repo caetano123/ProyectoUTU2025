@@ -4,23 +4,37 @@ namespace App\Controllers;
 use App\Core\Controller;
 use App\Models\Servicio;
 use App\Models\Subcategoria;
+use App\Models\Categoria;
+use App\Models\Zona;
+
 
 class VenderController extends Controller {
 
-    private $modelo;
-    private $subcategoriaModelo;
+    protected $servicioModelo;
+    protected $subcategoriaModelo;
+    protected $categoriaModelo;
+    protected $zonaModelo;
+
 
     public function __construct() {
         parent::__construct();
-        $this->modelo = new Servicio();
+        $this->servicioModelo = new Servicio();
         $this->subcategoriaModelo = new Subcategoria();
+        $this->categoriaModelo = new Categoria();
+        $this->zonaModelo = new Zona();
 
         $this->checkAuth();
     }
     
     public function index() {
+
+        $categorias = $this->categoriaModelo->all(); 
+        $zonas = $this->zonaModelo->all();
+
         return $this->render('vender', [
-            'title' => 'Vender un Servicio'
+            'title' => 'Vender un Servicio',
+            'categorias' => $categorias, 
+            'zonas' => $zonas
         ]);
     }
 
@@ -54,7 +68,7 @@ class VenderController extends Controller {
         }
 
         try {
-            $this->modelo->create([
+            $this->servicioModelo->create([
                 'Nombre' => $titulo,
                 'Descripcion' => $descripcion,
                 'Precio' => $precio, 

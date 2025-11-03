@@ -7,7 +7,6 @@
     <a href="/" class="<?= isActive('/', $currentUrl, true) ?>">Inicio</a>
     <a href="/vender" class="<?= isActive('/vender', $currentUrl) ?>">Vender Servicio</a>
     <a href="/buscar" class="<?= isActive('/buscar', $currentUrl) ?>">Servicios</a>
-   
 
     <?php if (!isActive('/buscar', $currentUrl)): ?>
       <form class="navbar-search-form" action="/buscar" method="get">
@@ -30,7 +29,7 @@
     ?>
 
       <?php if ($isAdmin): ?>
-        <a href="/paneladmin" class="<?= isActive('/paneladmin', $currentUrl) ?>">Panel para administradores</a>
+        <a href="/admin" class="<?= isActive('/admin', $currentUrl) ?>">Panel para administradores</a>
       <?php endif; ?>
       
       <div class="notificaciones-icono" id="campana-container">

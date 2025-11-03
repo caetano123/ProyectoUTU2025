@@ -40,4 +40,19 @@ class Subcategoria extends Model{
 		return $stmt->fetch(PDO::FETCH_ASSOC);
 	}
 
+    public function findBy(array $conditions) {
+        $whereParts = [];
+        $params = [];
+        foreach ($conditions as $column => $value) {
+            $whereParts[] = "{$column} = ?";
+            $params[] = $value;
+        }
+
+        $sql = "SELECT * FROM {$this->table} WHERE " . implode(" AND ", $whereParts);
+        
+        $stmt = $this->db->query($sql, $params);
+        
+        return $stmt->fetchAll(); 
+    }
+
 }
