@@ -94,7 +94,7 @@
         <input type="radio" id="star1" name="puntos" value="1"><label for="star1" title="1 estrella">&#9733;</label>
     </div>
 
-    <textarea name="comentario" placeholder="Deja un comentario (opcional)" rows="2" class="comentario"></textarea>
+    <textarea name="comentario" placeholder="Deja un comentario (opcional)" rows="2" class="comentario" maxlength="70"></textarea>
 
     <button type="submit" class="btn-valorar">Enviar valoración</button>
         </form>

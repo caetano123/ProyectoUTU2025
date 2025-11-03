@@ -16,17 +16,25 @@ use App\Middleware\AuthMiddleware;
 // RUTAS PÚBLICAS
 // =========================
 
+<<<<<<< HEAD
+//valoraciones
+$router->addRoute( "GET", "/servicio/valorar", "Servicios\\ServicioController@valorarForm", [AuthMiddleware::class]);
+$router->addRoute("POST", "/servicio/valorar", "Servicios\\ServicioController@valorar", [AuthMiddleware::class]);
+
+
+=======
 //prueba
 $router->addRoute("GET", "/servicio/valorar", "Servicios\\ServicioController@valorarForm", [AuthMiddleware::class]);
 $router->addRoute("POST", "/servicio/valorar", "Servicios\\ServicioController@valorar", [AuthMiddleware::class]);
 
+>>>>>>> origin/main
 // Página de inicio
 $router->addRoute("GET", "/", "HomeController@index");
 
 // Pagina Vender Servicio
 $router->addRoute("GET", "/vender", "VenderController@index");      // formulario
 $router->addRoute("POST", "/vender/crear", "VenderController@crear"); // procesar formulario
-$router->addRoute("GET", "/buscar", "BuscarController@index");     // mostrar servicios
+
 
 // Pagina de Servicio Individual
 $router->addRoute("GET", "/servicio", "Servicios\\ServicioController@show");
@@ -35,7 +43,8 @@ $router->addRoute("POST", "/servicio/update", "Servicios\\ServicioController@upd
 $router->addRoute("POST", "/servicio/contactar", "Servicios\\ServicioController@contactar", );
 
 // Pagina de Buscar Servicio
-$router->addRoute("GET", "/buscar", "BuscarController@index");
+//$router->addRoute("GET", "/buscar", "BuscarController@index");
+$router->addRoute("GET", "/buscar", "Servicios\\ServicioController@index");
 $router->addRoute("POST", "/buscar/eliminar", "Servicios\\ServicioController@eliminar");
 
 // Pagina de Posts

@@ -1826,3 +1826,81 @@ input[type="file"] {
     font-size: 1rem;
     color: #999;
 }
+<<<<<<< HEAD
+
+/* Contenedor de paginación */
+.paginacion {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5rem;
+    margin: 3rem 0 2rem;
+    flex-wrap: wrap;
+}
+
+/* Estilo base para todos los enlaces */
+.paginacion a {
+    min-width: 40px;
+    height: 40px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 12px;
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
+    text-decoration: none;
+    color: #333;
+    font-weight: 500;
+    font-size: 14px;
+    transition: all 0.3s ease;
+    background-color: #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+/* Hover para todos los enlaces */
+.paginacion a:hover {
+    background-color: #f8f9fa;
+    border-color: #007bff;
+    color: #007bff;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 123, 255, 0.15);
+}
+
+
+.paginacion .activo,
+.paginacion .pag-num.activo {
+    background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
+    color: white;
+    border-color: #007bff;
+    box-shadow: 0 4px 12px rgba(0, 123, 255, 0.3);
+    cursor: default;
+    font-weight: 600;
+}
+
+.paginacion .activo:hover {
+    transform: none;
+    background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
+    border-color: #007bff;
+}
+
+/* Botones de navegación (Anterior/Siguiente) */
+.paginacion .pag-nav {
+    font-weight: 600;
+    padding: 0 16px;
+    background-color: #f8f9fa;
+    border-color: #dee2e6;
+    color: #495057;
+}
+
+.paginacion .pag-nav:hover {
+    background-color: #007bff;
+    border-color: #007bff;
+    color: white;
+}
+
+/* Números de página */
+.paginacion .pag-num {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+=======
+>>>>>>> origin/main

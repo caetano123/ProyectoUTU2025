@@ -19,9 +19,13 @@ class Categoria extends Model{
 		return $stmt->fetch(PDO::FETCH_ASSOC);
 	}
 
-	public function findByName($name) {
-		$sql = "SELECT {$this->primaryKey} FROM {$this->table} WHERE Nombre = :name";
-		$stmt = $this->executeRawQuery($sql, [':name' => $name]);
-		return $stmt->fetchColumn();
-	}
+	public function findByName($nombre)
+{
+    $sql = "SELECT ID_Categoria FROM Categorias WHERE Nombre = :nombre LIMIT 1";
+    $params = [':nombre' => $nombre];
+    
+    $result = $this->db->query($sql, $params)->fetch(\PDO::FETCH_ASSOC);
+    
+    return $result ? $result['ID_Categoria'] : null;
+}
 }
