@@ -32,10 +32,7 @@
 
     <div class="busqueda-linea">
       <h4 class="h4Nom">Subcategoria:</h4>
-      
-      <select name="subcategoria" id="select-subcategoria" class="busquedaCategoria" required disabled>
-        <option value="">Selecciona una categoría primero</option>
-      </select>
+      <input name="subcategoria" class="busquedaVender" placeholder="Escribe la subcategoría. Por ej: Carpintería" minlength="4" maxlength="25" required />
     </div>
 
     <div class="busqueda-linea">
