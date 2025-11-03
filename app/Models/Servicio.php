@@ -56,8 +56,6 @@ class Servicio extends Model
     }
 
 
-
-
     public function findById($id)
     {
         if (is_array($id)) {

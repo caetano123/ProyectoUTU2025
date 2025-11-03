@@ -70,5 +70,77 @@ class User extends Model {
         return [$tipo]; // Retorna un array con el rol
     }
 
+    // Buscar usuario por email o CI
+public function getByEmailOrCI($value) {
+    $sql = "SELECT * FROM {$this->table} WHERE Correo = :correo OR ID_Persona = :ci LIMIT 1";
+    $stmt = $this->executeRawQuery($sql, [
+        ':correo' => $value,
+        ':ci' => $value
+    ]);
+    return $stmt->fetch(PDO::FETCH_ASSOC);
+}
 
+
+// Guardar token de recuperación
+public function savePasswordReset($ci, $token_hash, $expires) {
+    $sql = "INSERT INTO password_resets (CI, token_hash, expires_at) VALUES (:ci, :token, :expires)";
+    $this->executeRawQuery($sql, [
+        ':ci' => $ci,
+        ':token' => $token_hash,
+        ':expires' => $expires
+    ]);
+}
+
+// Obtener token de recuperación
+public function getPasswordReset($token_hash) {
+    $sql = "SELECT * FROM password_resets WHERE token_hash = :token LIMIT 1";
+    $stmt = $this->executeRawQuery($sql, [':token' => $token_hash]);
+    return $stmt->fetch(PDO::FETCH_ASSOC);
+}
+
+// Marcar token como usado
+public function markTokenUsed($id) {
+    $sql = "UPDATE password_resets SET used = 1 WHERE id = :id";
+    $this->executeRawQuery($sql, [':id' => $id]);
+}
+
+// Actualizar contraseña del usuario
+public function updatePassword($ci, $newHash) {
+    $sql = "UPDATE {$this->table} SET ContrasenaHash = :hash WHERE ID_Persona = :ci";
+    $this->executeRawQuery($sql, [':hash' => $newHash, ':ci' => $ci]);
+}
+
+
+
+// Actualizar contraseña del usuario
+public function updatePassword($ci, $newHash) {
+    $sql = "UPDATE {$this->table} SET ContrasenaHash = :hash WHERE ID_Persona = :ci";
+    $this->executeRawQuery($sql, [':hash' => $newHash, ':ci' => $ci]);
+}
+
+   public function updateById($id, $data) {
+        // Si no hay datos para actualizar, no hacemos nada.
+        if (empty($data)) {
+            return false;
+        }
+
+        $setParts = [];
+        foreach ($data as $key => $value) {
+            $setParts[] = "`$key` = :$key";
+        }
+
+        $setString = implode(', ', $setParts);
+
+        $sql = "UPDATE {$this->table} SET {$setString} WHERE ID_Persona = :id";
+        
+        $stmt = $this->db->prepare($sql);
+
+        foreach ($data as $key => &$value) {
+            $stmt->bindParam(":$key", $value);
+        }
+        
+        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+        
+        return $stmt->execute();
+    }
 }

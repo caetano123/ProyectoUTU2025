@@ -28,13 +28,21 @@
                 <td><?= htmlspecialchars($c["FechaRegistro"]) ?></td>
                 <td>
                       <div class="acciones-btn">
-                            <a href="/admin/notifyUser?id=<?= htmlspecialchars($c["ID_Persona"]) ?>" class="btnAceptar">Notificar</a>
+                            <a href="/admin/notificar?id=<?= htmlspecialchars($c["ID_Persona"]) ?>" class="btnAceptar">Notificar</a>
 
-                            <form method="POST" action="/paneladmin/deleteUser">
+                            <form method="POST" action="/admin/deleteUser">
                                 <input type="hidden" name="id" value="<?= htmlspecialchars($c["ID_Persona"]) ?>">
                                 <button type="submit" class="btnBorrar" onclick="return confirm('¿Estás seguro de que querés eliminar este usuario?');">Eliminar</button>
                             </form>
-                        </div>
+
+                        <?php if ($c["Tipo"] != 'ADMIN'): ?>
+                        <form method="POST" action="/admin/makeAdmin" style="display:inline;">
+                            <input type="hidden" name="id" value='<?= htmlspecialchars($c["ID_Persona"]) ?>'>
+                            <button type="submit" class="btnAceptar" onclick="return confirm('¿Estás seguro de que querés hacer admin a este usuario?');">Hacer Admin</button>
+                        </form>
+                    <?php endif; ?>
+
+                    </div>
                 </td>
             </tr>
         <?php endforeach; ?>

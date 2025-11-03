@@ -1,0 +1,59 @@
+services:
+  web:
+    build:
+      context: .
+      dockerfile: ./docker/Dockerfile
+    container_name: serviciOS_web
+    ports:
+      - "81:80"
+    volumes:
+      - .:/var/www/html
+    depends_on:
+      - db
+    command: bash -c "apt-get update && apt-get install -y nano mariadb-client && composer install && apache2-foreground"
+    networks:
+      - serviciOS_net
+
+  db:
+    image: mariadb:11
+    container_name: serviciOS_db
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: cae2007
+      MYSQL_DATABASE: ServiciOs
+    volumes:
+      - "C:/xampp/htdocs/ProyectoUTU2025/database/migrations/init.sql:/docker-entrypoint-initdb.d/init.sql"
+      - db_data:/var/lib/mysql
+    networks:
+      - serviciOS_net
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: serviciOS_phpmyadmin
+    restart: always
+    ports:
+      - "8081:80"
+    environment:
+      PMA_HOST: db
+      PMA_USER: root
+      PMA_PASSWORD: cae2007
+    depends_on:
+      - db
+    networks:
+      - serviciOS_net
+      
+  mailhog:
+    image: mailhog/mailhog
+    container_name: serviciOS_mailhog
+    ports:
+      - "8025:8025"  # interfaz web para ver mails
+      - "1025:1025"  # puerto SMTP
+    networks:
+      - serviciOS_net
+
+volumes:
+  db_data:
+
+networks:
+  serviciOS_net:
+    driver: bridge

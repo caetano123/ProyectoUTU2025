@@ -19,18 +19,14 @@
 
     <div class="busqueda-linea">
       <h4 class="h4Nom">Categoría:</h4>
-      <select name="categoria" class="busquedaCategoria" required>
+
+      <select name="categoria" id="select-categoria" class="busquedaCategoria" required>
         <option value="">Selecciona una categoría</option>
-        <option value="1">Diseño Gráfico y Creatividad</option>
-        <option value="2">Tecnología y Programación</option>
-        <option value="3">Marketing Digital y Ventas</option>
-        <option value="4">Video, Foto y Animación</option>
-        <option value="5">Negocios y Asistencia Virtual</option>
-        <option value="6">Hogar y Reparaciones</option>
-        <option value="7">Clases y Tutorías</option>
-        <option value="8">Eventos</option>
-        <option value="9">Cuidado y Bienestar</option>
-        <option value="10">Otra (especificar)</option>
+        <?php foreach ($categorias as $cat): ?>
+           <option value="<?= $cat['ID_Categoria'] ?>">
+            <?= htmlspecialchars($cat['Nombre']) ?>
+          </option>
+        <?php endforeach; ?>
       </select>
     </div>
 
@@ -43,15 +39,11 @@
       <h4 class="h4Nom">Zona:</h4>
       <select name="zona" class="busquedaCategoria" required>
         <option value="">Selecciona una zona</option>
-        <option value="1">18 de Mayo</option>
-        <option value="2">Canelones</option>
-        <option value="3">La Paz</option>
-        <option value="4">Las Brujas</option>
-        <option value="5">Las Piedras</option>
-        <option value="6">Los Cerrillos</option>
-        <option value="7">Montevideo</option>
-        <option value="8">Progreso</option>
-        <option value="9">Toledo</option>
+        <?php foreach ($zonas as $zona): ?>
+          <option value="<?= $zona['ID_Zona'] ?>">
+               <?= htmlspecialchars($zona['Nombre']) ?>
+              </option>
+        <?php endforeach; ?>
       </select>
     </div>
 

@@ -1,0 +1,6 @@
+FROM mariadb:11
+
+# Instalar nano dentro del contenedor de MariaDB
+RUN apt-get update && apt-get install -y nano && rm -rf /var/lib/apt/lists/*
+
+# Dejar el entrypoint original intacto

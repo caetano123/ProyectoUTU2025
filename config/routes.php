@@ -16,11 +16,18 @@ use App\Middleware\AuthMiddleware;
 // RUTAS PÚBLICAS
 // =========================
 
+<<<<<<< HEAD
 //valoraciones
 $router->addRoute( "GET", "/servicio/valorar", "Servicios\\ServicioController@valorarForm", [AuthMiddleware::class]);
 $router->addRoute("POST", "/servicio/valorar", "Servicios\\ServicioController@valorar", [AuthMiddleware::class]);
 
 
+=======
+//prueba
+$router->addRoute("GET", "/servicio/valorar", "Servicios\\ServicioController@valorarForm", [AuthMiddleware::class]);
+$router->addRoute("POST", "/servicio/valorar", "Servicios\\ServicioController@valorar", [AuthMiddleware::class]);
+
+>>>>>>> origin/main
 // Página de inicio
 $router->addRoute("GET", "/", "HomeController@index");
 
@@ -56,6 +63,19 @@ $router->addRoute("GET", "/logout", "Security\\AuthController@logout");
 $router->addRoute("GET", "/register", "Security\\AuthController@showRegister");
 $router->addRoute("POST", "/register", "Security\\AuthController@register");
 
+// =========================
+// RECUPERACIÓN DE CONTRASEÑA
+// =========================
+
+// Mostrar formulario "Olvidé mi contraseña"
+$router->addRoute("GET", "/recuperar_contraseña", "Security\\AuthController@showRequestReset");
+
+// Procesar formulario y enviar email con token
+$router->addRoute("POST", "/recuperar_contraseña", "Security\\AuthController@requestReset");
+
+$router->addRoute("GET", "/recuperar_contraseña/:token", "Security\\AuthController@showResetPassword");
+$router->addRoute("POST", "/recuperar_contraseña/:token", "Security\\AuthController@resetPassword");
+
 
 // =========================
 // RUTAS PROTEGIDAS POR MIDDLEWARE
@@ -81,6 +101,13 @@ $router->addRoute("POST", "/usuarios/save/:id", "Security\\UserController@save",
 $router->addRoute("GET", "/notificaciones", "NotificacionController@index", [AuthMiddleware::class]);
 $router->addRoute("GET", "/notificaciones/check", "NotificacionController@check", [AuthMiddleware::class]);
 
+
 // Panel para administradores
-$router->addRoute("GET", "/paneladmin", "Admin\\AdminController@index", [AuthMiddleware::class]);
-$router->addRoute("POST", "/paneladmin/deleteUser", "Admin\\AdminController@deleteUser", [AuthMiddleware::class]);
+$router->addRoute("GET", "/admin", "Admin\\AdminController@index", [AuthMiddleware::class]);
+$router->addRoute("POST", "/admin/deleteUser", "Admin\\AdminController@deleteUser", [AuthMiddleware::class]);
+$router->addRoute("GET", "/admin/notificar", "Admin\\AdminController@showNotifyForm");
+$router->addRoute("POST", "/admin/notificar/send", "Admin\\AdminController@sendNotification");
+$router->addRoute("POST", "/admin/makeAdmin", "Admin\\AdminController@makeAdmin");
+
+// Esta ruta es para que JavaScript pueda pedir los datos
+$router->addRoute("GET", "/api/subcategorias", "SubcategoriaController@getByCategoria");

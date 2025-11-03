@@ -7,6 +7,28 @@
     <input type="hidden" name="categoria" id="categoriaSeleccionada" value="<?= $_GET['categoria'] ?? '' ?>" />
 </form>
 
+<!-- tarjetas de servicios  -->
+<h2><?= $title ?></h2>
+<div class="servicios-grid">
+    <?php if(!empty($servicios)): ?>
+        <?php foreach($servicios as $s): ?>
+        <div class="servicio-card">
+            <h3><?= htmlspecialchars($s['Nombre']) ?></h3>
+            <p><?= htmlspecialchars($s['Descripcion']) ?></p>
+            <p class="precio">$<?= number_format($s['Precio'],2) ?></p>
+
+            <div class="botones-accion">
+                 <a href="/servicio?id=<?= $s['ID_Servicio'] ?>" class="btnAceptar">
+                     Ver más
+                </a>
+            </div>
+        </div>
+        <?php endforeach; ?>
+    <?php else: ?>
+        <p>No hay servicios cargados aún.</p>
+    <?php endif; ?>
+</div>
+
 <!-- Botones de categoría -->
 <h4>Buscar por categoría:</h4>
 <div class="busqueda-container">
@@ -54,28 +76,6 @@
         <img src="assets/vertodo.png" alt="Ver Todos">
         <span>Ver Todos</span>
     </button>
-</div>
-
-<!-- tarjetas de servicios  -->
-<h2><?= $title ?></h2>
-<div class="servicios-grid">
-    <?php if(!empty($servicios)): ?>
-        <?php foreach($servicios as $s): ?>
-        <div class="servicio-card">
-            <h3><?= htmlspecialchars($s['Nombre']) ?></h3>
-            <p><?= htmlspecialchars($s['Descripcion']) ?></p>
-            <p class="precio">$<?= number_format($s['Precio'],2) ?></p>
-
-            <div class="botones-accion">
-                 <a href="/servicio?id=<?= $s['ID_Servicio'] ?>" class="btnAceptar">
-                     Ver más
-                </a>
-            </div>
-        </div>
-        <?php endforeach; ?>
-    <?php else: ?>
-        <p>No hay servicios cargados aún.</p>
-    <?php endif; ?>
 </div>
 
 

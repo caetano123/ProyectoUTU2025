@@ -2,7 +2,7 @@
 
 return [
     'driver' => 'mysql',
-    'host' => 'localhost',
+    'host' => 'db',
     'database' => 'ServiciOs',
     'username' => 'root',
     'password' => '',
@@ -13,4 +13,3 @@ return [
         PDO::ATTR_EMULATE_PREPARES => false,
     ]
 ];
-

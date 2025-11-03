@@ -88,7 +88,7 @@ header {
   padding: 0 20px; 
   height: var(--navbar-height);
   background-color: rgba(255, 255, 255, 0.3);
-  border-bottom: 1px solid grey;
+  border-bottom: 1px solid rgb(233, 227, 227);
   position: sticky; 
   top: 0;
 z-index: 1000
@@ -1826,6 +1826,7 @@ input[type="file"] {
     font-size: 1rem;
     color: #999;
 }
+<<<<<<< HEAD
 
 /* Contenedor de paginación */
 .paginacion {
@@ -1901,3 +1902,5 @@ input[type="file"] {
 .paginacion .pag-num {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
+=======
+>>>>>>> origin/main
