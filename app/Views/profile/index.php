@@ -5,7 +5,11 @@
             <?= htmlspecialchars($title ?? 'Perfil de Usuario de ' . $user['Nombre']) ?>
         </h1>
         <div class="foto-perfil">
+<<<<<<< HEAD
             <img src="https://i.pinimg.com/736x/87/22/ec/8722ec261ddc86a44e7feb3b46836c10.jpg" alt="Foto de Perfil" class="foto-perfil-img">
+=======
+            <img src="profile-picture.jpg" alt="Profile Picture" class="foto-perfil-img">
+>>>>>>> 4ce35c1 (Perfiles de Usuarios, con posibilidad de editarlo)
         </div>
 
         <div class="info">
@@ -15,6 +19,7 @@
             <p><strong>Correo Electrónico:</strong> <?= htmlspecialchars($user['Correo']) ?></p>
         </div>
 
+<<<<<<< HEAD
         <?php if ($is_owner): ?>
             <div class="botones-accion" style="margin-top: 20px;">
                  <a href="/profile/edit" class="btnAceptar">Editar Perfil</a>
@@ -47,5 +52,19 @@
              <?php else: ?>
                  <p>No hay servicios cargados aún.</p>
             <?php endif; ?>
+=======
+    <div class="acciones-perfil" style="margin-top: 20px;">
+        <a href="profile/edit" class="boton-editar">Editar Perfil</a>
+    </div>
+
+    </div>
+    <h3>Servicios</h3>
+    <div class="servicios">
+        <ul>
+            <?php foreach ($servicios as $servicio): ?>
+                <li><?= htmlspecialchars($servicio['NombreServicio']) ?> - <?= htmlspecialchars($servicio['Descripcion']) ?></li>
+            <?php endforeach; ?>
+        </ul>
+>>>>>>> 4ce35c1 (Perfiles de Usuarios, con posibilidad de editarlo)
     </div>
 </body>

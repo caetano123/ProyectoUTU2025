@@ -1474,6 +1474,7 @@ input[type="file"] {
   align-self: center;
 }
 
+<<<<<<< HEAD
 /* Servicio individual*/
 /* --- Contenedor Principal --- */
 .servicio-container {
@@ -1826,3 +1827,5 @@ input[type="file"] {
     font-size: 1rem;
     color: #999;
 }
+=======
+>>>>>>> 4ce35c1 (Perfiles de Usuarios, con posibilidad de editarlo)

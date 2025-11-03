@@ -16,14 +16,24 @@ use App\Middleware\AuthMiddleware;
 // RUTAS PÚBLICAS
 // =========================
 
+<<<<<<< HEAD
 //prueba
 $router->addRoute("GET", "/servicio/valorar", "Servicios\\ServicioController@valorarForm", [AuthMiddleware::class]);
 $router->addRoute("POST", "/servicio/valorar", "Servicios\\ServicioController@valorar", [AuthMiddleware::class]);
+=======
+// API
+$router->addRoute("POST","/apicategorias", "ApiController@index");
+$router->addRoute("GET","/apicategorias", "ApiController@index");
+>>>>>>> 4ce35c1 (Perfiles de Usuarios, con posibilidad de editarlo)
 
 // Página de inicio
 $router->addRoute("GET", "/", "HomeController@index");
 
+<<<<<<< HEAD
 // Pagina Vender Servicio
+=======
+//Pagina Vender Servicio
+>>>>>>> 4ce35c1 (Perfiles de Usuarios, con posibilidad de editarlo)
 $router->addRoute("GET", "/vender", "VenderController@index");      // formulario
 $router->addRoute("POST", "/vender/crear", "VenderController@crear"); // procesar formulario
 $router->addRoute("GET", "/buscar", "BuscarController@index");     // mostrar servicios
