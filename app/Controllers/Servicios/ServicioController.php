@@ -245,15 +245,15 @@ class ServicioController extends Controller {
             return $this->redirect('/buscar');
         }
 
-        $currentUser = $this->auth->user();
-        if (!$currentUser) {
+        $usuarioActual = $this->auth->user();
+        if (!$usuarioActual) {
             $this->session->flash('error', 'Debes iniciar sesión para contactar.');
             return $this->redirect('/login');
         }
 
         $idProveedor = $servicio['ID_Persona']; 
-        $idUsuarioQueContacta = $currentUser['ID_Persona'];
-        $nombreUsuarioQueContacta = $currentUser['Nombre'];
+        $idUsuarioQueContacta = $usuarioActual['ID_Persona'];
+        $nombreUsuarioQueContacta = $usuarioActual['Nombre'];
 
         if ($idProveedor == $idUsuarioQueContacta) {
             $this->session->flash('error', 'No puedes contactarte por tu propio servicio.');
@@ -283,14 +283,14 @@ class ServicioController extends Controller {
 
    public function valorarForm($servicio)
 {
-    $currentUser = $this->auth->user();
-    if (!$currentUser) {
+    $usuarioActual = $this->auth->user();
+    if (!$usuarioActual) {
         $this->session->flash('error', 'Debes iniciar sesión para valorar.');
         return $this->redirect('/login');
     }
 
     // Verificar que el usuario no sea el dueño del servicio
-    if ($currentUser['ID_Persona'] === $servicio['ID_Persona']) {
+    if ($usuarioActual['ID_Persona'] === $servicio['ID_Persona']) {
         $this->session->flash('error', 'No puedes valorar tu propio servicio.');
         return $this->redirect('/servicio?id=' . $servicio['ID_Servicio']);
     }
@@ -305,53 +305,112 @@ class ServicioController extends Controller {
 
     public function valorar()
 {
-    $currentUser = $this->auth->user();
-    if (!$currentUser) {
+    $usuarioActual = $this->auth->user();
+    if (!$usuarioActual) {
         $this->session->flash('error', 'Debes iniciar sesión para valorar.');
         return $this->redirect('/login');
     }
 
+    
+    $idServicio = $_POST['id_servicio'] ?? null;
     $idProveedor = $_POST['id_proveedor'] ?? null;
     $puntos = $_POST['puntos'] ?? null;
     $comentario = $_POST['comentario'] ?? '';
 
-    if (!$idProveedor || !$puntos || $puntos < 1 || $puntos > 5) {
-        $this->session->flash('error', 'Datos de valoración inválidos.');
+    // metodo para redirigir al servicio, si es que existe
+    $redirigirAlServicio = function() use ($idServicio) {
+        if (!empty($idServicio) && is_numeric($idServicio)) {
+            return $this->redirect('/servicio?id=' . (int)$idServicio);
+        }
         return $this->redirect('/buscar');
+    };
+
+    // Validaciones: que id_proveedor e id_servicio y puntos sean numéricos y válidos
+    if (empty($idProveedor) || !is_numeric($idProveedor) || empty($puntos) || !is_numeric($puntos)) {
+        $this->session->flash('error', 'Datos de valoración inválidos.');
+        return $redirigirAlServicio();
     }
 
-    $idCliente = $currentUser['ID_Persona'];
+    $idProveedor = (int) $idProveedor;
+    $puntos = (int) $puntos;
 
+    if ($puntos < 1 || $puntos > 5) {
+        $this->session->flash('error', 'Los puntos deben estar entre 1 y 5.');
+        return $redirigirAlServicio();
+    }
 
+    $idCliente = $usuarioActual['ID_Persona'];
+
+    // Verificar contacto (si falla, se vuelve al servicio)
     $contacto = $this->notificacionModel->verificarContacto($idCliente, $idProveedor);
     if (!$contacto) {
         $this->session->flash('error', 'Solo puedes valorar proveedores que contactaste.');
-        return $this->redirect('/buscar');
+        return $redirigirAlServicio();
     }
 
-    // Se fija que no haya valorado antes
+    // Verificar si valoro
     if ($this->valoracionModel->yaValoro($idCliente, $idProveedor)) {
         $this->session->flash('error', 'Ya valoraste a este proveedor.');
-        return $this->redirect('/servicio?id=' . $idProveedor);
+        return $redirigirAlServicio();
     }
 
     // Guardar valoración
-$idServicio = $_POST['id_servicio'] ?? null;
-$idProveedor = $_POST['id_proveedor'] ?? null;
+    try {
+        $this->valoracionModel->crearValoracion([
+            'ID_Cliente'   => $idCliente,
+            'ID_Proveedor' => $idProveedor,
+            'Puntos'       => $puntos,
+            'Comentario'   => $comentario
+        ]);
+        $this->session->flash('success', '¡Gracias por valorar al proveedor!');
+    } catch (\Exception $e) {
+        error_log('Error al guardar valoración: ' . $e->getMessage());
+        $this->session->flash('error', 'Ocurrió un error al guardar la valoración.');
+    }
 
-$this->valoracionModel->crearValoracion([
-    'ID_Cliente'   => $idCliente,
-    'ID_Proveedor' => $idProveedor,
-    'Puntos'       => $puntos,
-    'Comentario'   => $comentario
-]);
-
-$this->session->flash('success', '¡Gracias por valorar al proveedor!');
-
-// Redirigir al mismo servicio
-return $this->redirect('/servicio?id=' . $idServicio);
+    // Redirigir al servicio
+    return $redirigirAlServicio();
 }
 
+public function index()
+{
+    $pagina = isset($_GET['pagina']) ? max(1, (int)$_GET['pagina']) : 1;
+    $categoria = $_GET['categoria'] ?? null;
+    $query = $_GET['query'] ?? null; // Agregar búsqueda por texto
+
+    // Si hay categoría, necesitamos el ID
+    $categoriaId = null;
+    if ($categoria && $categoria !== 'Ver Todos') {
+        $categoriaModel = new \App\Models\Categoria();
+        $categoriaId = $categoriaModel->findByName($categoria);
+    }
+
+    // Traemos los servicios paginados
+    $result = $this->servicioModel->getServicios($pagina, $categoriaId, 10, $query);
+
+    $servicios = $result['data'];
+    $totalPaginas = $result['totalPaginas'];
+    $totalRegistros = $result['totalRegistros'];
+
+    // Si la página solicitada es mayor que el total, redirigir a la última página
+    if ($pagina > $totalPaginas && $totalPaginas > 0) {
+        $params = $_GET;
+        $params['pagina'] = $totalPaginas;
+        $queryString = http_build_query($params);
+        header("Location: /buscar?$queryString");
+        exit;
+    }
+   
+    return $this->render('servicio/index', [
+        'title' => 'Buscar servicios',
+        'servicios' => $servicios,
+        'totalPaginas' => $totalPaginas,
+        'totalRegistros' => $totalRegistros,
+        'pagina' => $pagina,
+        'categoria' => $categoria,
+        'query' => $query
+    ]);
+}
 
 
 
