@@ -2,10 +2,10 @@
 
 return [
     'driver' => 'mysql',
-    'host' => 'db',
+    'host' => 'localhost',
     'database' => 'ServiciOs',
-    'username' => 'root',
-    'password' => 'cae2007',
+    'username' => 'serviciosuser',
+    'password' => '1234',
     'charset' => 'utf8mb4',
     'options' => [
         PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
