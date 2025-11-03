@@ -53,7 +53,9 @@ class ServicioController extends Controller {
 
     $loggedInUser = $this->auth->user();
     $loggedInUserId = $loggedInUser['ID_Persona'] ?? null;
-    $is_owner = ($loggedInUserId === $servicio['ID_Persona']);
+    $isOwner = ($loggedInUserId === $servicio['ID_Persona']);
+    $isAdmin = (isset($loggedInUser['Tipo']) && $loggedInUser['Tipo'] == 'ADMIN');
+
 
     
     $valoracion = $this->valoracionModel->promedioValoraciones($usuario['ID_Persona']);
@@ -70,7 +72,8 @@ class ServicioController extends Controller {
     'usuario' => $usuario,
     'id_usuario' => $usuario['ID_Persona'],
     'imgPath' => BASE_URL . '/assets/uploads/servicios/' . $servicio['ID_Categoria'] . '.jpg',
-    'is_owner' => $is_owner,
+    'isOwner' => $isOwner,
+    'isAdmin' => $isAdmin,
     'valoracion' => $valoracion,
     'promedio' => $promedio,
     'totalValoraciones' => $totalValoraciones,
@@ -124,20 +127,22 @@ class ServicioController extends Controller {
 
 
     public function edit() {
-        $servicio = $this->servicioModel->findById($_GET['id'] ?? null);
+        $idServicio = $_GET['id'] ?? null;
+        $servicio = $this->servicioModel->find(['ID_Servicio' => $idServicio]);
 
         if (empty($servicio)) {
             return $this->render('errors/404', ['title' => 'Servicio No Encontrado']);
         }
-          
-        $subcategoria = $this->subcategoriaModel->findById($servicio['ID_Subcategoria']);
 
-        $subcategoria_nombre = $subcategoria['Nombre'] ?? ''; 
+        $categorias = $this->categoriaModel->all(); 
+        $zonas = $this->zonaModel->all();
 
         return $this->render('servicio/edit', [
-            'title' => 'Editar Servicio',
+            'title' => 'Editar Servicio ',
+
             'servicio' => $servicio,
-            'subcategoria_nombre' => $subcategoria_nombre 
+            'categorias' => $categorias, 
+            'zonas' => $zonas
 
         ]);
     }

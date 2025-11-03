@@ -2,59 +2,55 @@
     <form action="/servicio/update" method="POST" enctype="multipart/form-data">
         <div class="servicio-container">
             <h1 class="personal">
-                <?= htmlspecialchars($title ?? 'Editar Servicio ' . $servicio['Nombre']) ?>
+                <?= htmlspecialchars($title . htmlspecialchars($servicio['Nombre'])) ?>
             </h1>
             <input type="hidden" name="id" value="<?= htmlspecialchars($servicio['ID_Servicio']) ?>">
 
-                <p class="servicio-descripcion">
-                    <strong>Nombre:</strong>
-                    <input type="text" name="Nombre" value="<?= htmlspecialchars($servicio['Nombre']) ?>">
-                </p>
+    <div class="busqueda-linea">
+      <h4 class="h4Nom">Título:</h4>
+      <input type="text" name="titulo" class="busquedaTitulo" value="<?=htmlspecialchars($servicio['Nombre'])?>" minlength="4" maxlength="30" required />
+    </div>
 
-                <p class="servicio-descripcion">
-                    <strong>Descripción:</strong>
-                    <textarea name="Descripcion"><?= htmlspecialchars($servicio['Descripcion']) ?></textarea>
-                </p>
+    <div class="busqueda-linea">
+      <h4 class="h4Nom">Descripción:</h4>
+      <textarea name="descripcion" class="descripcion" placeholder="<?=htmlspecialchars($servicio['Descripcion'])?>" maxlength="200" required></textarea>
+    </div>
 
-            <div class="servicio-info-box">
-                <p><strong>Precio:</strong>
-                    <input type="text" name="Precio" value="<?= htmlspecialchars($servicio['Precio']) ?>">
-                </p>
-                <div class="busqueda-linea">
+       <div class="busqueda-linea">
+      <h4 class="h4Nom">Precio (por hora trabajada en pesos uruguayos):</h4>
+      <input type="text" name="precio" class="busquedaVender" value="<?=htmlspecialchars($servicio['Precio'])?>" minlength="1" maxlength="10" required />
+    </div>
+
+    <div class="busqueda-linea">
       <h4 class="h4Nom">Categoría:</h4>
-      <select name="categoria" class="busquedaCategoria" required>
+
+      <select name="categoria" id="select-categoria" class="busquedaCategoria" required>
         <option value="">Selecciona una categoría</option>
-        <option value="1">Diseño Gráfico y Creatividad</option>
-        <option value="2">Tecnología y Programación</option>
-        <option value="3">Marketing Digital y Ventas</option>
-        <option value="4">Video, Foto y Animación</option>
-        <option value="5">Negocios y Asistencia Virtual</option>
-        <option value="6">Hogar y Reparaciones</option>
-        <option value="7">Clases y Tutorías</option>
-        <option value="8">Eventos</option>
-        <option value="9">Cuidado y Bienestar</option>
-        <option value="10">Otra (especificar)</option>
+        <?php foreach ($categorias as $cat): ?>
+           <option value="<?= $cat['ID_Categoria'] ?>">
+            <?= htmlspecialchars($cat['Nombre']) ?>
+          </option>
+        <?php endforeach; ?>
       </select>
     </div>
-        <div class="busqueda-linea">
+
+    <div class="busqueda-linea">
       <h4 class="h4Nom">Subcategoria:</h4>
       
-    <input name="subcategoria" class="busquedaVender" value="<?= htmlspecialchars($subcategoria_nombre) ?>" required />
+      <select name="subcategoria" id="select-subcategoria" class="busquedaCategoria" required disabled>
+        <option value="">Selecciona una categoría primero</option>
+      </select>
     </div>
 
     <div class="busqueda-linea">
       <h4 class="h4Nom">Zona:</h4>
       <select name="zona" class="busquedaCategoria" required>
         <option value="">Selecciona una zona</option>
-        <option value="1">18 de Mayo</option>
-        <option value="2">Canelones</option>
-        <option value="3">La Paz</option>
-        <option value="4">Las Brujas</option>
-        <option value="5">Las Piedras</option>
-        <option value="6">Los Cerrillos</option>
-        <option value="7">Montevideo</option>
-        <option value="8">Progreso</option>
-        <option value="9">Toledo</option>
+        <?php foreach ($zonas as $zona): ?>
+          <option value="<?= $zona['ID_Zona'] ?>">
+               <?= htmlspecialchars($zona['Nombre']) ?>
+              </option>
+        <?php endforeach; ?>
       </select>
     </div>
             </div>

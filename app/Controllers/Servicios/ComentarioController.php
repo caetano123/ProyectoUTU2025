@@ -3,7 +3,7 @@ namespace App\Controllers\Usuarios;
 
 use App\Core\Controller;
 use App\Models\Servicio;
-use App\Models\Notificaciones;
+use App\Models\Notificacion;
 
 class ComentarioController extends Controller {
 
@@ -12,7 +12,7 @@ class ComentarioController extends Controller {
 
     public function __construct() {
         $this->servicioModel = new Servicio();
-        $this->notificacionModel = new Notificaciones();
+        $this->notificacionModel = new Notificacion();
 
         parent::__construct();
     }

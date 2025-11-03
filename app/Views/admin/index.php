@@ -12,7 +12,6 @@
             <th>Apellido</th>
             <th>Email</th>
             <th>Teléfono</th>
-            <th>Verificado</th>
             <th>Fecha de Registro</th>
             <th>Acciones</th>
             <!-- Agregá más columnas si querés -->
@@ -24,7 +23,6 @@
                 <td><?= htmlspecialchars($c["Apellido"]) ?></td>
                 <td><?= htmlspecialchars($c["Correo"]) ?></td>
                 <td><?= htmlspecialchars($c["Telefono"]) ?></td>
-                <td><?= $c["Verificado"] ? 'Sí' : 'No' ?></td>
                 <td><?= htmlspecialchars($c["FechaRegistro"]) ?></td>
                 <td>
                       <div class="acciones-btn">
