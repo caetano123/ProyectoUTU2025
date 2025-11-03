@@ -110,6 +110,14 @@ public function updatePassword($ci, $newHash) {
     $this->executeRawQuery($sql, [':hash' => $newHash, ':ci' => $ci]);
 }
 
+
+
+// Actualizar contraseña del usuario
+public function updatePassword($ci, $newHash) {
+    $sql = "UPDATE {$this->table} SET ContrasenaHash = :hash WHERE ID_Persona = :ci";
+    $this->executeRawQuery($sql, [':hash' => $newHash, ':ci' => $ci]);
+}
+
    public function updateById($id, $data) {
         // Si no hay datos para actualizar, no hacemos nada.
         if (empty($data)) {
