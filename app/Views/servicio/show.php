@@ -68,7 +68,7 @@
                 <?= date('d/m/Y H:i', strtotime($servicio['FechaPublicacion'])); ?>
             </p>
             </div>
-                    <?php if ($is_owner): ?>
+                    <?php if ($isOwner || $isAdmin): ?>
             <div class="botones-accion">
                  <a href="/servicio/edit?id=<?= $servicio['ID_Servicio'] ?>" class="btnAceptar">Editar Servicio</a>
 
@@ -80,7 +80,7 @@
             </div>
         <?php endif; ?>
 
-        <?php if (!$is_owner): ?>
+        <?php if (!$isOwner): ?>
         <form action="/servicio/valorar" method="POST" class="valoracion-form mt-3">
          <input type="hidden" name="id_proveedor" value="<?= $usuario['ID_Persona'] ?>">
     <input type="hidden" name="id_servicio" value="<?= $servicio['ID_Servicio'] ?>">
