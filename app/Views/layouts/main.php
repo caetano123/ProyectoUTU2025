@@ -45,7 +45,7 @@
       <a href="https://www.facebook.com/people/QuadStack-OS/pfbid02jtotTLbrvhB8HKmbDSzegCCApuoTX2r6tAntyRLBrwgJPVv9jRiGy3LjMUCe4Lz9l/?name=xhp_nt__fb__action__open_user" target="_blank" rel="noopener" aria-label="Facebook">
         <i class="fab fa-facebook-f"></i>
       </a>
-      <a href="https://www.linkedin.com" target="_blank" rel="noopener" aria-label="LinkedIn">
+      <a href="https://www.linkedin.com/in/quadstack-os-150779395?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app" target="_blank" rel="noopener" aria-label="LinkedIn">
         <i class="fab fa-linkedin-in"></i>
       </a>
       <a href="https://www.tiktok.com" target="_blank" rel="noopener" aria-label="TikTok">
