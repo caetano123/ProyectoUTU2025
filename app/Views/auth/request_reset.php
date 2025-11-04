@@ -13,7 +13,7 @@
 <?php endif; ?>
 
 <form method="POST" action="/recuperar_contraseña">
-    <label for="email">Correo o CI:</label>
-    <input type="text" name="email" id="email" required>
+    <label for="email">Ingrese su Correo aqui:</label>
+    <input type="text" placeholder="Ej:Sele@gmail" name="email" id="email" required>
     <button type="submit">Enviar</button>
 </form>
