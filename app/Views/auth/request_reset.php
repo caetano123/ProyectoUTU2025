@@ -14,6 +14,6 @@
 
 <form method="POST" action="/recuperar_contraseña">
     <label for="email">Ingrese su Correo aqui:</label>
-    <input type="text" placeholder="Ej:Sele@gmail" name="email" id="email" required>
+    <input type="text" placeholder="Ej:SeleLopez@gmail" name="email" id="email" required>
     <button type="submit">Enviar</button>
 </form>
