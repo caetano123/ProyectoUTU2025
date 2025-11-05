@@ -46,7 +46,7 @@ class VenderController extends Controller {
         $descripcion = trim($_POST['descripcion'] ?? '');
         $precio = $_POST['precio'] ?? null;
         $id_categoria = $_POST['categoria'] ?? null;
-        $subcategoria = $_POST['subcategoria'] ?? null;
+        $id_subcategoria = $_POST['subcategoria'] ?? null;
         
         $id_persona = $currentUser['ID_Persona'];
         $id_zona = $_POST['zona'] ?? null;
@@ -61,10 +61,6 @@ class VenderController extends Controller {
             $this->session->flash("error", "El precio ingresado no es válido. Por favor, introduce solo números.");
             header("Location: /vender");
             exit;
-        }
-
-        if (isset($subcategoria) && !empty($subcategoria)) {
-            $id_subcategoria = $this->subcategoriaModelo->addSubcategoria($subcategoria, $id_categoria);
         }
 
         try {

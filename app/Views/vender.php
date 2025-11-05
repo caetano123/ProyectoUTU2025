@@ -4,7 +4,7 @@
 
     <div class="busqueda-linea">
       <h4 class="h4Nom">Título:</h4>
-      <input type="text" name="titulo" class="busquedaTitulo" placeholder="Ej: Carpintero con 5 años de experiencia" minlength="4" maxlength="20" required />
+      <input type="text" name="titulo" class="busquedaTitulo" placeholder="Ej: Carpintero con 5 años de experiencia" minlength="4" maxlength="50" required />
     </div>
 
     <div class="busqueda-linea">
