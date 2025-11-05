@@ -133,7 +133,7 @@ class ServicioController extends Controller {
         if (empty($servicio)) {
             return $this->render('errors/404', ['title' => 'Servicio No Encontrado']);
         }
-
+        
         $categorias = $this->categoriaModel->all(); 
         $zonas = $this->zonaModel->all();
 
@@ -177,21 +177,23 @@ class ServicioController extends Controller {
         $validatedData = [];
         $redirectUrl = '/servicio/edit?id=' . $idServicio; 
 
-        if (empty(trim($data['Nombre']))) {
+        $nombre = trim($data['nombre'] ?? '');
+
+        if (empty($nombre)) {
             $this->session->flash('error', 'El nombre del servicio no puede estar vacío.');
             return $this->redirect($redirectUrl); 
         }
-        $validatedData['Nombre'] = trim($data['Nombre']);
+        $validatedData['nombre'] = $nombre;
 
-        if (!empty($data['Descripcion'])) {
-            $validatedData['Descripcion'] = trim($data['Descripcion']);
+        if (!empty($data['descripcion'])) {
+            $validatedData['descripcion'] = trim($data['descripcion']);
         }
 
-        if (empty($data['Precio']) || !is_numeric($data['Precio'])) {
+        if (empty($data['precio']) || !is_numeric($data['precio'])) {
              $this->session->flash('error', 'El precio no es válido.');
             return $this->redirect($redirectUrl);
         }
-        $validatedData['Precio'] = $data['Precio'];
+        $validatedData['precio'] = $data['precio'];
 
         if (empty($data['categoria']) || !is_numeric($data['categoria'])) {
              $this->session->flash('error', 'La categoría no es válida.');
@@ -205,20 +207,12 @@ class ServicioController extends Controller {
         }
         $validatedData['ID_Zona'] = $data['zona'];
 
-        $subcategoriaNombre = trim($data['subcategoria'] ?? '');
-        if (empty($subcategoriaNombre)) {
-             $this->session->flash('error', 'La subcategoría no puede estar vacía.');
+        if (empty($data['subcategoria']) || !is_numeric($data['subcategoria'])) {
+             $this->session->flash('error', 'La subcategoria no es válida.');
             return $this->redirect($redirectUrl);
         }
-
-        $subcat = $this->subcategoriaModel->findByName($subcategoriaNombre); 
+        $validatedData['ID_Subcategoria'] = $data['subcategoria'];
         
-        if ($subcat) {
-            $validatedData['ID_Subcategoria'] = $subcat['ID_Subcategoria'];
-        } else {
-            $newSubcatId = $this->subcategoriaModel->addSubcategoria($subcategoriaNombre, $validatedData['ID_Categoria']);
-            $validatedData['ID_Subcategoria'] = $newSubcatId;
-        }
         try {
 
             $this->servicioModel->update(['ID_Servicio' => $idServicio], $validatedData);

@@ -7,8 +7,8 @@
             <input type="hidden" name="id" value="<?= htmlspecialchars($servicio['ID_Servicio']) ?>">
 
     <div class="busqueda-linea">
-      <h4 class="h4Nom">Título:</h4>
-      <input type="text" name="titulo" class="busquedaTitulo" value="<?=htmlspecialchars($servicio['Nombre'])?>" minlength="4" maxlength="30" required />
+      <h4 class="h4Nom">Nombre del Servicio:</h4>
+      <input type="text" name="nombre" class="busquedaTitulo" value="<?=htmlspecialchars($servicio['Nombre'])?>" minlength="4" maxlength="50" required />
     </div>
 
     <div class="busqueda-linea">
